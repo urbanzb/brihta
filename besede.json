@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-20",
+ "updated": "2026-11-21",
  "topics": [
   {
    "id": "feelings",
@@ -289,12 +289,6 @@
      "en": "red",
      "sl": "rdeča",
      "pic": "🔴",
-     "added": "2026-11-20"
-    },
-    {
-     "en": "pink",
-     "sl": "roza",
-     "pic": "🌸",
      "added": "2026-11-20"
     },
     {
