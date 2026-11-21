@@ -1,6 +1,11 @@
-# Angleške besede
+# Brihta
 
-Igrive vaje za angleške besede iz šole: kartice, poveži, spomin, poslušaj, kaj manjka, najdi, igra za dva in slovarček.
+Brihta je aplikacija z igrivimi vajami za razred A. Zdaj vsebuje angleške besede iz šole: kartice, poveži, spomin, poslušaj, sestavi besedo, najdi, igro za dva (na enem telefonu ali vsak s svojim) in slovarček.
+
+Dodatno:
+- **Pametno ponavljanje:** besede, ki jih otrok zgreši, se pojavljajo pogosteje. Ko so vsaj tri takšne, se na začetnem zaslonu pokaže tema **🎯 Vadi**.
+- **Zvočni učinki** ob pravilnem in napačnem odgovoru. Izklopiš jih z gumbom **🔔 / 🔕** na začetnem zaslonu.
+- **Igra za dva na enem telefonu** deluje brez interneta in brez Firebase.
 Aplikacija deluje na Android telefonih in iPhonih, se namesti kot prava aplikacija z ikono in deluje tudi brez povezave.
 Ko skrbnik objavi nove besede, jih vsi uporabniki dobijo samodejno.
 
@@ -21,13 +26,23 @@ Datoteke spletne aplikacije so namenoma v eni mapi, da jih lažje naložiš tudi
 
 ---
 
-## 1. Postavitev na GitHub (enkrat)
+## 0. Preimenovanje iz app_ANG v brihta (enkrat)
+
+Če repozitorij še nosi staro ime `app_ANG`:
+1. Na GitHubu odpri repozitorij → **Settings → General**. Na vrhu je polje **Repository name**: vpiši `brihta` in tapni **Rename**.
+2. Naloži nove datoteke (`index.html`, `sw.js`, `manifest.webmanifest`, `README.md`, mapo `android`) in posodobi `.github/workflows/apk.yml`.
+3. **Settings → Pages** preveri, da je stran objavljena. Novi naslov je `https://urbanzb.github.io/brihta/`. Stari naslov `…/app_ANG/` preneha delovati.
+4. Na telefonu odstrani staro aplikacijo in namesti novo z novega naslova. Žeton, nastavitve in lastne besede ostanejo shranjeni.
+5. Žeton deluje naprej, ker GitHub ob preimenovanju ohrani dostop. Če objava ne uspe, v žetonu preveri, da je izbran repozitorij `brihta`.
+6. **Actions → Zgradi APK → Run workflow**, da nastane `Brihta.apk` z novim naslovom.
+
+
 
 Najlažje gre z računalnikom. S telefonom gre tudi, če v Chromu v meniju ⋮ vklopiš »Spletno mesto za računalnike«.
 
 1. Odpri **github.com** in ustvari brezplačen račun. Uporabniško ime bo del naslova aplikacije, zato izberi kratko ime.
 2. Desno zgoraj tapni **+** → **New repository**.
-   - Repository name: `app_ANG`
+   - Repository name: `brihta`
    - Izberi **Public**.
    - Tapni **Create repository**.
 3. Na strani novega repozitorija tapni **uploading an existing file** (ali **Add file → Upload files**).
@@ -36,13 +51,13 @@ Najlažje gre z računalnikom. S telefonom gre tudi, če v Chromu v meniju ⋮ v
    - Pri **Source** izberi **Deploy from a branch**.
    - Pri **Branch** izberi **main** in **/ (root)**, nato **Save**.
 6. Počakaj 1 do 2 minuti in osveži stran. Zgoraj se pokaže naslov, na primer:
-   `https://urbanzb.github.io/app_ANG/`
+   `https://urbanzb.github.io/brihta/`
 
 To je povezava, ki jo pošlješ staršem.
 
 ## 2. Namestitev na telefon
 
-**Android (Chrome):** povezavo odpri v **Chromu** (ali Samsung Internetu). Aplikacija sama ponudi gumb **Namesti**. Če ga ni, odpri meni **⋮** in izberi **Namesti aplikacijo**. Aplikacija se pojavi med ostalimi aplikacijami.
+**Android (Chrome):** povezavo odpri v **Chromu** (ali Samsung Internetu). Aplikacija sama ponudi gumb **Namesti**. Če ga ni, odpri meni **⋮** in izberi **Namesti aplikacijo**. Aplikacija se pojavi med ostalimi aplikacijami z imenom **Brihta**.
 
 Če se nameščena aplikacija odpira v drugem brskalniku (npr. DuckDuckGo), nastavi Chrome za privzeti brskalnik ali namesti različico **APK** (razdelek 7).
 
@@ -59,7 +74,7 @@ Posodobitev aplikacije in besed ni treba nameščati. Zgodi se samodejno ob odpr
 3. Izpolni:
    - **Token name:** `appANG`
    - **Expiration:** izberi najdaljši rok, ki ga GitHub ponudi.
-   - **Repository access:** **Only select repositories** → izberi `app_ANG`.
+   - **Repository access:** **Only select repositories** → izberi `brihta`.
    - **Permissions:** **Add permissions → Contents → Read and write**.
 4. Tapni **Generate token** in kopiraj žeton (začne se z `github_pat_`). GitHub ti ga pokaže samo enkrat.
 5. V aplikaciji odpri **⚙️ Moje besede in nastavitve → Za skrbnika → Skrbniški način**.
@@ -91,7 +106,7 @@ Igra za dva poveže dva telefona prek Googlove storitve Firebase. Brezplačni pa
 
 **A. Ustvari projekt**
 1. Odpri **console.firebase.google.com** in se prijavi z Google računom.
-2. Ustvari projekt, na primer `appANG`. Google Analytics izklopi.
+2. Ustvari projekt (pri tebi že obstaja: `appANG`). Google Analytics izklopi.
 
 **B. Vklopi anonimno prijavo**
 1. Levo pod **Project shortcuts** tapni **Authentication** (če se pokaže **Get started**, ga tapni).
@@ -139,7 +154,7 @@ APK je mala Android aplikacija, ki odpre isto spletno aplikacijo. Besede in igre
 Ob prvi gradnji GitHub ustvari ključ za podpisovanje in ga šifriranega z geslom shrani kot `android/keystore.enc`. Te datoteke ne briši, sicer starši posodobitev ne bodo mogli namestiti čez staro različico.
 
 ### Prenos in namestitev
-- Povezava za prenos: **https://github.com/urbanzb/app_ANG/releases/download/apk/Besede.apk**
+- Povezava za prenos: **https://github.com/urbanzb/brihta/releases/download/apk/Brihta.apk**
 - V spletni aplikaciji na Androidu je povezava tudi v **⚙️ Nastavitve → Android aplikacija (APK)**.
 - Ob odpiranju datoteke telefon vpraša, ali dovoliš namestitev iz tega vira. Dovoli in tapni **Namesti**. Če Play Protect opozori na neznano aplikacijo, izberi **Več podrobnosti → Vseeno namesti**.
 
@@ -150,17 +165,26 @@ Ob prvi gradnji GitHub ustvari ključ za podpisovanje in ga šifriranega z geslo
 ### Google in nepreverjeni razvijalci
 Google uvaja preverjanje razvijalcev tudi za aplikacije zunaj Trgovine Play. Ko bo to veljalo v Sloveniji (napovedano za leto 2027), bo namestitev APK nepreverjenega razvijalca zahtevnejša. Takrat je spletna različica (razdelek 2) najpreprostejša pot.
 
+## Za razvijalca: več predmetov
+
+Koda je pripravljena na druge predmete, uporabnik pa zaenkrat vidi samo angleščino. Ko bo čas za razširitev:
+- v `besede.json` se doda seznam `"subjects"` (npr. `{"id":"mat","name":"Matematika","icon":"🔢","a":"račun","b":"rezultat","langA":"sl","langB":""}`),
+- teme dobijo polje `"subject"` (teme brez njega pripadajo angleščini),
+- na začetni zaslon se doda izbira predmeta, ki nastavi `S.subject`.
+
+Igre delujejo za vse pare oblike *a = b*, izgovorjava pa sledi jezikoma `langA` in `langB` izbranega predmeta.
+
 ## Zasebnost
 
 Aplikacija nima prijav in ne zbira podatkov. Pisave so priložene, zato tudi Google Fonts ni v uporabi.
 Edina zunanja storitev je Firebase pri igri za dva: tam se med igro shranijo le kartice, živalci in točke, brez imen. Igra se izbriše, ko jo ustvarjalec zapusti.
-Zvezdice, nastavitve in lastne besede so shranjene samo na napravi.
+Zvezdice, nastavitve, statistika pravilnih odgovorov in lastne besede so shranjene samo na napravi.
 Datoteka `besede.json` je javna, zato vanjo ne vpisuj imen otrok ali drugih osebnih podatkov.
 
 ## Pogoste težave
 
 - **Aplikacija se odpira v brskalniku (npr. DuckDuckGo):** Chrome nastavi za privzeti brskalnik in aplikacijo znova namesti iz Chroma, ali pa namesti APK (razdelek 7). Žeton vpiši v aplikaciji, ki jo dejansko uporabljaš, ker ima vsak brskalnik svojo shrambo.
 - **Novih besed ni:** počakaj nekaj minut, zapri aplikacijo in jo odpri znova.
-- **»Žeton nima pravice za pisanje«:** pri žetonu preveri dovoljenje **Contents: Read and write** in da je izbran repozitorij `app_ANG`.
+- **»Žeton nima pravice za pisanje«:** pri žetonu preveri dovoljenje **Contents: Read and write** in da je izbran repozitorij `brihta`.
 - **Slovenske besede se ne izgovarjajo:** naprava nima slovenskega glasu. Aplikacija uporabi hrvaškega, če obstaja. Izgovorjavo lahko izklopiš z gumbom **🔊 SLO**.
 - **Napaka v objavljeni besedi:** v skrbniškem načinu besedo izbriši, jo dodaj pravilno in znova objavi. Lahko tudi neposredno uredi `besede.json` na GitHubu.

@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Angleške besede</title>
-<meta name="description" content="Igrive vaje za angleške besede iz šole.">
+<title>Brihta</title>
+<meta name="description" content="Brihta: igrive vaje za razred A.">
 <meta name="theme-color" content="#3D8BFD">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Besede">
+<meta name="apple-mobile-web-app-title" content="Brihta">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
 @font-face{font-family:'Grandstander';src:url(grandstander.woff2) format('woff2');font-weight:600 800;font-display:swap}
@@ -103,6 +103,17 @@ h1,h2,h3,h4{font-family:var(--display);margin:0;line-height:1.1}
 .mcard .word{font-size:15px}
 .mcard.ok{background:var(--okbg);border-color:var(--leaf);box-shadow:0 2px 0 var(--leaf)}
 .mcard.no{background:var(--nobg);border-color:var(--berry);animation:shake .35s}
+.spell-pic{font-size:96px;line-height:1}
+.spell-sl{font-size:20px;color:var(--soft)}
+.slots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.slot{width:44px;height:54px;border:0;border-bottom:4px solid var(--ink);background:transparent;font-size:28px;padding:0;border-radius:4px}
+.slot.full{background:var(--card)}
+.slot.bad{background:var(--nobg);border-color:var(--berry);animation:shake .35s}
+.slot.good{background:var(--okbg);border-color:var(--leaf)}
+.tiles{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;max-width:420px}
+.ltile{width:52px;height:56px;border-radius:12px;font-size:28px;padding:0;background:var(--sun);color:#1F2A44}
+.ltile.used{visibility:hidden}
+@media (max-width:380px){.slot{width:36px;height:48px;font-size:24px}.ltile{width:46px;height:50px;font-size:24px}}
 .mcard.gone{background:transparent;border:2.5px dashed var(--soft);font-family:var(--display);font-size:34px;color:var(--soft)}
 .peek{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:var(--paper);z-index:20;font-family:var(--display);font-weight:800;font-size:34px}
 .peek .p{font-size:110px;line-height:1}
@@ -193,7 +204,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <div id="app"><p class="loading">Nalagam …</p></div>
 <script>
 'use strict';
-const APP_VERSION='1.2';
+const APP_VERSION='1.4';
 const AB=window.AndroidBridge||null;
 const PAL=['#FFC93C','#6FB7FF','#5FD39A','#FF9EC4','#B79CFF','#FFB067'];
 const NEW_DAYS=14;
@@ -202,15 +213,15 @@ const NEW_DAYS=14;
 function lsGet(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}}
 function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}
 
-const S={view:'home',topic:'all',caps:true,stars:0,memPairs:6,duoPairs:6,slo:true,animal:'🦊',q:'',loaded:false,status:'',edOpen:null,dirty:{my:false,pub:false}};
-(function(){const p=lsGet('besede-prefs',{});if(typeof p.caps==='boolean')S.caps=p.caps;if(p.stars)S.stars=p.stars;if([4,6,8,10].includes(p.memPairs))S.memPairs=p.memPairs;if(typeof p.slo==='boolean')S.slo=p.slo;if(p.animal)S.animal=p.animal;if([4,6,8,10].includes(p.duoPairs))S.duoPairs=p.duoPairs})();
-function savePrefs(){lsSet('besede-prefs',{caps:S.caps,stars:S.stars,memPairs:S.memPairs,slo:S.slo,animal:S.animal,duoPairs:S.duoPairs})}
+const S={view:'home',topic:'all',caps:true,stars:0,memPairs:6,duoPairs:6,slo:true,sfx:true,subject:'ang',animal:'🦊',q:'',loaded:false,status:'',edOpen:null,dirty:{my:false,pub:false}};
+(function(){const p=lsGet('besede-prefs',{});if(typeof p.caps==='boolean')S.caps=p.caps;if(p.stars)S.stars=p.stars;if([4,6,8,10].includes(p.memPairs))S.memPairs=p.memPairs;if(typeof p.slo==='boolean')S.slo=p.slo;if(p.animal)S.animal=p.animal;if([4,6,8,10].includes(p.duoPairs))S.duoPairs=p.duoPairs;if(typeof p.sfx==='boolean')S.sfx=p.sfx;if(p.subject)S.subject=p.subject})();
+function savePrefs(){lsSet('besede-prefs',{caps:S.caps,stars:S.stars,memPairs:S.memPairs,slo:S.slo,animal:S.animal,duoPairs:S.duoPairs,sfx:S.sfx,subject:S.subject})}
 
 let PUB=lsGet('besede-cache',null)||{topics:[]};
 let MY=lsGet('moje-besede',null)||{topics:[]};
 let ADM=null,PREV=null;const PASTE={my:'',pub:''};
 const CFG=Object.assign({owner:'',repo:'',branch:'main',token:''},lsGet('skrbnik',{}));
-if(!CFG.owner&&/\.github\.io$/i.test(location.hostname)){CFG.owner=location.hostname.split('.')[0];const seg=location.pathname.split('/').filter(Boolean)[0];CFG.repo=seg&&!/\.html?$/i.test(seg)?seg:location.hostname}
+if(/\.github\.io$/i.test(location.hostname)){CFG.owner=location.hostname.split('.')[0];const seg=location.pathname.split('/').filter(Boolean)[0];CFG.repo=seg&&!/\.html?$/i.test(seg)?seg:location.hostname}
 
 const app=document.getElementById('app');
 const h=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -219,8 +230,22 @@ const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth
 const clone=o=>JSON.parse(JSON.stringify(o));
 function besed(n){const m=n%100;return n+' '+(m===1?'beseda':m===2?'besedi':(m===3||m===4)?'besede':'besed')}
 function isNew(w){return !!w.added&&(Date.now()-new Date(w.added+'T00:00:00').getTime())<NEW_DAYS*864e5}
-function topicsAll(){return (PUB.topics||[]).concat(MY.topics||[])}
-function pool(){const out=[];for(const t of topicsAll()){if(S.topic!=='all'&&S.topic!=='novo'&&S.topic!==t.id)continue;for(const w of t.words){if(S.topic==='novo'&&!isNew(w))continue;out.push({...w,color:t.color,key:t.id+'|'+w.en})}}return out}
+/* Predmeti. Zaenkrat je en sam (angleščina) in ga uporabnik ne vidi.
+   Za nov predmet: v besede.json dodaj seznam "subjects" in temam polje "subject" (npr. "mat"),
+   na začetni zaslon pa izbiro predmeta, ki nastavi S.subject. Igre uporabljajo pare a = b (en/sl). */
+const DEFAULT_SUBJECTS=[{id:'ang',name:'Angleščina',icon:'🇬🇧',title:'Angleške besede',a:'angleško',b:'slovensko',langA:'en-GB',langB:'sl'}];
+function subjects(){return Array.isArray(PUB.subjects)&&PUB.subjects.length?PUB.subjects:DEFAULT_SUBJECTS}
+function SUBJ(){return subjects().find(x=>x.id===S.subject)||subjects()[0]}
+function topicsRaw(){return (PUB.topics||[]).concat(MY.topics||[])}
+function topicsAll(){const id=SUBJ().id;return topicsRaw().filter(t=>(t.subject||'ang')===id)}
+
+/* Pametno ponavljanje: za vsako besedo štejemo pravilne (o) in napačne (b) odgovore. */
+let STATS=lsGet('besede-stat',{});
+function stat(w,ok){if(!w||!w.key)return;const x=STATS[w.key]||{o:0,b:0};if(ok)x.o++;else x.b++;x.t=Date.now();STATS[w.key]=x;lsSet('besede-stat',STATS)}
+function isHard(w){const x=STATS[w.key];return !!x&&x.b>0&&x.b>=x.o}
+function weight(w){const x=STATS[w.key];if(!x)return 1.5;return Math.min(6,Math.max(0.4,1+2*x.b-0.6*x.o))}
+function wpick(list,n){const a=list.slice(),out=[];while(out.length<n&&a.length){const tot=a.reduce((t,w)=>t+weight(w),0);let r=Math.random()*tot,i=0;for(;i<a.length-1;i++){r-=weight(a[i]);if(r<=0)break}out.push(a.splice(i,1)[0])}return out}
+function pool(){const out=[];for(const t of topicsAll()){if(S.topic!=='all'&&S.topic!=='novo'&&S.topic!=='vadi'&&S.topic!==t.id)continue;for(const w of t.words){const x={...w,color:t.color,key:t.id+'|'+w.en};if(S.topic==='novo'&&!isNew(w))continue;if(S.topic==='vadi'&&!isHard(x))continue;out.push(x)}}return out}
 function uniqPics(list){const seen=new Set();return list.filter(w=>{if(seen.has(w.pic))return false;seen.add(w.pic);return true})}
 
 /* ---------- nalaganje objavljenih besed ---------- */
@@ -239,8 +264,9 @@ window.__ttsReady=()=>{apkSl=null;if(S.view==='home'||S.view==='slovar')render()
 function slVoice(){if(AB){const l=apkLang();return l?{lang:l}:null}const vs=voices();return vs.find(v=>/^sl/i.test(v.lang))||vs.find(v=>/^hr/i.test(v.lang))||vs.find(v=>/^(bs|sr)/i.test(v.lang))||null}
 function canSl(){return S.slo&&!!slVoice()}
 function speak(t,sl,queue){if(AB){if(sl&&!canSl())return;const c=String(t).replace(/…|\.\.\./g,'').replace(/’/g,"'").replace(/ \/ /g,', ');try{AB.speak(c,sl?slVoice().lang:'en-GB',!!queue)}catch(e){}return}try{const s=window.speechSynthesis;if(!s)return;if(sl&&!canSl())return;if(!queue)s.cancel();const u=new SpeechSynthesisUtterance(String(t).replace(/…|\.\.\./g,'').replace(/’/g,"'").replace(/ \/ /g,', '));let v;if(sl){v=slVoice();u.lang=v.lang;u.rate=.9}else{const vs=voices();v=vs.find(v=>/en[-_]GB/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang));u.lang='en-GB';u.rate=.85}if(v)u.voice=v;s.speak(u)}catch(e){}}
-function say(t){speak(t,false)}
-function saySl(t,queue){speak(t,true,queue)}
+function speakLang(t,lang,queue){if(!lang)return;if(/^en/i.test(lang))speak(t,false,queue);else if(/^sl/i.test(lang))speak(t,true,queue)}
+function say(t){speakLang(t,SUBJ().langA)}
+function saySl(t,queue){speakLang(t,SUBJ().langB,queue)}
 function slNote(){if(!S.slo)return '';const v=slVoice();if(!v)return `<p class="note">Ta naprava nima glasu za slovenščino, zato se slovenske besede ne izgovarjajo.</p>`;if(/^sl/i.test(v.lang))return '';return `<p class="note">Ta naprava nima slovenskega glasu, zato slovenske besede bere ${/^hr/i.test(v.lang)?'hrvaški':'soroden'} glas. Izgovorjava je približna.</p>`}
 
 /* ---------- namestitev ---------- */
@@ -336,28 +362,37 @@ async function ghPut(path,text,msg){
 }
 
 /* ---------- igre ---------- */
-const GAMES={kartice:{ico:'🃏',name:'Kartice',desc:'Poglej, poslušaj in obrni.',need:1},povezi:{ico:'🔗',name:'Poveži',desc:'Angleška beseda najde slovenski par.',need:3},spomin:{ico:'🧠',name:'Spomin',desc:'Odkrivaj kartice in poišči pare.',need:3},kviz:{ico:'👂',name:'Poslušaj',desc:'Slišiš besedo, izbereš sliko.',need:4},manjka:{ico:'🙈',name:'Kaj manjka?',desc:'Zapomni si slike in ugani, katera je izginila.',need:6},najdi:{ico:'🔍',name:'Najdi',desc:'Zapomni si, kje je katera slika.',need:6}};
+const GAMES={kartice:{ico:'🃏',name:'Kartice',desc:'Poglej, poslušaj in obrni.',need:1},povezi:{ico:'🔗',name:'Poveži',desc:'Angleška beseda najde slovenski par.',need:3},spomin:{ico:'🧠',name:'Spomin',desc:'Odkrivaj kartice in poišči pare.',need:3},kviz:{ico:'👂',name:'Poslušaj',desc:'Slišiš besedo, izbereš sliko.',need:4},crke:{ico:'🔤',name:'Sestavi besedo',desc:'Iz premešanih črk sestavi angleško besedo.',need:3},najdi:{ico:'🔍',name:'Najdi',desc:'Zapomni si, kje je katera slika.',need:6}};
 let G={};
-function star(){S.stars++;savePrefs()}
+function star(){S.stars++;savePrefs();setTimeout(()=>sfx('win'),350)}
+let actx=null;
+function sfx(kind){if(!S.sfx)return;try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();if(actx.state==='suspended')actx.resume();const now=actx.currentTime+0.02;
+  const seq={ok:[[660,0,.1],[880,.09,.16]],bad:[[247,0,.12],[196,.11,.2]],win:[[523,0,.11],[659,.11,.11],[784,.22,.11],[1047,.33,.3]]}[kind]||[];
+  for(const[f,t,d]of seq){const o=actx.createOscillator(),g=actx.createGain();o.type=kind==='bad'?'triangle':'sine';o.frequency.value=f;
+    g.gain.setValueAtTime(0.0001,now+t);g.gain.exponentialRampToValueAtTime(kind==='bad'?0.1:0.16,now+t+0.015);g.gain.exponentialRampToValueAtTime(0.0001,now+t+d);
+    o.connect(g);g.connect(actx.destination);o.start(now+t);o.stop(now+t+d+0.05)}}catch(e){}}
 function bar(title,back){return `<header class="bar"><button class="back press" data-act="nav" data-v="${back||'home'}">‹ Nazaj</button><h2>${h(title)}</h2><span class="stars">⭐ ${S.stars}</span></header>`}
 
 function render(){
   app.className=S.caps?'caps':'';
   switch(S.view){
     case 'home':return renderHome();case 'kartice':return renderFlash();case 'povezi':return renderMatch();case 'spomin':return renderMem();
-    case 'kviz':return renderQuiz();case 'manjka':return renderMissing();case 'najdi':return renderFind();case 'few':return renderFew();
-    case 'slovar':return renderDict();case 'duo':return renderDuo();case 'settings':return renderSettings();case 'my':return renderMy();case 'admin':return renderAdmin();
+    case 'kviz':return renderQuiz();case 'crke':return renderSpell();case 'najdi':return renderFind();case 'few':return renderFew();
+    case 'slovar':return renderDict();case 'duo1':return renderLocal();case 'duo':return renderDuo();case 'settings':return renderSettings();case 'my':return renderMy();case 'admin':return renderAdmin();
   }
 }
 function renderHome(){
-  if(S.topic!=='all'&&S.topic!=='novo'&&!topicsAll().some(t=>t.id===S.topic))S.topic='all';
+  if(S.topic!=='all'&&S.topic!=='novo'&&S.topic!=='vadi'&&!topicsAll().some(t=>t.id===S.topic))S.topic='all';
   const ts=topicsAll(),all=ts.reduce((n,t)=>n+t.words.length,0),nNew=ts.reduce((n,t)=>n+t.words.filter(isNew).length,0);
   if(S.topic==='novo'&&!nNew)S.topic='all';
   let chips=`<button class="chip ${S.topic==='all'?'on':''}" style="--c:#FFC93C" data-act="topic" data-id="all">📚 Vse<small>${all}</small></button>`;
+  const nHard=ts.reduce((n,t)=>n+t.words.filter(w=>isHard({key:t.id+'|'+w.en})).length,0);
+  if(S.topic==='vadi'&&nHard<3)S.topic='all';
+  if(nHard>=3)chips+=`<button class="chip ${S.topic==='vadi'?'on':''}" style="--c:#B79CFF" data-act="topic" data-id="vadi" title="Besede, ki so ti delale težave">🎯 Vadi<small>${nHard}</small></button>`;
   if(nNew)chips+=`<button class="chip ${S.topic==='novo'?'on':''}" style="--c:#FF9EC4" data-act="topic" data-id="novo">✨ Novo<small>${nNew}</small></button>`;
   chips+=ts.map(t=>`<button class="chip ${S.topic===t.id?'on':''}" style="--c:${h(t.color)}" data-act="topic" data-id="${h(t.id)}">${h(t.icon)} ${h(t.name)}${t.words.some(isNew)?'<i class="dot" title="nove besede"></i>':''}<small>${t.words.length}</small></button>`).join('');
   const games=Object.entries(GAMES).map(([k,g])=>`<button class="game press" data-act="game" data-g="${k}"><span class="ico">${g.ico}</span><b>${g.name}</b><span>${g.desc}</span></button>`).join('');
-  app.innerHTML=`<header class="hero"><div><h1>Angleške besede</h1><p>Izberi temo in igro.</p></div><div class="tools"><span class="stars" title="Zbrane zvezdice">⭐ ${S.stars}</span><button class="pill press" data-act="caps" title="Velike ali male črke">${S.caps?'ABC':'abc'}</button><button class="pill press ${S.slo?'':'off'}" data-act="slo" aria-pressed="${S.slo}" title="Izgovorjava slovenskih besed">🔊 SLO</button></div></header>
+  app.innerHTML=`<header class="hero"><div><h1>Brihta</h1><p>Angleške besede. Izberi temo in igro.</p></div><div class="tools"><span class="stars" title="Zbrane zvezdice">⭐ ${S.stars}</span><button class="pill press" data-act="caps" title="Velike ali male črke">${S.caps?'ABC':'abc'}</button><button class="pill press ${S.slo?'':'off'}" data-act="slo" aria-pressed="${S.slo}" title="Izgovorjava slovenskih besed">🔊 SLO</button><button class="pill press ${S.sfx?'':'off'}" data-act="sfx" aria-pressed="${S.sfx}" aria-label="Zvočni učinki" title="Zvočni učinki">${S.sfx?'🔔':'🔕'}</button></div></header>
   ${installBanner()}${slNote()}
   ${!ts.length&&!S.loaded?`<p class="loading">Nalagam besede …</p>`:`<h3 class="label">Tema</h3><div class="chips">${chips}</div><div class="games">${games}<button class="game wide press" data-act="duo"><span class="ico">👫</span><span class="txt"><b>Igra za dva</b><span>Spomin s prijateljem, vsak s svojega telefona.</span></span></button></div>
   <button class="dict-btn press" data-act="nav" data-v="slovar"><span class="ico">📖</span><span><b>Slovarček</b><span class="sub2">Vse besede na enem mestu, z izgovorjavo.</span></span></button>`}
@@ -365,15 +400,15 @@ function renderHome(){
 }
 function renderFew(){app.innerHTML=bar(GAMES[G.g].name)+`<div class="msg"><p>Za to igro potrebuješ vsaj ${GAMES[G.g].need} besede z različnimi slikicami. Izberi drugo temo ali dodaj nove besede.</p><button class="big press" data-act="nav" data-v="my">Dodaj besede</button></div>`}
 function start(g){
-  let p=pool();if(g!=='kartice'&&g!=='povezi'&&g!=='spomin')p=uniqPics(p);
+  let p=pool();if(g==='crke')p=uniqPics(p.map(w=>({...w,spell:spellWord(w.en)})).filter(w=>w.spell));else if(g!=='kartice'&&g!=='povezi'&&g!=='spomin')p=uniqPics(p);
   G={g};
   if(p.length<GAMES[g].need){S.view='few';return render()}
-  if(g==='kartice'){G.list=shuffle(p);G.i=0;G.flipped=false;say(G.list[0].en)}
-  if(g==='povezi'){const pick=shuffle(p).slice(0,5);G.left=pick;G.right=shuffle(pick);G.sel=null;G.done=new Set();G.wrong=null}
-  if(g==='spomin'){G.max=p.length;const pick=shuffle(p).slice(0,S.memPairs);G.cards=shuffle(pick.flatMap(w=>[{w,t:'en'},{w,t:'sl'}]));G.open=[];G.ok=new Set();G.lock=false}
+  if(g==='kartice'){G.list=wpick(p,p.length);G.i=0;G.flipped=false;say(G.list[0].en)}
+  if(g==='povezi'){const pick=wpick(p,5);G.left=pick;G.right=shuffle(pick);G.sel=null;G.done=new Set();G.wrong=null}
+  if(g==='spomin'){G.max=p.length;const pick=wpick(p,S.memPairs);G.cards=shuffle(pick.flatMap(w=>[{w,t:'en'},{w,t:'sl'}]));G.open=[];G.ok=new Set();G.lock=false}
   if(g==='kviz'){G.p=p;G.total=Math.min(8,p.length);G.n=0;G.score=0;nextQ()}
-  if(g==='manjka'){G.p=p;G.maxSize=Math.min(6,p.length-2);G.size=Math.min(4,G.maxSize);G.round=0;G.total=5;G.score=0;newMissing()}
-  if(g==='najdi'){G.items=shuffle(p).slice(0,6);G.order=shuffle(G.items);G.k=0;G.found=new Set();G.wrong=null;G.phase='look'}
+  if(g==='crke'){G.list=wpick(p,6);G.n=0;G.score=0;newSpell()}
+  if(g==='najdi'){G.items=wpick(p,6);G.order=shuffle(G.items);G.k=0;G.found=new Set();G.wrong=null;G.phase='look'}
   S.view=g;render();
 }
 function renderFlash(){
@@ -400,7 +435,7 @@ function renderMem(){
   const sizes=`<div class="sizes"><span>Število parov:</span>${[4,6,8,10].map(n=>`<button class="chip ${S.memPairs===n?'on':''}" style="--c:#FFC93C" data-act="msize" data-n="${n}" ${n>G.max&&n!==4?'disabled':''}>${n}</button>`).join('')}</div>`;
   app.innerHTML=bar('Spomin')+sizes+(fin?'':`<p class="instr">Poišči angleško besedo in njen slovenski par.</p>`)+`<div class="mem ${G.cards.length>=16?'dense':''}" data-n="${G.cards.length}">${cs}</div>`+(fin?`<div class="win">Vsi pari najdeni! ⭐ +1</div><div class="center"><button class="big press" data-act="game" data-g="spomin">Igraj znova</button></div>`:'');
 }
-function nextQ(){const cur=G.p[Math.floor(Math.random()*G.p.length)];const others=shuffle(G.p.filter(w=>w.key!==cur.key)).slice(0,3);G.cur=cur;G.opts=shuffle([cur,...others]);G.ans=null;say(cur.en)}
+function nextQ(){const cur=wpick(G.p,1)[0];const others=shuffle(G.p.filter(w=>w.key!==cur.key)).slice(0,3);G.cur=cur;G.opts=shuffle([cur,...others]);G.ans=null;say(cur.en)}
 function renderQuiz(){
   if(G.n>=G.total){app.innerHTML=bar('Poslušaj')+`<div class="msg"><div class="win">${G.score} / ${G.total} pravilno</div><p>${G.score>=G.total/2?'Odlično poslušaš! ⭐ +1':'Vadi še malo s karticami, pa bo šlo.'}</p><button class="big press" data-act="game" data-g="kviz">Igraj znova</button></div>`;return}
   const a=G.ans;
@@ -411,22 +446,23 @@ function renderQuiz(){
   <button class="listen press" data-act="qsay" aria-label="Poslušaj besedo">🔊</button><div class="opts">${opts}</div>
   ${a!==null?`<div class="fb"><strong>${right?'Pravilno! 🎉':'Skoraj!'}</strong><span class="word">${h(G.cur.en)}</span> = <span class="word">${h(G.cur.sl)}</span></div><button class="big press" data-act="qnext">Naprej</button>`:''}</main>`;
 }
-function newMissing(){G.items=shuffle(G.p).slice(0,G.size);G.miss=Math.floor(Math.random()*G.size);const m=G.items[G.miss];const extra=shuffle(G.p.filter(w=>!G.items.includes(w))).slice(0,2);G.choices=shuffle([m,...extra]);G.phase='look';G.ans=null}
-function mcardUp(w,extra,cls){return `<button class="mcard press ${cls||''}" ${extra}><span class="p">${h(w.pic)}</span><span class="word">${h(w.en)}</span></button>`}
-function renderMissing(){
-  const head=bar('Kaj manjka?');
-  if(G.round>=G.total){app.innerHTML=head+`<div class="msg"><div class="win">${G.score} / ${G.total} pravilno</div><p>${G.score>=3?'Imaš odličen spomin! ⭐ +1':'Poskusi še enkrat, vsakič gre bolje.'}</p><button class="big press" data-act="game" data-g="manjka">Igraj znova</button></div>`;return}
-  if(G.phase==='peek'){app.innerHTML=head+`<div class="peek" role="status"><span class="p">🙈</span>Zapri oči …</div>`;return}
-  const m=G.items[G.miss],a=G.ans;
-  const grid=G.items.map((w,i)=>{
-    if(G.phase!=='look'&&i===G.miss)return a===null?`<div class="mcard gone" aria-label="Manjka">?</div>`:mcardUp(w,'disabled','ok');
-    return mcardUp(w,`data-act="say" data-t="${h(w.en)}"`)}).join('');
-  let below='';
-  if(G.phase==='look')below=`<div class="center"><button class="big press" data-act="mhide">🙈 Zapri oči</button></div>`;
-  else{const ch=G.choices.map((w,i)=>{let c='';if(a!==null){if(w===m)c='ok';else if(i===a)c='no'}return `<button class="opt press ${c}" data-act="mpick" data-i="${i}" ${a!==null?'disabled':''} aria-label="Možnost ${i+1}"><span class="p">${h(w.pic)}</span>${a!==null?`<span class="word">${h(w.en)}</span>`:''}</button>`}).join('');
-    below=`<div class="stage"><div class="choices">${ch}</div>${a!==null?`<div class="fb"><strong>${G.choices[a]===m?'Pravilno! 🎉':'Skoraj!'}</strong>Manjkal je <span class="word">${h(m.en)}</span> = <span class="word">${h(m.sl)}</span></div><button class="big press" data-act="mnext">Naprej</button>`:''}</div>`}
-  app.innerHTML=head+`<p class="instr">Krog ${G.round+1} od ${G.total}. ${G.phase==='look'?'Dobro si oglej slike. Tapni sliko, da jo slišiš.':'Katera slika je izginila?'}</p><div class="mem" data-n="${G.items.length}">${grid}</div><div style="height:20px"></div>${below}`;
+function spellWord(en){const w=String(en).trim().replace(/^(a|an|the)\s+/i,'').replace(/[.!?]+$/,'');return /^[A-Za-z]{2,9}$/.test(w)?w.toLowerCase():''}
+function newSpell(){const w=G.list[G.n],letters=w.spell.split('');let order;do{order=shuffle(letters.map((c,i)=>i))}while(letters.length>2&&order.every((x,i)=>x===i));
+  G.cur=w;G.tiles=order.map(i=>({c:letters[i],used:false}));G.slots=letters.map(()=>null);G.state='play';G.hinted=false;G.marked=false;G.bad=null;say(w.en)}
+function spellCheck(){const w=G.cur,got=G.slots.map(t=>t===null?'':G.tiles[t].c).join('');if(got.length<w.spell.length||G.slots.includes(null))return;
+  if(got===w.spell){G.state='ok';if(!G.hinted)G.score++;if(!G.marked)stat(w,true);sfx('ok');say(w.en);saySl(w.sl,true)}
+  else{if(!G.marked){G.marked=true;stat(w,false)}sfx('bad');G.bad=G.slots.map((t,i)=>G.tiles[t].c!==w.spell[i]);setTimeout(()=>{if(S.view!=='crke'||!G.bad)return;G.slots=G.slots.map((t,i)=>{if(G.bad[i]){G.tiles[t].used=false;return null}return t});G.bad=null;render()},900)}}
+function renderSpell(){
+  const head=bar('Sestavi besedo');
+  if(G.n>=G.list.length){app.innerHTML=head+`<div class="msg"><div class="win">${G.score} / ${G.list.length} brez pomoči</div><p>${G.score>=G.list.length/2?'Odlično črkuješ! ⭐ +1':'Bravo za trud! Vsakič gre bolje.'}</p><button class="big press" data-act="game" data-g="crke">Igraj znova</button></div>`;return}
+  const w=G.cur,ok=G.state==='ok';
+  const slots=G.slots.map((t,i)=>`<button class="slot ${t===null?'':'full'} ${G.bad&&G.bad[i]?'bad':''} ${ok?'good':''}" data-act="sslot" data-i="${i}" ${ok||t===null?'disabled':''} aria-label="Mesto ${i+1}"><span class="word">${t===null?'':h(G.tiles[t].c)}</span></button>`).join('');
+  const tiles=G.tiles.map((t,i)=>`<button class="ltile press ${t.used?'used':''}" data-act="stile" data-i="${i}" ${t.used||ok?'disabled':''}><span class="word">${h(t.c)}</span></button>`).join('');
+  app.innerHTML=head+`<main class="stage"><p class="instr">Beseda ${G.n+1} od ${G.list.length}. Poslušaj in sestavi besedo iz črk.</p>
+  <div class="spell-pic">${h(w.pic)}</div><div class="row"><button class="round press" data-act="ssay" aria-label="Poslušaj">🔊</button><span class="spell-sl">${h(w.sl)}</span></div>
+  <div class="slots">${slots}</div>${ok?`<div class="fb"><strong>${G.hinted?'Bravo!':'Pravilno! 🎉'}</strong><span class="word">${h(w.en)}</span> = <span class="word">${h(w.sl)}</span></div><button class="big press" data-act="snext">Naprej</button>`:`<div class="tiles">${tiles}</div><div class="btns" style="justify-content:center"><button class="sm press" data-act="shint">💡 Pomoč</button><button class="sm press" data-act="sclear">↺ Znova</button></div>`}</main>`;
 }
+function mcardUp(w,extra,cls){return `<button class="mcard press ${cls||''}" ${extra}><span class="p">${h(w.pic)}</span><span class="word">${h(w.en)}</span></button>`}
 function renderFind(){
   const head=bar('Najdi'),ph=G.phase;
   const grid=G.items.map((w,i)=>{
@@ -464,7 +500,7 @@ async function fbConnect(cfg,name){
 async function fbInit(){if(!FB)FB=await fbConnect(PUB.firebase,'besede');return FB}
 function duoReady(){return !!(window.__FAKE_FB||(PUB.firebase&&PUB.firebase.databaseURL&&PUB.firebase.apiKey))}
 function renderIfDuo(){if(S.view==='duo')render()}
-function duoOpen(){D={phase:'menu',code:'',err:'',animal:S.animal};S.view='duo';render();scrollTo(0,0)}
+function duoOpen(){D={phase:'menu',code:'',err:'',animal:S.animal,animal2:ANIMALS.find(a=>a!==S.animal)};S.view='duo';render();scrollTo(0,0)}
 function fbErrText(e){const t=String((e&&(e.code||''))+' '+(e&&e.message||e)).toLowerCase();
   if(t.includes('nastavitve'))return 'Igra za dva še ni nastavljena.';
   if(t.includes('admin-restricted'))return 'V Firebase ni vklopljena anonimna prijava (Authentication → Sign-in method → Anonymous).';
@@ -473,7 +509,7 @@ function fbErrText(e){const t=String((e&&(e.code||''))+' '+(e&&e.message||e)).to
   if(t.includes('network')||t.includes('fetch')||t.includes('import')||t.includes('load'))return 'Telefon ne doseže strežnikov Firebase. To se zgodi v brskalnikih, ki blokirajo sledilce (npr. DuckDuckGo), ali z blokatorjem oglasov ali VPN. Odpri aplikacijo, nameščeno iz Chroma, ali APK.';
   return 'Povezava ni uspela ('+String(e&&(e.code||e.message)||e).slice(0,80)+'). Poskusi znova.'}
 function duoFail(e){duoStop();D.phase='menu';D.err=fbErrText(e);renderIfDuo()}
-function newRoom(){const p=uniqPics(pool());const pick=shuffle(p).slice(0,Math.min(S.duoPairs,p.length));
+function newRoom(){const p=uniqPics(pool());const pick=wpick(p,Math.min(S.duoPairs,p.length));
   return{created:Date.now(),host:D.animal,state:'wait',turn:Math.random()<.5?'h':'g',score:{h:0,g:0},rev:0,
     cards:shuffle(pick.flatMap(w=>[{k:w.key,t:'en',pic:w.pic,en:w.en,sl:w.sl},{k:w.key,t:'sl',pic:w.pic,en:w.en,sl:w.sl}]))}}
 async function duoCreate(){
@@ -507,6 +543,7 @@ function duoListen(){return new Promise(resolve=>{let first=true;
     if(v.state==='play'||v.state==='done')D.phase=v.state;
     if(v.state==='play')D.starred=false;
     if(v.state==='done'&&!D.starred){D.starred=true;star()}
+    const mc=Object.keys(v.matched||{}).length,pmc=prev?Object.keys(prev.matched||{}).length:mc;if(mc>pmc)sfx('ok');
     const o=v.open||[],po=(prev&&prev.open)||[];
     if(o.length>po.length){const c=v.cards[o[o.length-1]];if(c){if(c.t==='en')say(c.en);else saySl(c.sl)}}
     if(v.pending&&D.pendRev!==v.pendRev){D.pendRev=v.pendRev;clearTimeout(D.timer);const pr=v.pendRev;D.timer=setTimeout(()=>duoResolve(pr),1300)}
@@ -524,18 +561,37 @@ function duoStop(){if(!D)return;if(D.unsub){D.unsub();D.unsub=null}if(D.timer){c
 function duoLeave(){if(!D)return;const r=D.ref,role=D.role,code=D.code,gone=D.gone;duoStop();
   if(r&&FB){if(role==='h'){FB.onDisconnect(r).cancel&&FB.onDisconnect(r).cancel();FB.remove(r).catch(()=>{})}else if(role==='g'){if(gone&&gone.cancel)gone.cancel();if(D.room)FB.set(FB.ref('rooms/'+code+'/guestGone'),true).catch(()=>{})}}
   D=null}
+function startLocal(){const p=uniqPics(pool());if(p.length<3){D.err='Za igro potrebuješ vsaj 3 besede v izbrani temi.';return render()}
+  const pick=wpick(p,Math.min(S.duoPairs,p.length));
+  G={g:'duo1',a:[D.animal,D.animal2],cards:shuffle(pick.flatMap(w=>[{w,t:'en'},{w,t:'sl'}])),open:[],who:{},turn:Math.random()<.5?0:1,score:[0,0],lock:false,done:false,pass:false};
+  S.view='duo1';render();scrollTo(0,0)}
+function renderLocal(){
+  const head=bar('Igra na enem telefonu','duo'),t=G.turn;
+  const score=`<div class="score"><span class="pl ${!G.done&&t===0?'turn':''}">${h(G.a[0])} ${G.score[0]}</span>:<span class="pl ${!G.done&&t===1?'turn':''}">${G.score[1]} ${h(G.a[1])}</span></div>`;
+  const cards=G.cards.map((c,i)=>{const who=G.who[c.w.key],up=G.open.includes(i)||who!==undefined;
+    if(!up)return `<button class="mcard press down" data-act="lflip" data-i="${i}" aria-label="Skrita kartica">?</button>`;
+    const inner=c.t==='en'?`<span class="p">${h(c.w.pic)}</span><span class="word">${h(c.w.en)}</span>`:`<span class="word">${h(c.w.sl)}</span>`;
+    return `<div class="mcard press ${who===undefined?'':(who===0?'ok':'theirs')}">${inner}</div>`}).join('');
+  let msg;
+  if(G.done){const[a,b]=G.score;msg=`<div class="win">${a===b?'Neodločeno! 🤝':'Zmagal je '+h(G.a[a>b?0:1])+'! 🏆'} ⭐ +1</div><div class="center"><button class="big press" data-act="lagain">Igraj znova</button></div>`}
+  else msg=`<p class="turnmsg">${G.pass?'Podaj telefon! ':''}Na vrsti je ${h(G.a[t])}</p>`;
+  app.innerHTML=head+score+(G.done?'':msg)+`<div class="mem ${G.cards.length>=16?'dense':''}" data-n="${G.cards.length}">${cards}</div>`+(G.done?msg:'');
+}
 function renderDuo(){
   const head=bar('Igra za dva');
-  if(!duoReady()){app.innerHTML=head+`<div class="msg"><p>Igra za dva še ni nastavljena. Skrbnik mora v skrbniškem načinu vpisati nastavitve za Firebase.</p></div>`;return}
-  const err=D.err?`<p class="note">${h(D.err)}</p>`:'';
+  const err=D.err?`<p class="note">${h(D.err)}</p>`:'',online=duoReady();
   if(D.phase==='menu'){
     const an=ANIMALS.map(a=>`<button class="animal press ${D.animal===a?'on':''}" data-act="danimal" data-a="${a}" aria-label="Živalca ${a}" aria-pressed="${D.animal===a}">${a}</button>`).join('');
     const avail=uniqPics(pool()).length,ts=topicsAll(),tn=S.topic==='all'?'vse teme':S.topic==='novo'?'nove besede':((ts.find(t=>t.id===S.topic)||{}).name||'vse teme');
+    const sizes=`<div class="sizes"><span>Število parov:</span>${[4,6,8,10].map(n=>`<button class="chip ${S.duoPairs===n?'on':''}" style="--c:#FFC93C" data-act="dpairs" data-n="${n}" ${n>avail&&n!==4?'disabled':''}>${n}</button>`).join('')}</div>`;
     app.innerHTML=head+err+`<section class="card"><h3>Izberi svojo živalco</h3><div class="animals">${an}</div></section>
-    <section class="card"><h3>Nova igra</h3><p class="instr">Ustvari igro spomin in prijatelju povej kodo. Besede: ${h(tn)}. Temo izbereš na začetnem zaslonu.</p>
-    <div class="sizes"><span>Število parov:</span>${[4,6,8,10].map(n=>`<button class="chip ${S.duoPairs===n?'on':''}" style="--c:#FFC93C" data-act="dpairs" data-n="${n}" ${n>avail&&n!==4?'disabled':''}>${n}</button>`).join('')}</div>
-    <button class="big press" data-act="dcreate">Ustvari igro</button></section>
-    <section class="card"><h3>Pridruži se</h3><p class="instr">Vpiši kodo, ki ti jo pove prijatelj.</p><div class="btns"><input class="codein" inputmode="numeric" pattern="[0-9]*" maxlength="4" data-dcode value="${h(D.code)}" placeholder="0000" aria-label="Koda igre"><button class="big press" data-act="djoin">Pridruži se</button></div></section>`;return}
+    <section class="card"><h3>Število parov</h3><p class="instr">Besede: ${h(tn)}. Temo izbereš na začetnem zaslonu.</p>${sizes}</section>
+    <section class="card"><h3>📱 Na enem telefonu</h3><p class="instr">Igrata izmenično na tem telefonu in si ga podajata. Internet ni potreben.</p>
+     <div class="btns" style="margin-bottom:12px"><span>${h(D.animal)} proti</span><button class="animal press on" data-act="danimal2" aria-label="Zamenjaj živalco drugega igralca">${h(D.animal2)}</button><span class="instr" style="margin:0">tapni za drugo živalco</span></div>
+     <button class="big press" data-act="lstart">Začni igro</button></section>
+    ${online?`<section class="card"><h3>📲 Vsak s svojim telefonom: nova igra</h3><p class="instr">Ustvari igro in prijatelju povej kodo.</p><button class="big press" data-act="dcreate">Ustvari igro</button></section>
+    <section class="card"><h3>📲 Vsak s svojim telefonom: pridruži se</h3><p class="instr">Vpiši kodo, ki ti jo pove prijatelj.</p><div class="btns"><input class="codein" inputmode="numeric" pattern="[0-9]*" maxlength="4" data-dcode value="${h(D.code)}" placeholder="0000" aria-label="Koda igre"><button class="big press" data-act="djoin">Pridruži se</button></div></section>`
+    :`<p class="note">Igra vsak s svojim telefonom še ni nastavljena. Skrbnik mora v skrbniškem načinu vpisati nastavitve za Firebase.</p>`}`;return}
   if(D.phase==='connecting'){app.innerHTML=head+`<p class="loading">Povezujem …</p>`;return}
   if(D.phase==='left'){app.innerHTML=head+`<div class="msg"><p>${h(D.err)}</p><button class="big press" data-act="dmenu">Nova igra</button></div>`;return}
   const v=D.room;
@@ -558,16 +614,20 @@ function renderSettings(){
   app.innerHTML=bar('Nastavitve')+`
   <section class="card"><h3>✏️ Moje besede</h3><p class="instr">Besede, ki jih dodaš tukaj, so samo na tej napravi. Zdaj imaš ${besed(myN)}. Ob menjavi telefona jih izvozi in na novem telefonu uvozi.</p>
    <div class="btns"><button class="sm press" data-act="nav" data-v="my">Uredi moje besede</button><button class="sm press" data-act="export" ${MY.topics.length?'':'disabled'}>⬇️ Izvozi</button><label class="sm press filebtn">⬆️ Uvozi<input type="file" accept=".json,application/json" data-import hidden></label></div></section>
-  <section class="card"><h3>🔗 Deli aplikacijo</h3><p class="instr">Pošlji povezavo drugim staršem iz razreda.</p><div class="btns"><button class="sm press" data-act="share">Deli povezavo</button></div></section>
+  <section class="card"><h3>🔗 Deli aplikacijo</h3><p class="instr">Pošlji povezavo drugim staršem iz razreda. Spletna povezava deluje na vseh telefonih. APK je dodatna možnost samo za Android, če se nameščena aplikacija odpira v brskalniku.</p><div class="btns"><button class="sm press" data-act="share">🌐 Deli povezavo</button><button class="sm press" data-act="shareapk">🤖 Deli APK</button></div></section>
   ${isAndroid()&&!AB?`<section class="card"><h3>🤖 Android aplikacija (APK)</h3><p class="instr">Če se nameščena aplikacija na tvojem telefonu odpira v brskalniku, namesti to različico. Telefon bo vprašal za dovoljenje za namestitev.</p><a class="sm press linkbtn" href="${h(apkUrl())}">⬇️ Prenesi APK</a></section>`:''}
   <section class="card"><h3>🔑 Za skrbnika</h3><p class="instr">Objava novih besed za vse uporabnike. Potrebuješ GitHub žeton.</p><button class="sm press" data-act="nav" data-v="admin">Skrbniški način</button></section>
   ${S.status?`<p class="status" role="status">${h(S.status)}</p>`:''}
   <p class="meta">Besede posodobljene: ${h(PUB.updated||'–')}. Različica ${APP_VERSION}${AB?' (Android '+(()=>{try{return AB.versionCode()}catch(e){return '?'}})()+')':''}.</p>`;
 }
-function apkUrl(){return `https://github.com/${CFG.owner}/${CFG.repo}/releases/download/apk/Besede.apk`}
+function apkUrl(){return `https://github.com/${CFG.owner}/${CFG.repo}/releases/download/apk/Brihta.apk`}
+async function shareApk(){const url=apkUrl(),text='Brihta za Android (APK). Odpri povezavo na Android telefonu in dovoli namestitev:';
+  if(AB){try{AB.shareText(text+' '+url)}catch(e){}return}
+  try{if(navigator.share){await navigator.share({title:'Brihta (APK)',text,url});return}}catch(e){if(e&&e.name==='AbortError')return}
+  try{await navigator.clipboard.writeText(url);S.status='Povezava do APK je kopirana: '+url}catch(e){S.status='Povezava do APK: '+url}render()}
 async function shareApp(){const url=location.href.split('#')[0].replace(/index\.html$/,'');
-  if(AB){try{AB.shareText('Igrive vaje za angleške besede iz šole: '+url)}catch(e){}return}
-  try{if(navigator.share){await navigator.share({title:'Angleške besede',text:'Igrive vaje za angleške besede iz šole:',url});return}}catch(e){if(e&&e.name==='AbortError')return}
+  if(AB){try{AB.shareText('Brihta, igrive vaje za angleške besede iz šole: '+url)}catch(e){}return}
+  try{if(navigator.share){await navigator.share({title:'Brihta',text:'Brihta, igrive vaje za angleške besede iz šole:',url});return}}catch(e){if(e&&e.name==='AbortError')return}
   try{await navigator.clipboard.writeText(url);S.status='Povezava je kopirana: '+url}catch(e){S.status='Povezava: '+url}render()}
 async function exportMy(){const data=JSON.stringify(MY,null,1),name='moje-besede-'+today()+'.json';
   if(AB){try{AB.saveFile(name,data)}catch(e){}return}
@@ -580,8 +640,8 @@ function importMy(file){const r=new FileReader();r.onload=()=>{try{const d=JSON.
 /* ---------- urejanje ---------- */
 function slug(s){return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'tema'}
 function DS(k){return k==='my'?MY:ADM}
-function makeTopic(k,name,sl,icon){const d=DS(k);let id=(k==='my'?'my-':'')+slug(name);const taken=new Set(topicsAll().map(t=>t.id).concat(d.topics.map(t=>t.id)));let id2=id,n=2;while(taken.has(id2))id2=id+'-'+(n++);
-  return{id:id2,name,sl,icon,color:PAL[(topicsAll().length+d.topics.length)%PAL.length],words:[]}}
+function makeTopic(k,name,sl,icon){const d=DS(k);let id=(k==='my'?'my-':'')+slug(name);const taken=new Set(topicsRaw().map(t=>t.id).concat(d.topics.map(t=>t.id)));let id2=id,n=2;while(taken.has(id2))id2=id+'-'+(n++);
+  return{id:id2,name,sl,icon,subject:SUBJ().id,color:PAL[(topicsRaw().length+d.topics.length)%PAL.length],words:[]}}
 function renderPrev(k){
   const d=DS(k);
   const opts=d.topics.map((t,i)=>`<option value="${i}" ${String(PREV.sel)===String(i)?'selected':''}>${h(t.icon+' '+t.name)}</option>`).join('')+`<option value="new" ${PREV.sel==='new'?'selected':''}>➕ Nova tema</option>`;
@@ -645,8 +705,16 @@ function act(a,b){
   const i=+b.dataset.i,k=b.dataset.k;
   switch(a){
   case 'duo':duoOpen();break;
-  case 'danimal':D.animal=b.dataset.a;S.animal=D.animal;savePrefs();render();break;
+  case 'danimal':D.animal=b.dataset.a;S.animal=D.animal;if(D.animal2===D.animal)D.animal2=ANIMALS.find(a=>a!==D.animal);savePrefs();render();break;
   case 'dpairs':S.duoPairs=+b.dataset.n;savePrefs();render();break;
+  case 'danimal2':{let k=ANIMALS.indexOf(D.animal2);do{k=(k+1)%ANIMALS.length}while(ANIMALS[k]===D.animal);D.animal2=ANIMALS[k];render();break}
+  case 'lstart':startLocal();break;
+  case 'lagain':startLocal();break;
+  case 'lflip':{if(G.done||G.lock||G.open.includes(i)||G.who[G.cards[i].w.key]!==undefined)break;G.pass=false;G.open.push(i);const c=G.cards[i];if(c.t==='en')say(c.w.en);else saySl(c.w.sl);
+    if(G.open.length===2){const[x,y]=G.open.map(j=>G.cards[j]);
+      if(x.w.key===y.w.key){G.who[x.w.key]=G.turn;G.score[G.turn]++;G.open=[];sfx('ok');if(Object.keys(G.who).length===G.cards.length/2){G.done=true;star()}}
+      else{G.lock=true;setTimeout(()=>{if(S.view!=='duo1')return;G.open=[];G.lock=false;G.turn=1-G.turn;G.pass=true;render()},1300)}}
+    render();break}
   case 'dcreate':duoCreate();break;
   case 'djoin':duoJoin();break;
   case 'dflip':duoFlip(i);break;
@@ -660,6 +728,7 @@ function act(a,b){
   case 'fbclear':if(!confirm('Izklopim igro za dva za vse uporabnike?'))break;delete ADM.firebase;S.dirty.pub=true;S.edOpen='fb';S.status='Igra za dva bo izklopljena po objavi.';render();break;
   case 'nav':{if(!leaveOk())break;if(S.view==='duo')duoLeave();try{speechSynthesis.cancel()}catch(e){}const v=b.dataset.v;S.view=v;S.status='';if(v==='admin'&&!S.dirty.pub){ADM=null;loadPub().then(()=>{if(S.view==='admin'&&!S.dirty.pub){ADM=null;render()}})}render();scrollTo(0,0);break}
   case 'caps':S.caps=!S.caps;savePrefs();render();break;
+  case 'sfx':S.sfx=!S.sfx;savePrefs();render();if(S.sfx)sfx('ok');break;
   case 'slo':S.slo=!S.slo;savePrefs();render();if(S.slo)saySl('Živijo');break;
   case 'install':if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.finally(()=>{deferredPrompt=null;render()})}break;
   case 'hideinst':lsSet('skrij-namestitev',true);render();break;
@@ -669,24 +738,31 @@ function act(a,b){
   case 'flip':G.flipped=!G.flipped;if(G.flipped)saySl(G.list[G.i].sl);else say(G.list[G.i].en);render();break;
   case 'next':case 'prev':{const n=G.list.length;const ni=a==='next'?G.i+1:G.i-1;if(a==='next'&&ni===n)star();G.i=(ni+n)%n;G.flipped=false;say(G.list[G.i].en);render();break}
   case 'L':G.sel=i;say(G.left[i].en);render();break;
-  case 'R':saySl(G.right[i].sl);if(G.sel===null)break;if(G.right[i].key===G.left[G.sel].key){G.done.add(G.right[i].key);G.sel=null;if(G.done.size===G.left.length)star()}else{G.wrong=i;setTimeout(()=>{G.wrong=null;if(S.view==='povezi')render()},500)}render();break;
+  case 'R':saySl(G.right[i].sl);if(G.sel===null)break;if(G.right[i].key===G.left[G.sel].key){const lw=G.left[G.sel];if(!(G.missed&&G.missed[lw.key]))stat(lw,true);G.done.add(G.right[i].key);G.sel=null;sfx('ok');if(G.done.size===G.left.length)star()}else{const lw=G.left[G.sel];G.missed=G.missed||{};if(!G.missed[lw.key]){G.missed[lw.key]=1;stat(lw,false)}sfx('bad');G.wrong=i;setTimeout(()=>{G.wrong=null;if(S.view==='povezi')render()},500)}render();break;
   case 'mem':{if(G.lock||G.open.includes(i)||G.ok.has(G.cards[i].w.key))break;G.open.push(i);const c=G.cards[i];if(c.t==='en')say(c.w.en);else saySl(c.w.sl);
-    if(G.open.length===2){const[x,y]=G.open.map(j=>G.cards[j]);if(x.w.key===y.w.key){G.ok.add(x.w.key);G.open=[];if(G.ok.size===G.cards.length/2)star()}else{G.lock=true;setTimeout(()=>{G.open=[];G.lock=false;if(S.view==='spomin')render()},1100)}}
+    if(G.open.length===2){const[x,y]=G.open.map(j=>G.cards[j]);if(x.w.key===y.w.key){G.ok.add(x.w.key);G.open=[];sfx('ok');if(G.ok.size===G.cards.length/2)star()}else{G.lock=true;setTimeout(()=>{G.open=[];G.lock=false;if(S.view==='spomin')render()},1100)}}
     render();break}
   case 'msize':S.memPairs=+b.dataset.n;savePrefs();start('spomin');break;
   case 'qsay':say(G.cur.en);break;
-  case 'qopt':if(G.ans!==null)break;G.ans=i;if(G.opts[i].key===G.cur.key)G.score++;say(G.cur.en);saySl(G.cur.sl,true);render();break;
+  case 'qopt':{if(G.ans!==null)break;G.ans=i;const right=G.opts[i].key===G.cur.key;if(right)G.score++;stat(G.cur,right);sfx(right?'ok':'bad');say(G.cur.en);saySl(G.cur.sl,true);render();break}
   case 'qnext':G.n++;if(G.n>=G.total){if(G.score>=G.total/2)star()}else nextQ();render();break;
-  case 'mhide':G.phase='peek';render();setTimeout(()=>{if(S.view==='manjka'&&G.phase==='peek'){G.phase='guess';render()}},1600);break;
-  case 'mpick':{if(G.ans!==null)break;G.ans=i;const m=G.items[G.miss];if(G.choices[i]===m){G.score++;G.size=Math.min(G.size+1,G.maxSize)}say(m.en);saySl(m.sl,true);render();break}
-  case 'mnext':G.round++;if(G.round>=G.total){if(G.score>=3)star()}else newMissing();render();scrollTo(0,0);break;
+  case 'stile':{if(G.state!=='play'||G.bad||G.tiles[i].used)break;const k=G.slots.indexOf(null);if(k<0)break;G.slots[k]=i;G.tiles[i].used=true;spellCheck();render();break}
+  case 'sslot':{if(G.state!=='play'||G.bad)break;const t=G.slots[i];if(t===null)break;G.tiles[t].used=false;G.slots[i]=null;render();break}
+  case 'shint':{if(G.state!=='play'||G.bad)break;const w=G.cur.spell;const k=G.slots.findIndex((t,j)=>t===null||G.tiles[t].c!==w[j]);if(k<0)break;
+    if(G.slots[k]!==null){G.tiles[G.slots[k]].used=false;G.slots[k]=null}
+    let ti=G.tiles.findIndex((t,j)=>!t.used&&t.c===w[k]);if(ti<0){const j=G.slots.findIndex((t,x)=>t!==null&&x!==k&&G.tiles[t].c===w[k]&&G.tiles[t].c!==w[x]);if(j>=0){ti=G.slots[j];G.slots[j]=null}}
+    if(ti>=0){G.slots[k]=ti;G.tiles[ti].used=true;G.hinted=true;if(!G.marked){G.marked=true;stat(G.cur,false)}spellCheck()}render();break}
+  case 'sclear':if(G.state!=='play'||G.bad)break;G.slots=G.slots.map(()=>null);G.tiles.forEach(t=>t.used=false);render();break;
+  case 'ssay':say(G.cur.en);break;
+  case 'snext':G.n++;if(G.n>=G.list.length){if(G.score>=G.list.length/2)star()}else newSpell();render();scrollTo(0,0);break;
   case 'nflip':G.phase='find';say(G.order[0].en);render();break;
   case 'nsay':say(G.order[G.k].en);break;
   case 'npick':{const w=G.items[i];if(G.phase!=='find'||G.found.has(w.key)||G.wrong!==null)break;
-    if(w.key===G.order[G.k].key){G.found.add(w.key);G.k++;if(G.k>=G.order.length){G.phase='done';star()}else setTimeout(()=>{if(S.view==='najdi')say(G.order[G.k].en)},500)}
-    else{G.wrong=i;say(w.en);setTimeout(()=>{G.wrong=null;if(S.view==='najdi')render()},1000)}
+    if(w.key===G.order[G.k].key){const tg=G.order[G.k];if(!(G.missed&&G.missed[tg.key]))stat(tg,true);sfx('ok');G.found.add(w.key);G.k++;if(G.k>=G.order.length){G.phase='done';star()}else setTimeout(()=>{if(S.view==='najdi')say(G.order[G.k].en)},500)}
+    else{const tg=G.order[G.k];G.missed=G.missed||{};if(!G.missed[tg.key]){G.missed[tg.key]=1;stat(tg,false)}sfx('bad');G.wrong=i;say(w.en);setTimeout(()=>{G.wrong=null;if(S.view==='najdi')render()},1000)}
     render();break}
   case 'share':shareApp();break;
+  case 'shareapk':shareApk();break;
   case 'export':exportMy();break;
   case 'cfgsave':cfgSave();break;
   case 'cfgclear':CFG.token='';lsSet('skrbnik',CFG);S.status='Žeton je odstranjen s te naprave.';render();break;
@@ -709,7 +785,7 @@ function act(a,b){
   case 'save':saveDS(k);break;
   }
 }
-window.__androidBack=()=>{if(S.view==='home')return false;if(S.view==='manjka'&&G.phase==='peek')return true;const v=(S.view==='my'||S.view==='admin')?'settings':'home';act('nav',{dataset:{v}});return true};
+window.__androidBack=()=>{if(S.view==='home')return false;const v=(S.view==='my'||S.view==='admin')?'settings':S.view==='duo1'?'duo':'home';act('nav',{dataset:{v}});return true};
 function val(id){const e=document.getElementById(id);return e?e.value.trim():''}
 
 app.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(b&&!b.disabled)act(b.dataset.act,b)});

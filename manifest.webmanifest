@@ -1,8 +1,8 @@
 {
  "id": "./",
- "name": "Angleške besede",
- "short_name": "Besede",
- "description": "Igrive vaje za angleške besede iz šole.",
+ "name": "Brihta – razred A",
+ "short_name": "Brihta",
+ "description": "Brihta: igrive vaje za razred A.",
  "lang": "sl",
  "start_url": "./",
  "scope": "./",

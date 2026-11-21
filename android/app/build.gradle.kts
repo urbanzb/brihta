@@ -1,14 +1,14 @@
 plugins { id("com.android.application") }
 
 // Naslov spletne aplikacije in številko različice poda GitHub Actions.
-val appUrl = (project.findProperty("appUrl") as String?) ?: "https://urbanzb.github.io/app_ANG/"
+val appUrl = (project.findProperty("appUrl") as String?) ?: "https://urbanzb.github.io/brihta/"
 val vCode = ((project.findProperty("versionCode") as String?) ?: "1").toInt()
 
 android {
     namespace = "si.angleskebesede.app"
     compileSdk = 34
     defaultConfig {
-        applicationId = "si.angleskebesede.app"
+        applicationId = "si.brihta.app"
         minSdk = 24
         targetSdk = 34
         versionCode = vCode
