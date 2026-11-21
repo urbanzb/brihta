@@ -41,7 +41,7 @@ jobs:
             openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -in android/keystore.enc -out android/app/release.jks -pass env:KS_PASS
           else
             keytool -genkeypair -keystore android/app/release.jks -alias besede -keyalg RSA -keysize 2048 -validity 10000 \
-              -storepass "$KS_PASS" -keypass "$KS_PASS" -dname "CN=Angleske besede"
+              -storepass "$KS_PASS" -keypass "$KS_PASS" -dname "CN=Brihta"
             openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -salt -in android/app/release.jks -out android/keystore.enc -pass env:KS_PASS
             git config user.name "github-actions[bot]"
             git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
@@ -60,12 +60,13 @@ jobs:
           gradle assembleRelease --no-daemon \
             -PversionCode=${{ github.run_number }} \
             -PappUrl="https://$OWNER.github.io/${{ github.event.repository.name }}/"
-          cp app/build/outputs/apk/release/app-release.apk ../Besede.apk
+          cp app/build/outputs/apk/release/app-release.apk ../Brihta.apk
 
       - name: Objavi APK
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release view apk >/dev/null 2>&1 || gh release create apk --title "Android aplikacija" \
-            --notes "Prenesi datoteko Besede.apk in jo odpri na Android telefonu."
-          gh release upload apk Besede.apk --clobber
+          gh release view apk >/dev/null 2>&1 || gh release create apk --title "Brihta za Android" \
+            --notes "Prenesi datoteko Brihta.apk in jo odpri na Android telefonu."
+          gh release upload apk Brihta.apk --clobber
+          gh release delete-asset apk Besede.apk -y 2>/dev/null || true
