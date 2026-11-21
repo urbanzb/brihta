@@ -166,7 +166,7 @@ public class MainActivity extends Activity {
 
     /** Metode, ki jih spletna aplikacija kliče prek window.AndroidBridge. */
     private class Bridge {
-        /** Vrne prvi jezik s seznama (npr. "sl,hr"), ki ga ima naprava, ali prazen niz. */
+        /** Vrne prvi jezik s seznama (npr. "sl,hr" ali "en-GB"), ki ga ima naprava, ali prazen niz. */
         @JavascriptInterface
         public String ttsLang(String csv) {
             if (!ttsReady || tts == null) return "";
@@ -174,7 +174,9 @@ public class MainActivity extends Activity {
                 tag = tag.trim();
                 if (tag.isEmpty()) continue;
                 int r = tts.isLanguageAvailable(Locale.forLanguageTag(tag));
-                if (r >= TextToSpeech.LANG_AVAILABLE) return tag;
+                // Za oznake z regijo (npr. en-GB) zahtevamo prav to regijo, ne le jezika.
+                int need = tag.contains("-") ? TextToSpeech.LANG_COUNTRY_AVAILABLE : TextToSpeech.LANG_AVAILABLE;
+                if (r >= need) return tag;
             }
             return "";
         }

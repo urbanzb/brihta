@@ -165,6 +165,13 @@ Ob prvi gradnji GitHub ustvari ključ za podpisovanje in ga šifriranega z geslo
 ### Google in nepreverjeni razvijalci
 Google uvaja preverjanje razvijalcev tudi za aplikacije zunaj Trgovine Play. Ko bo to veljalo v Sloveniji (napovedano za leto 2027), bo namestitev APK nepreverjenega razvijalca zahtevnejša. Takrat je spletna različica (razdelek 2) najpreprostejša pot.
 
+## Jezik: samo britanska angleščina
+
+Brihta uporablja izključno **britansko angleščino**, tako v zapisu (colour, favourite, grey, lorry, biscuit, sweets, mum, trousers, rubber, football) kot v izgovorjavi (glas en-GB).
+- Pri dodajanju besed aplikacija zazna ameriške oblike (color, favorite, gray, truck, cookie, candy, mom …), pokaže britansko različico in ponudi gumb **Popravi**. Ameriške besede so v seznamu besed označene s 💂.
+- Če telefon nima britanskega glasu, aplikacija na začetnem zaslonu opozori. Britanski glas namestiš v nastavitvah telefona: **Pretvorba besedila v govor → nastavitve mehanizma → Namesti glasovne podatke → angleščina (Združeno kraljestvo)**. Natančna pot se med telefoni nekoliko razlikuje.
+- Navodila za Claude projekt (`navodila-za-claude-projekt.md`) zahtevajo britansko angleščino.
+
 ## Za razvijalca: več predmetov
 
 Koda je pripravljena na druge predmete, uporabnik pa zaenkrat vidi samo angleščino. Ko bo čas za razširitev:

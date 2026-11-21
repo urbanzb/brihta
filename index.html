@@ -148,6 +148,9 @@ code{background:var(--paper);padding:1px 6px;border-radius:6px;font-size:15px}
 .prow.miss .pic-in{border-color:var(--berry);background:var(--nobg)}
 .pic-in{text-align:center;padding:8px 2px!important}
 .hint{color:var(--soft);font-size:15px;margin:8px 0 12px}
+.ukhint{font-size:14px;color:var(--ink);background:var(--nobg);border-radius:8px;padding:6px 10px;margin:-2px 0 10px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.ukhint .sm{padding:3px 10px;font-size:14px}
+.ukflag{font-style:normal;font-size:13px;color:var(--berry)}
 details.ed{background:var(--card);border:2.5px solid var(--ink);border-radius:16px;margin-bottom:14px;overflow:hidden}
 details.ed summary{padding:14px 16px;font-family:var(--display);font-weight:800;font-size:20px;cursor:pointer;list-style-position:inside}
 details.ed summary small{font-family:var(--body);font-weight:400;color:var(--soft);font-size:15px;margin-left:6px}
@@ -167,7 +170,7 @@ details.ed summary small{font-family:var(--body);font-weight:400;color:var(--sof
 h3.sub{font-size:22px;margin:24px 0 10px}
 .meta{color:var(--soft);font-size:14px;text-align:center}
 .game.wide{grid-column:1/-1;min-height:auto;flex-direction:row;align-items:center;gap:14px}
-.game.wide .txt{display:flex;flex-direction:column;gap:2px}
+.game.wide .txt{display:flex;flex-direction:column;gap:2px;color:var(--ink)}
 .dict-btn{display:flex;align-items:center;gap:14px;width:100%;border-radius:18px;padding:14px 16px;margin:0 0 16px;text-align:left}
 .dict-btn .ico{font-size:36px;line-height:1}
 .dict-btn b{font-family:var(--display);font-size:22px;display:block}
@@ -204,7 +207,17 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <div id="app"><p class="loading">Nalagam …</p></div>
 <script>
 'use strict';
-const APP_VERSION='1.4';
+const APP_VERSION='1.5';
+/* JEZIK: Brihta uporablja izključno BRITANSKO angleščino (zapis in izgovorjava en-GB).
+   Ameriške oblike pri vnosu zaznamo s US_UK in predlagamo britansko različico. */
+const US_UK={color:'colour',colors:'colours',colored:'coloured',favorite:'favourite',favorites:'favourites',gray:'grey',center:'centre',theater:'theatre',meter:'metre',liter:'litre',
+neighbor:'neighbour',neighbors:'neighbours',honor:'honour',humor:'humour',flavor:'flavour',behavior:'behaviour',airplane:'aeroplane',airplanes:'aeroplanes',truck:'lorry',trucks:'lorries',
+candy:'sweets',cookie:'biscuit',cookies:'biscuits',mom:'mum',mommy:'mummy',moms:'mums',pants:'trousers',sneakers:'trainers',eraser:'rubber',erasers:'rubbers',soccer:'football',
+apartment:'flat',elevator:'lift',vacation:'holiday',mailman:'postman',trash:'rubbish',garbage:'rubbish','french fries':'chips','potato chips':'crisps',zucchini:'courgette',
+eggplant:'aubergine',flashlight:'torch',diaper:'nappy',sidewalk:'pavement',faucet:'tap',movie:'film',movies:'films',math:'maths','parking lot':'car park','gas station':'petrol station',
+pajamas:'pyjamas',jewelry:'jewellery',mustache:'moustache',tire:'tyre',tires:'tyres',traveling:'travelling',traveled:'travelled'};
+function ukHints(text){const out=[];const t=String(text||'');for(const us of Object.keys(US_UK)){const re=new RegExp('(^|[^a-z])('+us.replace(/ /g,'\\s+')+')(?=$|[^a-z])','i');if(re.test(t))out.push([us,US_UK[us]])}return out}
+function ukFix(text){let t=String(text||'');for(const [us,uk] of ukHints(t)){t=t.replace(new RegExp('(^|[^a-zA-Z])('+us.replace(/ /g,'\\s+')+')(?=$|[^a-zA-Z])','gi'),(m,a,w)=>a+(w[0]===w[0].toUpperCase()?uk[0].toUpperCase()+uk.slice(1):uk))}return t}
 const AB=window.AndroidBridge||null;
 const PAL=['#FFC93C','#6FB7FF','#5FD39A','#FF9EC4','#B79CFF','#FFB067'];
 const NEW_DAYS=14;
@@ -260,13 +273,18 @@ async function loadPub(){
 function voices(){try{return speechSynthesis.getVoices()}catch(e){return[]}}
 let apkSl=null;
 function apkLang(){if(apkSl===null){try{apkSl=AB.ttsLang('sl,hr,bs,sr')||''}catch(e){apkSl=''}}return apkSl}
-window.__ttsReady=()=>{apkSl=null;if(S.view==='home'||S.view==='slovar')render()};
+window.__ttsReady=()=>{apkSl=null;apkGb=null;if(S.view==='home'||S.view==='slovar')render()};
 function slVoice(){if(AB){const l=apkLang();return l?{lang:l}:null}const vs=voices();return vs.find(v=>/^sl/i.test(v.lang))||vs.find(v=>/^hr/i.test(v.lang))||vs.find(v=>/^(bs|sr)/i.test(v.lang))||null}
 function canSl(){return S.slo&&!!slVoice()}
 function speak(t,sl,queue){if(AB){if(sl&&!canSl())return;const c=String(t).replace(/…|\.\.\./g,'').replace(/’/g,"'").replace(/ \/ /g,', ');try{AB.speak(c,sl?slVoice().lang:'en-GB',!!queue)}catch(e){}return}try{const s=window.speechSynthesis;if(!s)return;if(sl&&!canSl())return;if(!queue)s.cancel();const u=new SpeechSynthesisUtterance(String(t).replace(/…|\.\.\./g,'').replace(/’/g,"'").replace(/ \/ /g,', '));let v;if(sl){v=slVoice();u.lang=v.lang;u.rate=.9}else{const vs=voices();v=vs.find(v=>/en[-_]GB/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang));u.lang='en-GB';u.rate=.85}if(v)u.voice=v;s.speak(u)}catch(e){}}
 function speakLang(t,lang,queue){if(!lang)return;if(/^en/i.test(lang))speak(t,false,queue);else if(/^sl/i.test(lang))speak(t,true,queue)}
 function say(t){speakLang(t,SUBJ().langA)}
 function saySl(t,queue){speakLang(t,SUBJ().langB,queue)}
+let apkGb=null;
+function gbNote(){
+  if(AB){try{if(!AB.ttsLang('en'))return '';if(apkGb===null)apkGb=AB.ttsLang('en-GB')||''}catch(e){return ''}if(apkGb)return ''}
+  else{const vs=voices();if(!vs.length||!vs.some(v=>/^en/i.test(v.lang))||vs.some(v=>/^en[-_]GB/i.test(v.lang)))return ''}
+  return `<p class="note">Ta naprava nima britanskega angleškega glasu, zato angleščino morda bere ameriški. Britanski glas namestiš v nastavitvah telefona pod <b>Pretvorba besedila v govor</b> (jezik: angleščina, Združeno kraljestvo).</p>`}
 function slNote(){if(!S.slo)return '';const v=slVoice();if(!v)return `<p class="note">Ta naprava nima glasu za slovenščino, zato se slovenske besede ne izgovarjajo.</p>`;if(/^sl/i.test(v.lang))return '';return `<p class="note">Ta naprava nima slovenskega glasu, zato slovenske besede bere ${/^hr/i.test(v.lang)?'hrvaški':'soroden'} glas. Izgovorjava je približna.</p>`}
 
 /* ---------- namestitev ---------- */
@@ -393,8 +411,8 @@ function renderHome(){
   chips+=ts.map(t=>`<button class="chip ${S.topic===t.id?'on':''}" style="--c:${h(t.color)}" data-act="topic" data-id="${h(t.id)}">${h(t.icon)} ${h(t.name)}${t.words.some(isNew)?'<i class="dot" title="nove besede"></i>':''}<small>${t.words.length}</small></button>`).join('');
   const games=Object.entries(GAMES).map(([k,g])=>`<button class="game press" data-act="game" data-g="${k}"><span class="ico">${g.ico}</span><b>${g.name}</b><span>${g.desc}</span></button>`).join('');
   app.innerHTML=`<header class="hero"><div><h1>Brihta</h1><p>Angleške besede. Izberi temo in igro.</p></div><div class="tools"><span class="stars" title="Zbrane zvezdice">⭐ ${S.stars}</span><button class="pill press" data-act="caps" title="Velike ali male črke">${S.caps?'ABC':'abc'}</button><button class="pill press ${S.slo?'':'off'}" data-act="slo" aria-pressed="${S.slo}" title="Izgovorjava slovenskih besed">🔊 SLO</button><button class="pill press ${S.sfx?'':'off'}" data-act="sfx" aria-pressed="${S.sfx}" aria-label="Zvočni učinki" title="Zvočni učinki">${S.sfx?'🔔':'🔕'}</button></div></header>
-  ${installBanner()}${slNote()}
-  ${!ts.length&&!S.loaded?`<p class="loading">Nalagam besede …</p>`:`<h3 class="label">Tema</h3><div class="chips">${chips}</div><div class="games">${games}<button class="game wide press" data-act="duo"><span class="ico">👫</span><span class="txt"><b>Igra za dva</b><span>Spomin s prijateljem, vsak s svojega telefona.</span></span></button></div>
+  ${installBanner()}${gbNote()}${slNote()}
+  ${!ts.length&&!S.loaded?`<p class="loading">Nalagam besede …</p>`:`<h3 class="label">Tema</h3><div class="chips">${chips}</div><div class="games">${games}<button class="game wide press" data-act="duo"><span class="ico">👫</span><span class="txt"><b>Igra za dva</b><span>Spomin s prijateljem, na enem telefonu ali vsak s svojega.</span></span></button></div>
   <button class="dict-btn press" data-act="nav" data-v="slovar"><span class="ico">📖</span><span><b>Slovarček</b><span class="sub2">Vse besede na enem mestu, z izgovorjavo.</span></span></button>`}
   <button class="ghost" data-act="nav" data-v="settings">⚙️ Moje besede in nastavitve</button>`;
 }
@@ -618,7 +636,7 @@ function renderSettings(){
   ${isAndroid()&&!AB?`<section class="card"><h3>🤖 Android aplikacija (APK)</h3><p class="instr">Če se nameščena aplikacija na tvojem telefonu odpira v brskalniku, namesti to različico. Telefon bo vprašal za dovoljenje za namestitev.</p><a class="sm press linkbtn" href="${h(apkUrl())}">⬇️ Prenesi APK</a></section>`:''}
   <section class="card"><h3>🔑 Za skrbnika</h3><p class="instr">Objava novih besed za vse uporabnike. Potrebuješ GitHub žeton.</p><button class="sm press" data-act="nav" data-v="admin">Skrbniški način</button></section>
   ${S.status?`<p class="status" role="status">${h(S.status)}</p>`:''}
-  <p class="meta">Besede posodobljene: ${h(PUB.updated||'–')}. Različica ${APP_VERSION}${AB?' (Android '+(()=>{try{return AB.versionCode()}catch(e){return '?'}})()+')':''}.</p>`;
+  <p class="meta">Besede posodobljene: ${h(PUB.updated||'–')}. Različica ${APP_VERSION}${AB?' (APK '+(()=>{try{return AB.versionCode()}catch(e){return '?'}})()+')':''}.</p>`;
 }
 function apkUrl(){return `https://github.com/${CFG.owner}/${CFG.repo}/releases/download/apk/Brihta.apk`}
 async function shareApk(){const url=apkUrl(),text='Brihta za Android (APK). Odpri povezavo na Android telefonu in dovoli namestitev:';
@@ -646,7 +664,7 @@ function renderPrev(k){
   const d=DS(k);
   const opts=d.topics.map((t,i)=>`<option value="${i}" ${String(PREV.sel)===String(i)?'selected':''}>${h(t.icon+' '+t.name)}</option>`).join('')+`<option value="new" ${PREV.sel==='new'?'selected':''}>➕ Nova tema</option>`;
   const nt=PREV.sel==='new'?`<div class="ntf"><input data-nt="icon" value="${h(PREV.nt.icon)}" placeholder="📘" aria-label="Emoji teme"><input data-nt="en" value="${h(PREV.nt.en)}" placeholder="angleško ime" aria-label="Ime teme angleško"><input data-nt="sl" value="${h(PREV.nt.sl)}" placeholder="slovensko ime" aria-label="Ime teme slovensko"></div>`:'';
-  const rows=PREV.items.map((it,i)=>`<div class="prow ${it.pic?'':'miss'}"><input class="pic-in" data-pi="${i}" data-f="pic" value="${h(it.pic)}" placeholder="?" aria-label="Emoji"><input data-pi="${i}" data-f="en" value="${h(it.en)}" aria-label="Angleško"><input data-pi="${i}" data-f="sl" value="${h(it.sl)}" aria-label="Slovensko"><button class="x" data-act="pdel" data-i="${i}" aria-label="Odstrani">×</button></div>`).join('');
+  const rows=PREV.items.map((it,i)=>`<div class="prow ${it.pic?'':'miss'}"><input class="pic-in" data-pi="${i}" data-f="pic" value="${h(it.pic)}" placeholder="?" aria-label="Emoji"><input data-pi="${i}" data-f="en" value="${h(it.en)}" aria-label="Angleško"><input data-pi="${i}" data-f="sl" value="${h(it.sl)}" aria-label="Slovensko"><button class="x" data-act="pdel" data-i="${i}" aria-label="Odstrani">×</button></div>${ukHints(it.en).length?`<div class="ukhint">💂 Ameriško: <b>${h(ukHints(it.en).map(x=>x[0]).join(', '))}</b>. Britansko: <b>${h(ukHints(it.en).map(x=>x[1]).join(', '))}</b> <button class="sm press" data-act="pfix" data-i="${i}">Popravi</button></div>`:''}`).join('');
   return `<div class="prev"><h4>Najdenih ${besed(PREV.items.length)}</h4><label>Dodaj v temo<select data-psel>${opts}</select></label>${nt}${rows}
   <p class="hint">Preveri besede, posebej šumnike. Kjer je polje za emoji rdeče, ga izberi s tipkovnico emojijev.</p>
   <div class="btns"><button class="big press" data-act="padd" data-k="${k}">Dodaj besede</button><button class="sm press" data-act="pcancel">Prekliči</button></div></div>`;
@@ -657,7 +675,7 @@ function editorBody(k){
    <textarea data-paste="${k}" rows="6" placeholder="😄 happy = vesel&#10;😢 sad = žalosten">${h(PASTE[k])}</textarea>
    <div class="btns"><button class="sm press" data-act="parse" data-k="${k}">Preberi besede</button></div>${PREV&&PREV.k===k?renderPrev(k):''}</section>`;
   const tp=d.topics.map((t,ti)=>`<details class="ed" ${S.edOpen===t.id?'open':''} data-id="${h(t.id)}"><summary>${h(t.icon)} ${h(t.name)}<small>${h(t.sl)}, ${besed(t.words.length)}</small></summary>
-   <ul class="wl">${t.words.map((w,wi)=>`<li><span class="p">${h(w.pic)}</span><span class="t"><b>${h(w.en)}</b> <span>= ${h(w.sl)}${isNew(w)?' ✨':''}</span></span><button class="x" data-act="delw" data-k="${k}" data-t="${ti}" data-i="${wi}" aria-label="Izbriši ${h(w.en)}">×</button></li>`).join('')}</ul>
+   <ul class="wl">${t.words.map((w,wi)=>`<li><span class="p">${h(w.pic)}</span><span class="t"><b>${h(w.en)}</b> <span>= ${h(w.sl)}${isNew(w)?' ✨':''}${ukHints(w.en).length?` <i class="ukflag" title="Ameriška oblika">💂 ${h(ukHints(w.en).map(x=>x[1]).join(', '))}</i>`:''}</span></span><button class="x" data-act="delw" data-k="${k}" data-t="${ti}" data-i="${wi}" aria-label="Izbriši ${h(w.en)}">×</button></li>`).join('')}</ul>
    <div class="form"><input id="pic-${k}-${ti}" placeholder="🐶" aria-label="Slikica (emoji)" maxlength="8"><input id="en-${k}-${ti}" placeholder="angleško" aria-label="Angleško"><input id="sl-${k}-${ti}" placeholder="slovensko" aria-label="Slovensko">
    <div class="actions"><button class="sm press" data-act="addw" data-k="${k}" data-t="${ti}">Dodaj besedo</button><button class="danger" data-act="delt" data-k="${k}" data-t="${ti}">Izbriši temo</button></div></div></details>`).join('');
   const newT=`<h3 class="sub">Nova tema</h3><div class="card" style="padding:0"><div class="form" style="border-top:0"><input id="nt-ico-${k}" placeholder="🐾" aria-label="Slikica teme" maxlength="8"><input id="nt-en-${k}" placeholder="npr. Animals" aria-label="Ime teme angleško"><input id="nt-sl-${k}" placeholder="npr. Živali" aria-label="Ime teme slovensko"><div class="actions"><button class="sm press" data-act="addt" data-k="${k}">Dodaj temo</button></div></div></div>`;
@@ -769,6 +787,7 @@ function act(a,b){
   case 'parse':{const r=parseList(PASTE[k]);if(!r.items.length){S.status='Ne najdem vrstic z znakom »=«.';PREV=null;return render()}
     const d=DS(k);let sel='new';if(r.topic){const j=d.topics.findIndex(t=>t.name.toLowerCase()===r.topic.en.toLowerCase());if(j>=0)sel=j}else if(d.topics.length){const j=d.topics.findIndex(t=>t.id===S.edOpen);sel=j>=0?j:d.topics.length-1}
     PREV={k,items:r.items,sel:String(sel),nt:{en:r.topic?r.topic.en:'',sl:r.topic?r.topic.sl:'',icon:(r.topic&&r.topic.icon)||(r.items[0]&&r.items[0].pic)||'📘'}};S.status='';render();break}
+  case 'pfix':PREV.items[i].en=ukFix(PREV.items[i].en);PREV.items[i].pic=PREV.items[i].pic||guessPic(PREV.items[i].en);render();break;
   case 'pdel':PREV.items.splice(i,1);if(!PREV.items.length)PREV=null;render();break;
   case 'pcancel':PREV=null;render();break;
   case 'padd':{const d=DS(k);let t;
@@ -777,7 +796,7 @@ function act(a,b){
     PREV=null;PASTE[k]='';S.dirty[k]=true;S.edOpen=t.id;S.status=`Dodano: ${besed(added)}${skipped?`, ${skipped} že obstaja`:''}. ${k==='my'?'Ne pozabi shraniti.':'Ko je vse prav, tapni »Objavi za vse«.'}`;render();break}
   case 'addw':{const d=DS(k),t=d.topics[+b.dataset.t],id=k+'-'+b.dataset.t,en=val('en-'+id),sl=val('sl-'+id),pic=val('pic-'+id)||guessPic(en)||'⭐';
     S.edOpen=t.id;if(!en||!sl){S.status='Vpiši angleško in slovensko besedo.';return render()}
-    t.words.push({en,sl,pic,added:today()});S.dirty[k]=true;S.status='Dodano: '+en+'.';render();const f=document.getElementById('en-'+id);if(f)f.focus();break}
+    t.words.push({en,sl,pic,added:today()});S.dirty[k]=true;const uh=ukHints(en);S.status=uh.length?'Dodano: '+en+'. Pozor, to je ameriška oblika. Britansko: '+uh.map(x=>x[1]).join(', ')+'.':'Dodano: '+en+'.';render();const f=document.getElementById('en-'+id);if(f)f.focus();break}
   case 'delw':{const t=DS(k).topics[+b.dataset.t];S.edOpen=t.id;t.words.splice(i,1);S.dirty[k]=true;S.status='Beseda izbrisana.';render();break}
   case 'delt':{const d=DS(k),t=d.topics[+b.dataset.t];if(!confirm('Izbrišem temo '+t.name+' z vsemi besedami?'))break;d.topics.splice(+b.dataset.t,1);S.dirty[k]=true;S.status='Tema izbrisana.';render();break}
   case 'addt':{const name=val('nt-en-'+k),sl=val('nt-sl-'+k)||name,icon=val('nt-ico-'+k)||'📘';if(!name){S.status='Vpiši ime nove teme.';return render()}
