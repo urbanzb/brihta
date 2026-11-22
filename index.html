@@ -20,8 +20,8 @@
 :root{--paper:#EAF3FB;--card:#FFFFFF;--ink:#1F2A44;--soft:#56688A;--line:#D3E4F4;--sun:#FFC93C;--sky:#3D8BFD;--leaf:#1E9E62;--berry:#D93D6E;--okbg:#DDF6E8;--thbg:#ECE6FF;--th:#7B61FF;--tabbg:#FFF0C2;--nobg:#FDE3EB;
 --display:'Grandstander','Trebuchet MS',system-ui,sans-serif;--body:'Atkinson Hyperlegible',Verdana,system-ui,sans-serif;
 color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#132039;--card:#1E2C4B;--ink:#EEF3FB;--soft:#A9B9D4;--line:#1C2C4D;--sky:#6AA8FF;--leaf:#3CCB86;--berry:#FF6E98;--okbg:#18402F;--thbg:#2E2552;--th:#A894FF;--tabbg:#3B3218;--nobg:#4A1D30;color-scheme:dark}}
-:root[data-theme="dark"]{--paper:#132039;--card:#1E2C4B;--ink:#EEF3FB;--soft:#A9B9D4;--line:#1C2C4D;--sky:#6AA8FF;--leaf:#3CCB86;--berry:#FF6E98;--okbg:#18402F;--thbg:#2E2552;--th:#A894FF;--tabbg:#3B3218;--nobg:#4A1D30;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#132039;--card:#1E2C4B;--ink:#EEF3FB;--soft:#A9B9D4;--line:#1C2C4D;--sky:#6AA8FF;--leaf:#3CCB86;--berry:#FF6E98;--okbg:#18402F;--thbg:#2E2552;--th:#A894FF;--tabbg:#1F4B57;--nobg:#4A1D30;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#132039;--card:#1E2C4B;--ink:#EEF3FB;--soft:#A9B9D4;--line:#1C2C4D;--sky:#6AA8FF;--leaf:#3CCB86;--berry:#FF6E98;--okbg:#18402F;--thbg:#2E2552;--th:#A894FF;--tabbg:#1F4B57;--nobg:#4A1D30;color-scheme:dark}
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
 body{margin:0;background-color:var(--paper);background-image:repeating-linear-gradient(to bottom,transparent 0 35px,var(--line) 35px 37px);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.45;min-height:100vh;-webkit-tap-highlight-color:transparent}
@@ -160,13 +160,21 @@ code{background:var(--paper);padding:1px 6px;border-radius:6px;font-size:15px}
 .chips.wrap{flex-wrap:wrap;overflow:visible;padding-bottom:4px}
 .hstep{background:var(--card);border:2.5px solid var(--ink);border-radius:20px;padding:14px 14px 16px;margin:0 0 16px}
 .hlab{font-size:22px;font-weight:800;margin:0 0 10px}
-.hq{margin:-4px 0 8px;color:var(--soft);font-size:16px}
+.hqrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-4px 0 10px}
+.hq{margin:0;color:var(--soft);font-size:16px}
 .ftabs{display:flex;gap:6px;align-items:flex-end}
 .ftab{flex:1;border:2.5px solid var(--ink);border-bottom:0;border-radius:14px 14px 0 0;background:var(--paper);padding:10px 4px;font-family:var(--display);font-weight:800;font-size:17px;color:var(--soft)}
 .ftab.on{background:var(--tabbg);color:var(--ink);border-bottom:2.5px solid var(--tabbg);margin-bottom:-2.5px;padding-bottom:12.5px;position:relative;z-index:1}
 .fpanel{background:var(--tabbg);border:2.5px solid var(--ink);border-radius:0 0 16px 16px;padding:12px}
 .fpanel .games{margin:0}
-.ftopic{margin:0 0 10px;font-size:15px;color:var(--soft)}.ftopic b{color:var(--ink)}
+.qbtn{width:36px;height:36px;border-radius:50%;font-family:var(--display);font-weight:800;font-size:20px;line-height:1;padding:0;flex-shrink:0;box-shadow:0 3px 0 var(--ink)}
+.qbtn.on{background:var(--sun);color:#1F2A44}
+.games.compact{gap:10px}
+.games.compact .game{min-height:0;flex-direction:row;align-items:center;gap:10px;padding:12px;border-radius:16px}
+.games.compact .game .ico{font-size:30px}
+.games.compact .game b{font-size:18px;line-height:1.15}
+.games.compact .game span:not(.ico):not(.txt),.games.compact .game .txt span{display:none}
+.games.compact .game.wide .txt{gap:0}
 @media (max-width:380px){.ftab{font-size:15px}.hstep{padding:12px}}
 .chip.allt{background:transparent;border-style:dashed;color:var(--ink)}
 .seg{display:grid;grid-template-columns:1fr 1fr;border:2.5px solid var(--ink);border-radius:14px;overflow:hidden;margin:8px 0 4px}
@@ -187,6 +195,11 @@ code{background:var(--paper);padding:1px 6px;border-radius:6px;font-size:15px}
 .tcard .tn b{font-family:var(--display);font-size:17px;overflow-wrap:anywhere}
 .tcard .tn small{font-size:13px;color:var(--soft)}
 .tcard.on .tn small{color:#1F2A44}
+.tcard.sel{background:var(--okbg);border-color:var(--leaf);box-shadow:0 3px 0 var(--leaf)}
+.tchk{position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;border:2px solid var(--ink);background:var(--card);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
+.tcard.sel .tchk{background:var(--leaf);border-color:var(--leaf);color:#fff}
+.sm.on{background:var(--sun);color:#1F2A44}
+.mixbar{position:sticky;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--paper);border-top:2.5px solid var(--ink);margin:12px -16px 0;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
 .tnew{position:absolute;top:6px;right:8px;background:var(--berry);color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:1px 7px}
 .mon{font-size:18px;margin:16px 0 8px}
 .clsrow{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:0 16px 8px;font-size:15px}
@@ -261,7 +274,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <div id="app"><p class="loading">Nalagam …</p></div>
 <script>
 'use strict';
-const APP_VERSION='2.1';
+const APP_VERSION='2.2';
 const FEEDBACK_EMAIL='uzbmobileapps@gmail.com'; // mnenja se pošljejo iz uporabnikovega poštnega programa
 /* JEZIK: Brihta uporablja izključno BRITANSKO angleščino (zapis in izgovorjava en-GB).
    Ameriške oblike pri vnosu zaznamo s US_UK in predlagamo britansko različico. */
@@ -281,9 +294,9 @@ const NEW_DAYS=14;
 function lsGet(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}}
 function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}
 
-const S={view:'home',topic:'all',caps:true,stars:0,memPairs:6,duoPairs:6,slo:true,sfx:true,subject:'ang',stats:true,cls:'',tab:'one',animal:'🦊',q:'',loaded:false,status:'',edOpen:null,dirty:{my:false,pub:false}};
-(function(){const p=lsGet('besede-prefs',{});if(typeof p.caps==='boolean')S.caps=p.caps;if(p.stars)S.stars=p.stars;if([4,6,8,10].includes(p.memPairs))S.memPairs=p.memPairs;if(typeof p.slo==='boolean')S.slo=p.slo;if(p.animal)S.animal=p.animal;if([4,6,8,10].includes(p.duoPairs))S.duoPairs=p.duoPairs;if(typeof p.sfx==='boolean')S.sfx=p.sfx;if(typeof p.stats==='boolean')S.stats=p.stats;if(p.cls)S.cls=p.cls;if(p.tab==='two')S.tab='two';if(p.subject)S.subject=p.subject})();
-function savePrefs(){lsSet('besede-prefs',{caps:S.caps,stars:S.stars,memPairs:S.memPairs,slo:S.slo,animal:S.animal,duoPairs:S.duoPairs,sfx:S.sfx,subject:S.subject,stats:S.stats,cls:S.cls,tab:S.tab})}
+const S={view:'home',topic:'all',caps:true,stars:0,memPairs:6,duoPairs:6,slo:true,sfx:true,subject:'ang',stats:true,cls:'',tab:'one',desc:false,mix:[],multi:false,msel:[],animal:'🦊',q:'',loaded:false,status:'',edOpen:null,dirty:{my:false,pub:false}};
+(function(){const p=lsGet('besede-prefs',{});if(typeof p.caps==='boolean')S.caps=p.caps;if(p.stars)S.stars=p.stars;if([4,6,8,10].includes(p.memPairs))S.memPairs=p.memPairs;if(typeof p.slo==='boolean')S.slo=p.slo;if(p.animal)S.animal=p.animal;if([4,6,8,10].includes(p.duoPairs))S.duoPairs=p.duoPairs;if(typeof p.sfx==='boolean')S.sfx=p.sfx;if(typeof p.stats==='boolean')S.stats=p.stats;if(p.cls)S.cls=p.cls;if(p.tab==='two')S.tab='two';if(p.desc===true)S.desc=true;if(Array.isArray(p.mix))S.mix=p.mix;if(p.subject)S.subject=p.subject})();
+function savePrefs(){lsSet('besede-prefs',{caps:S.caps,stars:S.stars,memPairs:S.memPairs,slo:S.slo,animal:S.animal,duoPairs:S.duoPairs,sfx:S.sfx,subject:S.subject,stats:S.stats,cls:S.cls,tab:S.tab,desc:S.desc,mix:S.mix})}
 
 let PUB=lsGet('besede-cache',null)||{topics:[]};
 let MY=lsGet('moje-besede',null)||{topics:[]};
@@ -341,7 +354,7 @@ function stat(w,ok){if(!w||!w.key)return;if(!ok)trackMiss(w);const x=STATS[w.key
 function isHard(w){const x=STATS[w.key];return !!x&&x.b>0&&x.b>=x.o}
 function weight(w){const x=STATS[w.key];if(!x)return 1.5;return Math.min(6,Math.max(0.4,1+2*x.b-0.6*x.o))}
 function wpick(list,n){const a=list.slice(),out=[];while(out.length<n&&a.length){const tot=a.reduce((t,w)=>t+weight(w),0);let r=Math.random()*tot,i=0;for(;i<a.length-1;i++){r-=weight(a[i]);if(r<=0)break}out.push(a.splice(i,1)[0])}return out}
-function pool(){const out=[];for(const t of topicsAll()){if(S.topic!=='all'&&S.topic!=='novo'&&S.topic!=='vadi'&&S.topic!==t.id)continue;for(const w of t.words){const x={...w,color:t.color,key:t.id+'|'+w.en};if(S.topic==='novo'&&!isNew(w))continue;if(S.topic==='vadi'&&!isHard(x))continue;out.push(x)}}return out}
+function pool(){const out=[];for(const t of topicsAll()){if(S.topic==='mix'?!(S.mix||[]).includes(t.id):(S.topic!=='all'&&S.topic!=='novo'&&S.topic!=='vadi'&&S.topic!==t.id))continue;for(const w of t.words){const x={...w,color:t.color,key:t.id+'|'+w.en};if(S.topic==='novo'&&!isNew(w))continue;if(S.topic==='vadi'&&!isHard(x))continue;out.push(x)}}return out}
 function uniqPics(list){const seen=new Set();return list.filter(w=>{if(seen.has(w.pic))return false;seen.add(w.pic);return true})}
 
 /* ---------- nalaganje objavljenih besed ---------- */
@@ -495,18 +508,20 @@ function renderClassPick(first){
 }
 function topicChip(t){return `<button class="chip ${S.topic===t.id?'on':''}" style="--c:${h(t.color)}" data-act="topic" data-id="${h(t.id)}">${h(t.icon)} ${h(t.name)}${t.words.some(isNew)?'<i class="dot" title="nove besede"></i>':''}<small>${t.words.length}</small></button>`}
 function specialCounts(ts){return{all:ts.reduce((n,t)=>n+t.words.length,0),nNew:ts.reduce((n,t)=>n+t.words.filter(isNew).length,0),nHard:ts.reduce((n,t)=>n+t.words.filter(w=>isHard({key:t.id+'|'+w.en})).length,0)}}
-function topicLabel(id){if(id==='all')return '📚 Vse';if(id==='novo')return '✨ Novo';if(id==='vadi')return '🔁 Ponovi';const t=topicsRaw().find(x=>x.id===id);return t?t.icon+' '+t.name:id}
+function topicLabel(id){if(id==='mix'){const n=(S.mix||[]).map(x=>(topicsRaw().find(t=>t.id===x)||{}).name).filter(Boolean);return '🧩 '+(n.length>3?n.slice(0,3).join(', ')+' …':n.join(', '))}if(id==='all')return '📚 Vse';if(id==='novo')return '✨ Novo';if(id==='vadi')return '🔁 Ponovi';const t=topicsRaw().find(x=>x.id===id);return t?t.icon+' '+t.name:id}
 function renderHome(){
   if(S.loaded&&!S.cls&&classes().length>1)return renderClassPick(true);
   if(S.loaded&&!S.cls){S.cls=classes()[0].id;savePrefs()}
-  if(S.topic!=='all'&&S.topic!=='novo'&&S.topic!=='vadi'&&!topicsAll().some(t=>t.id===S.topic))S.topic='all';
+  if(S.topic==='mix'){const ids=topicsAll().map(t=>t.id);S.mix=(S.mix||[]).filter(x=>ids.includes(x));if(S.mix.length<2)S.topic=S.mix[0]||'all'}
+  if(S.topic!=='all'&&S.topic!=='novo'&&S.topic!=='vadi'&&S.topic!=='mix'&&!topicsAll().some(t=>t.id===S.topic))S.topic='all';
   const ts=topicsAll(),{all,nNew,nHard}=specialCounts(ts);
   if(S.topic==='novo'&&!nNew)S.topic='all';
   if(S.topic==='vadi'&&nHard<3)S.topic='all';
   let chips=`<button class="chip ${S.topic==='all'?'on':''}" style="--c:#FFC93C" data-act="topic" data-id="all">📚 Vse<small>${all}</small></button>`;
   if(nNew)chips+=`<button class="chip ${S.topic==='novo'?'on':''}" style="--c:#FF9EC4" data-act="topic" data-id="novo">✨ Novo<small>${nNew}</small></button>`;
   if(nHard>=3)chips+=`<button class="chip ${S.topic==='vadi'?'on':''}" style="--c:#B79CFF" data-act="topic" data-id="vadi" title="Besede, ki so ti delale težave">🔁 Ponovi<small>${nHard}</small></button>`;
-  if(ts.length<=4)chips+=ts.map(topicChip).join('');
+  if(S.topic==='mix')chips+=`<button class="chip on" style="--c:#9FE1CB" data-act="mixedit" title="Spremeni izbor tem">🧩 Izbrane teme<small>${S.mix.length}</small></button>`;
+  if(ts.length<=4)chips+=ts.map(topicChip).join('')+`<button class="chip allt" data-act="nav" data-v="teme">Vse teme (${ts.length}) ›</button>`;
   else{const rec=lsGet('zadnje-teme',[]).map(id=>ts.find(t=>t.id===id)).filter(Boolean);
     let show=rec.slice(0,3);const sel=ts.find(t=>t.id===S.topic);if(sel&&!show.includes(sel))show=[sel,...show.slice(0,2)];
     if(show.length<3)for(const t of ts.slice().reverse()){if(show.length>=3)break;if(!show.includes(t))show.push(t)}
@@ -520,19 +535,22 @@ function renderHome(){
   app.innerHTML=`<header class="hero"><div><h1>Brihta ${cpill}</h1><p>Angleške besede iz šole.</p></div><div class="tools"><span class="stars" title="Zbrane zvezdice">⭐ ${S.stars}</span><button class="pill press" data-act="caps" title="Velike ali male črke">${S.caps?'ABC':'abc'}</button><button class="pill press ${S.slo?'':'off'}" data-act="slo" aria-pressed="${S.slo}" title="Izgovorjava slovenskih besed">🔊 SLO</button><button class="pill press ${S.sfx?'':'off'}" data-act="sfx" aria-pressed="${S.sfx}" aria-label="Zvočni učinki" title="Zvočni učinki">${S.sfx?'🔔':'🔕'}</button></div></header>
   ${installBanner()}${helpBanner()}${gbNote()}${slNote()}
   ${!ts.length&&!S.loaded?`<p class="loading">Nalagam besede …</p>`:`<section class="hstep" aria-labelledby="h-tema"><h2 class="hlab" id="h-tema">Izberi temo</h2><div class="chips wrap">${chips}</div></section>
-  <section class="hstep" aria-labelledby="h-igra"><h2 class="hlab" id="h-igra">Izberi igro</h2><p class="hq">Koliko vas igra?</p>
+  <section class="hstep" aria-labelledby="h-igra"><h2 class="hlab" id="h-igra">Izberi igro</h2><div class="hqrow"><p class="hq">Koliko vas igra?</p><button class="qbtn press ${S.desc?'on':''}" data-act="desc" aria-pressed="${S.desc}" aria-label="${S.desc?'Skrij opise iger':'Pokaži opise iger'}" title="${S.desc?'Skrij opise iger':'Kako se igra?'}">${S.desc?'✕':'?'}</button></div>
    <div class="ftabs" role="tablist"><button role="tab" aria-selected="${S.tab==='one'}" class="ftab ${S.tab==='one'?'on':''}" data-act="tab" data-t="one">🙋 Igram sam</button><button role="tab" aria-selected="${S.tab==='two'}" class="ftab ${S.tab==='two'?'on':''}" data-act="tab" data-t="two">👫 Igrava dva</button></div>
-   <div class="fpanel" role="tabpanel"><p class="ftopic">Tema: <b>${h(topicLabel(S.topic))}</b></p><div class="games">${S.tab==='two'?duo:games}</div></div></section>`}
+   <div class="fpanel" role="tabpanel"><div class="games ${S.desc?'withdesc':'compact'}">${S.tab==='two'?duo:games}</div></div></section>`}
   <div class="botrow"><button class="ghost" data-act="nav" data-v="slovar">📖 Slovarček</button><button class="ghost" data-act="nav" data-v="pomoc">❓ Navodila</button><button class="ghost" data-act="nav" data-v="settings">⚙️ Nastavitve</button></div>`;
 }
 const MESECI=['januar','februar','marec','april','maj','junij','julij','avgust','september','oktober','november','december'];
 function topicDate(t){if(t.created)return t.created;const ds=t.words.map(w=>w.added).filter(Boolean).sort();return ds[0]||''}
-function renderTopics(){app.innerHTML=bar('Vse teme')+`<div class="search"><input type="search" data-tq value="${h(S.tq||'')}" placeholder="Išči temo …" aria-label="Iskanje teme" autocomplete="off"></div><div id="tlist"></div>`;topicsList()}
+function renderTopics(){app.innerHTML=bar('Vse teme')+`<div class="btns" style="margin:0 0 10px"><button class="sm press ${S.multi?'on':''}" data-act="multi">${S.multi?'✕ Prekliči izbiro':'🧩 Izberi več tem'}</button>${S.multi?'<span class="instr" style="margin:0">Označi teme, ki jih želiš vaditi skupaj.</span>':''}</div><div class="search"><input type="search" data-tq value="${h(S.tq||'')}" placeholder="Išči temo …" aria-label="Iskanje teme" autocomplete="off"></div><div id="tlist"></div><div id="mixbar"></div>`;topicsList();mixBar()}
+function mixBar(){const el=document.getElementById('mixbar');if(!el)return;const n=(S.msel||[]).length;
+  el.innerHTML=S.multi?`<div class="mixbar"><span>Izbrano: <b>${n}</b></span><button class="big press" data-act="mixgo" ${n?'':'disabled'}>Vadi izbrane${n?' ('+n+')':''}</button></div>`:''}
 function topicsList(){const el=document.getElementById('tlist');if(!el)return;
   const q=fold(S.tq||'').trim(),all=topicsAll(),ts=all.filter(t=>!q||fold(t.name).includes(q)||fold(t.sl||'').includes(q));
-  const card=(id,icon,name,sub,color,isnew)=>`<button class="tcard press ${S.topic===id?'on':''}" style="--c:${h(color)}" data-act="tpick" data-id="${h(id)}"><span class="tic">${h(icon)}</span><span class="tn"><b>${h(name)}</b><small>${h(sub)}</small></span>${isnew?'<span class="tnew">novo</span>':''}</button>`;
+  const card=(id,icon,name,sub,color,isnew)=>{const m=S.multi,sel=m&&(S.msel||[]).includes(id);
+    return `<button class="tcard press ${!m&&S.topic===id?'on':''} ${sel?'sel':''}" style="--c:${h(color)}" data-act="${m?'tmsel':'tpick'}" data-id="${h(id)}" ${m?`aria-pressed="${sel}"`:''}><span class="tic">${h(icon)}</span><span class="tn"><b>${h(name)}</b><small>${h(sub)}</small></span>${m?`<span class="tchk">${sel?'✓':''}</span>`:(isnew?'<span class="tnew">novo</span>':'')}</button>`};
   let out='';
-  if(!q){const {all:na,nNew,nHard}=specialCounts(all);
+  if(!q&&!S.multi){const {all:na,nNew,nHard}=specialCounts(all);
     out+=`<div class="tgrid">${card('all','📚','Vse','vse teme skupaj, '+besed(na),'#FFC93C')}${nNew?card('novo','✨','Novo','dodano v zadnjih 14 dneh, '+besed(nNew),'#FF9EC4'):''}${nHard>=3?card('vadi','🔁','Ponovi','besede, ki so ti delale težave, '+besed(nHard),'#B79CFF'):''}</div>`}
   const school=ts.filter(t=>!String(t.id).startsWith('my-')),mine=ts.filter(t=>String(t.id).startsWith('my-'));
   const groups={};school.forEach((t,i)=>{const d=topicDate(t),k=d?d.slice(0,7):'';(groups[k]=groups[k]||[]).push({t,i,d})});
@@ -629,7 +647,8 @@ function fold(s){return String(s).toLowerCase().normalize('NFD').replace(/[\u030
 const DEFAULT_HELP=`# 🚀 Kako začneš
 - Ob imenu Brihta izberi svoj **razred**, na primer 1.a.
 - Izberi **temo**. Če je ni med prikazanimi, tapni **Vse teme**. Tam so teme razvrščene po mesecih.
-- Pri **Izberi igro** odgovori na vprašanje »Koliko vas igra?«: **🙋 Igram sam** ali **👫 Igrava dva**. Nato tapni igro.
+- Za ponavljanje lahko v **Vse teme** tapneš **🧩 Izberi več tem**, označiš več tem in tapneš **Vadi izbrane**.
+- Pri **Izberi igro** odgovori na vprašanje »Koliko vas igra?«: **🙋 Igram sam** ali **👫 Igrava dva**. Nato tapni igro. Z gumbom **?** ob vprašanju »Koliko vas igra?« pokažeš kratke opise iger.
 - Za vsako končano igro dobiš **zvezdico ⭐**. Koliko jih imaš, vidiš zgoraj desno.
 
 # 🎮 Igre
@@ -665,6 +684,7 @@ Brihta pošilja le skupne dnevne seštevke, brez imen in brez podatkov o napravi
 - katere besede iz šole so bile zgrešene.
 Seštevki pomagajo pri odločitvah, katere igre obdržati, katere izboljšati ali zamenjati in katere besede potrebujejo več vaje. Lastne besede se nikoli ne pošljejo. Statistiko izklopiš v **⚙️ Nastavitve**.`;
 const DEFAULT_CHANGES=[
+ {v:'2.2',t:'- Krajše ploščice iger: opise pokažeš z gumbom ?.\n- Vadiš lahko več tem hkrati: Vse teme → 🧩 Izberi več tem.'},
  {v:'2.1',t:'- Jasnejši začetni zaslon: izbira teme in igre v ločenih okvirjih.\n- Zavihka se imenujeta Igram sam in Igrava dva.'},
  {v:'2.0',t:'- Izbira razreda.\n- Nova razporeditev: teme zgoraj, igre v zavihkih Za enega in Za dva.\n- Pregled vseh tem, razvrščen po mesecih, z iskanjem.\n- Tema Vadi se zdaj imenuje 🔁 Ponovi.'},
  {v:'1.9',t:'- Mnenje se pošlje iz vaše e-pošte in deluje na vseh omrežjih.'},
@@ -970,7 +990,7 @@ function renderStatsBody(){
   const opens=days.map(d=>(STDATA[d]||{}).open||0),maxO=Math.max(1,...opens),active=opens.filter(x=>x>0).length;
   const gname={kartice:'Kartice',povezi:'Poveži',spomin:'Spomin',kviz:'Poslušaj',crke:'Sestavi besedo',najdi:'Najdi',duo1:'Za dva, en telefon',duo:'Za dva, dva telefona'};
   const games=Object.keys(gname).map(g=>[g,sum['gs_'+g]||0,sum['gd_'+g]||0]).filter(x=>x[1]).sort((a,b)=>b[1]-a[1]);const maxG=Math.max(1,...games.map(x=>x[1]));
-  const allT=topicsRaw(),tname=id=>id==='all'?'📚 Vse':id==='novo'?'✨ Novo':id==='vadi'?'🔁 Ponovi':((allT.find(t=>t.id===id)||{}).name||id);
+  const allT=topicsRaw(),tname=id=>id==='mix'?'🧩 Več tem':id==='all'?'📚 Vse':id==='novo'?'✨ Novo':id==='vadi'?'🔁 Ponovi':((allT.find(t=>t.id===id)||{}).name||id);
   const topics=Object.keys(sum).filter(k=>k.startsWith('t_')).map(k=>[decodeURIComponent(k.slice(2)),sum[k]]).sort((a,b)=>b[1]-a[1]).slice(0,8);
   const wordOf=key=>{const[tid,...rest]=key.split('|');const en=rest.join('|');const t=allT.find(x=>x.id===tid);const w=t&&t.words.find(x=>x.en===en);return w?`${w.pic} ${w.en} = ${w.sl}`:en};
   const hard=Object.keys(miss).map(k=>[decodeURIComponent(k),miss[k]]).sort((a,b)=>b[1]-a[1]).slice(0,10);
@@ -1017,7 +1037,7 @@ function act(a,b){
     c.databaseURL=c.databaseURL.replace(/\/$/,'');ADM.firebase=c;S.fbtxt='';S.fbdb=null;S.dirty.pub=true;S.status='Nastavitve so pripravljene. Preizkusi povezavo in tapni »Objavi za vse«.';render();break}
   case 'fbtest':fbTest();break;
   case 'fbclear':if(!confirm('Izklopim igro za dva za vse uporabnike?'))break;delete ADM.firebase;S.dirty.pub=true;S.edOpen='fb';S.status='Igra za dva bo izklopljena po objavi.';render();break;
-  case 'nav':{if(!leaveOk())break;if(S.view==='duo')duoLeave();try{speechSynthesis.cancel()}catch(e){}const v=b.dataset.v;if(v==='mnenje'&&FBK.state==='sent')FBK.state='';S.view=v;S.status='';if(v==='admin'&&!S.dirty.pub){ADM=null;loadPub().then(()=>{if(S.view==='admin'&&!S.dirty.pub){ADM=null;render()}})}render();scrollTo(0,0);break}
+  case 'nav':{if(!leaveOk())break;if(S.view==='duo')duoLeave();try{speechSynthesis.cancel()}catch(e){}const v=b.dataset.v;if(v==='mnenje'&&FBK.state==='sent')FBK.state='';if(S.view==='teme')S.multi=false;S.view=v;S.status='';if(v==='admin'&&!S.dirty.pub){ADM=null;loadPub().then(()=>{if(S.view==='admin'&&!S.dirty.pub){ADM=null;render()}})}render();scrollTo(0,0);break}
   case 'caps':S.caps=!S.caps;savePrefs();render();break;
   case 'sfx':S.sfx=!S.sfx;savePrefs();render();if(S.sfx)sfx('ok');break;
   case 'slo':S.slo=!S.slo;savePrefs();render();if(S.slo)saySl('Živijo');break;
@@ -1029,6 +1049,11 @@ function act(a,b){
   case 'topic':S.topic=b.dataset.id;pushRecent(S.topic);render();break;
   case 'tpick':S.topic=b.dataset.id;pushRecent(S.topic);S.tq='';S.view='home';render();scrollTo(0,0);break;
   case 'tab':S.tab=b.dataset.t;savePrefs();render();break;
+  case 'multi':S.multi=!S.multi;S.msel=S.topic==='mix'?(S.mix||[]).slice():(S.topic&&!['all','novo','vadi'].includes(S.topic)?[S.topic]:[]);render();break;
+  case 'tmsel':{const id=b.dataset.id,a=S.msel||(S.msel=[]);const j=a.indexOf(id);if(j>=0)a.splice(j,1);else a.push(id);topicsList();mixBar();break}
+  case 'mixgo':{const a=(S.msel||[]).slice();if(!a.length)break;if(a.length===1){S.topic=a[0];pushRecent(a[0])}else{S.topic='mix';S.mix=a}S.multi=false;S.tq='';savePrefs();S.view='home';render();scrollTo(0,0);break}
+  case 'mixedit':S.multi=true;S.msel=(S.mix||[]).slice();S.view='teme';render();scrollTo(0,0);break;
+  case 'desc':S.desc=!S.desc;savePrefs();render();break;
   case 'duomode':duoOpen(b.dataset.m);break;
   case 'clspick':S.cls=b.dataset.id;S.topic='all';savePrefs();S.view='home';render();scrollTo(0,0);break;
   case 'game':start(b.dataset.g);scrollTo(0,0);break;

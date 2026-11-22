@@ -9,7 +9,7 @@ Dodatno:
 
 Aplikacija deluje na Android telefonih in iPhonih, se namesti kot prava aplikacija z ikono in deluje tudi brez povezave. Nove besede in posodobitve dobite samodejno.
 
-Na začetnem zaslonu najprej izberete temo (okvir **Izberi temo**), nato igro (okvir **Izberi igro**, z jezičkoma **🙋 Igram sam** in **👫 Igrava dva**). Spodaj so **Slovarček**, **Navodila** in **Nastavitve**. Vse teme razreda, razvrščene po mesecih, odprete z gumbom **Vse teme**. Kratka navodila za igre so v aplikaciji pod **❓ Navodila**.
+Na začetnem zaslonu najprej izberete temo (okvir **Izberi temo**), nato igro (okvir **Izberi igro**, z jezičkoma **🙋 Igram sam** in **👫 Igrava dva**). Spodaj so **Slovarček**, **Navodila** in **Nastavitve**. Vse teme razreda, razvrščene po mesecih, odprete z gumbom **Vse teme**. Tam lahko z **🧩 Izberi več tem** označite več tem in jih vadite skupaj. Kratke opise iger pokažete z gumbom **?** ob vprašanju »Koliko vas igra?«, podrobnejša navodila pa so pod **❓ Navodila**.
 
 ## Namestitev na telefon
 
