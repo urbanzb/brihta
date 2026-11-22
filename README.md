@@ -9,7 +9,7 @@ Dodatno:
 
 Aplikacija deluje na Android telefonih in iPhonih, se namesti kot prava aplikacija z ikono in deluje tudi brez povezave. Nove besede in posodobitve dobite samodejno.
 
-Na začetnem zaslonu so zgoraj teme, pod njimi zavihka **🙋 Za enega** in **👫 Za dva** z igrami, spodaj pa **Slovarček**, **Navodila** in **Nastavitve**. Vse teme razreda, razvrščene po mesecih, odprete z gumbom **Vse teme**. Kratka navodila za igre so v aplikaciji pod **❓ Navodila**.
+Na začetnem zaslonu najprej izberete temo (okvir **Izberi temo**), nato igro (okvir **Izberi igro**, z jezičkoma **🙋 Igram sam** in **👫 Igrava dva**). Spodaj so **Slovarček**, **Navodila** in **Nastavitve**. Vse teme razreda, razvrščene po mesecih, odprete z gumbom **Vse teme**. Kratka navodila za igre so v aplikaciji pod **❓ Navodila**.
 
 ## Namestitev na telefon
 
@@ -127,7 +127,7 @@ V **Skrbniški način → 🏫 Razredi** urejaš seznam razredov. Ime lahko spre
 
 - Vsaka objavljena tema ima v urejevalniku vrstico **Razred** s polji za izbiro. Tema lahko pripada enemu ali več razredom, na primer skupna tema za 1.a in 1.b.
 - Teme brez oznake pripadajo prvemu razredu na seznamu, zato vse dosedanje teme ostanejo v 1.a.
-- Nova tema, ki jo dodaš, privzeto pripada razredu, ki je trenutno izbran v aplikaciji.
+- Ko ustvariš novo temo (s prilepljanjem besed ali z obrazcem **Nova tema**), v vrstici **Razred** izbereš, kateremu razredu ali razredom pripada. Privzeto je označen razred, ki je trenutno izbran v aplikaciji. Pri prilepljanju besed v obstoječo temo aplikacija pokaže njen razred.
 - Staršem posameznega razreda pošlji povezavo z oznako razreda, na primer `…/brihta/#1b`. Oznako (`1a`, `1b` …) vidiš v razdelku Razredi.
 - Lastne besede staršev so vidne v vseh razredih.
 - Statistika uporabe prikazuje tudi število odprtij po razredih.

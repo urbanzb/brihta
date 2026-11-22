@@ -17,11 +17,11 @@
 @font-face{font-family:'Grandstander';src:url(grandstander.woff2) format('woff2');font-weight:600 800;font-display:swap}
 @font-face{font-family:'Atkinson Hyperlegible';src:url(atkinson-regular.woff2) format('woff2');font-weight:400;font-display:swap}
 @font-face{font-family:'Atkinson Hyperlegible';src:url(atkinson-bold.woff2) format('woff2');font-weight:700;font-display:swap}
-:root{--paper:#EAF3FB;--card:#FFFFFF;--ink:#1F2A44;--soft:#56688A;--line:#D3E4F4;--sun:#FFC93C;--sky:#3D8BFD;--leaf:#1E9E62;--berry:#D93D6E;--okbg:#DDF6E8;--thbg:#ECE6FF;--th:#7B61FF;--nobg:#FDE3EB;
+:root{--paper:#EAF3FB;--card:#FFFFFF;--ink:#1F2A44;--soft:#56688A;--line:#D3E4F4;--sun:#FFC93C;--sky:#3D8BFD;--leaf:#1E9E62;--berry:#D93D6E;--okbg:#DDF6E8;--thbg:#ECE6FF;--th:#7B61FF;--tabbg:#FFF0C2;--nobg:#FDE3EB;
 --display:'Grandstander','Trebuchet MS',system-ui,sans-serif;--body:'Atkinson Hyperlegible',Verdana,system-ui,sans-serif;
 color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#132039;--card:#1E2C4B;--ink:#EEF3FB;--soft:#A9B9D4;--line:#1C2C4D;--sky:#6AA8FF;--leaf:#3CCB86;--berry:#FF6E98;--okbg:#18402F;--thbg:#2E2552;--th:#A894FF;--nobg:#4A1D30;color-scheme:dark}}
-:root[data-theme="dark"]{--paper:#132039;--card:#1E2C4B;--ink:#EEF3FB;--soft:#A9B9D4;--line:#1C2C4D;--sky:#6AA8FF;--leaf:#3CCB86;--berry:#FF6E98;--okbg:#18402F;--thbg:#2E2552;--th:#A894FF;--nobg:#4A1D30;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#132039;--card:#1E2C4B;--ink:#EEF3FB;--soft:#A9B9D4;--line:#1C2C4D;--sky:#6AA8FF;--leaf:#3CCB86;--berry:#FF6E98;--okbg:#18402F;--thbg:#2E2552;--th:#A894FF;--tabbg:#3B3218;--nobg:#4A1D30;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#132039;--card:#1E2C4B;--ink:#EEF3FB;--soft:#A9B9D4;--line:#1C2C4D;--sky:#6AA8FF;--leaf:#3CCB86;--berry:#FF6E98;--okbg:#18402F;--thbg:#2E2552;--th:#A894FF;--tabbg:#3B3218;--nobg:#4A1D30;color-scheme:dark}
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
 body{margin:0;background-color:var(--paper);background-image:repeating-linear-gradient(to bottom,transparent 0 35px,var(--line) 35px 37px);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.45;min-height:100vh;-webkit-tap-highlight-color:transparent}
@@ -157,7 +157,17 @@ code{background:var(--paper);padding:1px 6px;border-radius:6px;font-size:15px}
 .fbitem.new{border-left:4px solid var(--sun);padding-left:10px}
 .fbmeta{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--soft)}.fbmeta .x{margin-left:auto}
 .fbitem p{margin:6px 0 0}
-.chips.wrap{flex-wrap:wrap;overflow:visible}
+.chips.wrap{flex-wrap:wrap;overflow:visible;padding-bottom:4px}
+.hstep{background:var(--card);border:2.5px solid var(--ink);border-radius:20px;padding:14px 14px 16px;margin:0 0 16px}
+.hlab{font-size:22px;font-weight:800;margin:0 0 10px}
+.hq{margin:-4px 0 8px;color:var(--soft);font-size:16px}
+.ftabs{display:flex;gap:6px;align-items:flex-end}
+.ftab{flex:1;border:2.5px solid var(--ink);border-bottom:0;border-radius:14px 14px 0 0;background:var(--paper);padding:10px 4px;font-family:var(--display);font-weight:800;font-size:17px;color:var(--soft)}
+.ftab.on{background:var(--tabbg);color:var(--ink);border-bottom:2.5px solid var(--tabbg);margin-bottom:-2.5px;padding-bottom:12.5px;position:relative;z-index:1}
+.fpanel{background:var(--tabbg);border:2.5px solid var(--ink);border-radius:0 0 16px 16px;padding:12px}
+.fpanel .games{margin:0}
+.ftopic{margin:0 0 10px;font-size:15px;color:var(--soft)}.ftopic b{color:var(--ink)}
+@media (max-width:380px){.ftab{font-size:15px}.hstep{padding:12px}}
 .chip.allt{background:transparent;border-style:dashed;color:var(--ink)}
 .seg{display:grid;grid-template-columns:1fr 1fr;border:2.5px solid var(--ink);border-radius:14px;overflow:hidden;margin:8px 0 4px}
 .seg button{border:0;background:var(--card);padding:10px 4px;font-family:var(--display);font-weight:800;font-size:18px}
@@ -251,7 +261,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <div id="app"><p class="loading">Nalagam …</p></div>
 <script>
 'use strict';
-const APP_VERSION='2.0';
+const APP_VERSION='2.1';
 const FEEDBACK_EMAIL='uzbmobileapps@gmail.com'; // mnenja se pošljejo iz uporabnikovega poštnega programa
 /* JEZIK: Brihta uporablja izključno BRITANSKO angleščino (zapis in izgovorjava en-GB).
    Ameriške oblike pri vnosu zaznamo s US_UK in predlagamo britansko različico. */
@@ -507,11 +517,12 @@ function renderHome(){
    ${online?`<button class="game press" data-act="duomode" data-m="create"><span class="ico">➕</span><b>Ustvari igro</b><span>Prijatelju poveš kodo in igrata vsak s svojim telefonom.</span></button>
    <button class="game press" data-act="duomode" data-m="join"><span class="ico">🔑</span><b>Pridruži se</b><span>Vpiši kodo, ki ti jo pove prijatelj.</span></button>`:`<p class="note" style="grid-column:1/-1">Igra vsak s svojim telefonom še ni nastavljena.</p>`}`;
   const cpill=classes().length>1?`<button class="clspill press" data-act="nav" data-v="razred" aria-label="Zamenjaj razred">${h(CLS().name)} ▾</button>`:'';
-  app.innerHTML=`<header class="hero"><div><h1>Brihta ${cpill}</h1><p>Angleške besede. Izberi temo in igro.</p></div><div class="tools"><span class="stars" title="Zbrane zvezdice">⭐ ${S.stars}</span><button class="pill press" data-act="caps" title="Velike ali male črke">${S.caps?'ABC':'abc'}</button><button class="pill press ${S.slo?'':'off'}" data-act="slo" aria-pressed="${S.slo}" title="Izgovorjava slovenskih besed">🔊 SLO</button><button class="pill press ${S.sfx?'':'off'}" data-act="sfx" aria-pressed="${S.sfx}" aria-label="Zvočni učinki" title="Zvočni učinki">${S.sfx?'🔔':'🔕'}</button></div></header>
+  app.innerHTML=`<header class="hero"><div><h1>Brihta ${cpill}</h1><p>Angleške besede iz šole.</p></div><div class="tools"><span class="stars" title="Zbrane zvezdice">⭐ ${S.stars}</span><button class="pill press" data-act="caps" title="Velike ali male črke">${S.caps?'ABC':'abc'}</button><button class="pill press ${S.slo?'':'off'}" data-act="slo" aria-pressed="${S.slo}" title="Izgovorjava slovenskih besed">🔊 SLO</button><button class="pill press ${S.sfx?'':'off'}" data-act="sfx" aria-pressed="${S.sfx}" aria-label="Zvočni učinki" title="Zvočni učinki">${S.sfx?'🔔':'🔕'}</button></div></header>
   ${installBanner()}${helpBanner()}${gbNote()}${slNote()}
-  ${!ts.length&&!S.loaded?`<p class="loading">Nalagam besede …</p>`:`<h3 class="label">Tema</h3><div class="chips wrap">${chips}</div>
-  <div class="seg" role="tablist"><button role="tab" aria-selected="${S.tab==='one'}" class="${S.tab==='one'?'on':''}" data-act="tab" data-t="one">🙋 Za enega</button><button role="tab" aria-selected="${S.tab==='two'}" class="${S.tab==='two'?'on':''}" data-act="tab" data-t="two">👫 Za dva</button></div>
-  <div class="games">${S.tab==='two'?duo:games}</div>`}
+  ${!ts.length&&!S.loaded?`<p class="loading">Nalagam besede …</p>`:`<section class="hstep" aria-labelledby="h-tema"><h2 class="hlab" id="h-tema">Izberi temo</h2><div class="chips wrap">${chips}</div></section>
+  <section class="hstep" aria-labelledby="h-igra"><h2 class="hlab" id="h-igra">Izberi igro</h2><p class="hq">Koliko vas igra?</p>
+   <div class="ftabs" role="tablist"><button role="tab" aria-selected="${S.tab==='one'}" class="ftab ${S.tab==='one'?'on':''}" data-act="tab" data-t="one">🙋 Igram sam</button><button role="tab" aria-selected="${S.tab==='two'}" class="ftab ${S.tab==='two'?'on':''}" data-act="tab" data-t="two">👫 Igrava dva</button></div>
+   <div class="fpanel" role="tabpanel"><p class="ftopic">Tema: <b>${h(topicLabel(S.topic))}</b></p><div class="games">${S.tab==='two'?duo:games}</div></div></section>`}
   <div class="botrow"><button class="ghost" data-act="nav" data-v="slovar">📖 Slovarček</button><button class="ghost" data-act="nav" data-v="pomoc">❓ Navodila</button><button class="ghost" data-act="nav" data-v="settings">⚙️ Nastavitve</button></div>`;
 }
 const MESECI=['januar','februar','marec','april','maj','junij','julij','avgust','september','oktober','november','december'];
@@ -618,7 +629,7 @@ function fold(s){return String(s).toLowerCase().normalize('NFD').replace(/[\u030
 const DEFAULT_HELP=`# 🚀 Kako začneš
 - Ob imenu Brihta izberi svoj **razred**, na primer 1.a.
 - Izberi **temo**. Če je ni med prikazanimi, tapni **Vse teme**. Tam so teme razvrščene po mesecih.
-- Izberi zavihek **🙋 Za enega** ali **👫 Za dva** in tapni igro.
+- Pri **Izberi igro** odgovori na vprašanje »Koliko vas igra?«: **🙋 Igram sam** ali **👫 Igrava dva**. Nato tapni igro.
 - Za vsako končano igro dobiš **zvezdico ⭐**. Koliko jih imaš, vidiš zgoraj desno.
 
 # 🎮 Igre
@@ -654,6 +665,7 @@ Brihta pošilja le skupne dnevne seštevke, brez imen in brez podatkov o napravi
 - katere besede iz šole so bile zgrešene.
 Seštevki pomagajo pri odločitvah, katere igre obdržati, katere izboljšati ali zamenjati in katere besede potrebujejo več vaje. Lastne besede se nikoli ne pošljejo. Statistiko izklopiš v **⚙️ Nastavitve**.`;
 const DEFAULT_CHANGES=[
+ {v:'2.1',t:'- Jasnejši začetni zaslon: izbira teme in igre v ločenih okvirjih.\n- Zavihka se imenujeta Igram sam in Igrava dva.'},
  {v:'2.0',t:'- Izbira razreda.\n- Nova razporeditev: teme zgoraj, igre v zavihkih Za enega in Za dva.\n- Pregled vseh tem, razvrščen po mesecih, z iskanjem.\n- Tema Vadi se zdaj imenuje 🔁 Ponovi.'},
  {v:'1.9',t:'- Mnenje se pošlje iz vaše e-pošte in deluje na vseh omrežjih.'},
  {v:'1.8',t:'- Navodila ureja skrbnik.\n- Novosti po različicah so zapisane na koncu navodil.'},
@@ -872,11 +884,14 @@ function slug(s){return String(s).toLowerCase().normalize('NFD').replace(/[\u030
 function DS(k){return k==='my'?MY:ADM}
 function makeTopic(k,name,sl,icon){const d=DS(k);let id=(k==='my'?'my-':'')+slug(name);const taken=new Set(topicsRaw().map(t=>t.id).concat(d.topics.map(t=>t.id)));let id2=id,n=2;while(taken.has(id2))id2=id+'-'+(n++);
   return{id:id2,name,sl,icon,subject:SUBJ().id,created:today(),...(k==='my'?{}:{classes:[CLS().id]}),color:PAL[(topicsRaw().length+d.topics.length)%PAL.length],words:[]}}
+function clsChecks(attr,sel){return `<div class="clsrow" style="padding:0;margin:4px 0 12px"><span>Razred:</span>${admClasses().map(c=>`<label><input type="checkbox" ${attr} value="${h(c.id)}" ${sel.includes(c.id)?'checked':''}> ${h(c.name)}</label>`).join('')}</div>`}
+function defaultNewCls(){const ids=admClasses().map(c=>c.id);return ids.includes(CLS().id)?[CLS().id]:[ids[0]]}
 function admClasses(){return ADM&&Array.isArray(ADM.classes)&&ADM.classes.length?ADM.classes:classes()}
 function renderPrev(k){
   const d=DS(k);
   const opts=d.topics.map((t,i)=>`<option value="${i}" ${String(PREV.sel)===String(i)?'selected':''}>${h(t.icon+' '+t.name)}</option>`).join('')+`<option value="new" ${PREV.sel==='new'?'selected':''}>➕ Nova tema</option>`;
-  const nt=PREV.sel==='new'?`<div class="ntf"><input data-nt="icon" value="${h(PREV.nt.icon)}" placeholder="📘" aria-label="Emoji teme"><input data-nt="en" value="${h(PREV.nt.en)}" placeholder="angleško ime" aria-label="Ime teme angleško"><input data-nt="sl" value="${h(PREV.nt.sl)}" placeholder="slovensko ime" aria-label="Ime teme slovensko"></div>`:'';
+  const nt=PREV.sel==='new'?`<div class="ntf"><input data-nt="icon" value="${h(PREV.nt.icon)}" placeholder="📘" aria-label="Emoji teme"><input data-nt="en" value="${h(PREV.nt.en)}" placeholder="angleško ime" aria-label="Ime teme angleško"><input data-nt="sl" value="${h(PREV.nt.sl)}" placeholder="slovensko ime" aria-label="Ime teme slovensko"></div>${k==='pub'?clsChecks('data-pcls',PREV.ncls||defaultNewCls()):''}`
+    :(k==='pub'&&d.topics[+PREV.sel]?`<p class="hint" style="margin-top:-4px">Razred teme: ${h(topicClasses(d.topics[+PREV.sel],admClasses()).map(id=>(admClasses().find(c=>c.id===id)||{name:id}).name).join(' + '))}. Spremeniš ga v urejevalniku teme.</p>`:'');
   const rows=PREV.items.map((it,i)=>`<div class="prow ${it.pic?'':'miss'}"><input class="pic-in" data-pi="${i}" data-f="pic" value="${h(it.pic)}" placeholder="?" aria-label="Emoji"><input data-pi="${i}" data-f="en" value="${h(it.en)}" aria-label="Angleško"><input data-pi="${i}" data-f="sl" value="${h(it.sl)}" aria-label="Slovensko"><button class="x" data-act="pdel" data-i="${i}" aria-label="Odstrani">×</button></div>${ukHints(it.en).length?`<div class="ukhint">💂 Ameriško: <b>${h(ukHints(it.en).map(x=>x[0]).join(', '))}</b>. Britansko: <b>${h(ukHints(it.en).map(x=>x[1]).join(', '))}</b> <button class="sm press" data-act="pfix" data-i="${i}">Popravi</button></div>`:''}`).join('');
   return `<div class="prev"><h4>Najdenih ${besed(PREV.items.length)}</h4><label>Dodaj v temo<select data-psel>${opts}</select></label>${nt}${rows}
   <p class="hint">Preveri besede, posebej šumnike. Kjer je polje za emoji rdeče, ga izberi s tipkovnico emojijev.</p>
@@ -892,7 +907,7 @@ function editorBody(k){
    <ul class="wl">${t.words.map((w,wi)=>`<li><span class="p">${h(w.pic)}</span><span class="t"><b>${h(w.en)}</b> <span>= ${h(w.sl)}${isNew(w)?' ✨':''}${ukHints(w.en).length?` <i class="ukflag" title="Ameriška oblika">💂 ${h(ukHints(w.en).map(x=>x[1]).join(', '))}</i>`:''}</span></span><button class="x" data-act="delw" data-k="${k}" data-t="${ti}" data-i="${wi}" aria-label="Izbriši ${h(w.en)}">×</button></li>`).join('')}</ul>
    <div class="form"><input id="pic-${k}-${ti}" placeholder="🐶" aria-label="Slikica (emoji)" maxlength="8"><input id="en-${k}-${ti}" placeholder="angleško" aria-label="Angleško"><input id="sl-${k}-${ti}" placeholder="slovensko" aria-label="Slovensko">
    <div class="actions"><button class="sm press" data-act="addw" data-k="${k}" data-t="${ti}">Dodaj besedo</button><button class="danger" data-act="delt" data-k="${k}" data-t="${ti}">Izbriši temo</button></div></div></details>`).join('');
-  const newT=`<h3 class="sub">Nova tema</h3><div class="card" style="padding:0"><div class="form" style="border-top:0"><input id="nt-ico-${k}" placeholder="🐾" aria-label="Slikica teme" maxlength="8"><input id="nt-en-${k}" placeholder="npr. Animals" aria-label="Ime teme angleško"><input id="nt-sl-${k}" placeholder="npr. Živali" aria-label="Ime teme slovensko"><div class="actions"><button class="sm press" data-act="addt" data-k="${k}">Dodaj temo</button></div></div></div>`;
+  const newT=`<h3 class="sub">Nova tema</h3><div class="card" style="padding:0"><div class="form" style="border-top:0"><input id="nt-ico-${k}" placeholder="🐾" aria-label="Slikica teme" maxlength="8"><input id="nt-en-${k}" placeholder="npr. Animals" aria-label="Ime teme angleško"><input id="nt-sl-${k}" placeholder="npr. Živali" aria-label="Ime teme slovensko">${k==='pub'?`<div style="grid-column:1/-1">${clsChecks('data-ntcls',S.ntcls||defaultNewCls())}</div>`:''}<div class="actions"><button class="sm press" data-act="addt" data-k="${k}">Dodaj temo</button></div></div></div>`;
   const save=`<div class="savebar"><button class="big press" data-act="save" data-k="${k}" ${S.dirty[k]?'':'disabled'}>${k==='my'?'Shrani moje besede':'Objavi za vse'}</button><span class="status" role="status">${h(S.status)}</span></div>`;
   return paste+(d.topics.length?`<h3 class="sub">${k==='my'?'Moje teme':'Objavljene teme'}</h3>`:'')+tp+newT+save;
 }
@@ -1071,12 +1086,12 @@ function act(a,b){
   case 'cfgclear':CFG.token='';lsSet('skrbnik',CFG);S.status='Žeton je odstranjen s te naprave.';render();break;
   case 'parse':{const r=parseList(PASTE[k]);if(!r.items.length){S.status='Ne najdem vrstic z znakom »=«.';PREV=null;return render()}
     const d=DS(k);let sel='new';if(r.topic){const j=d.topics.findIndex(t=>t.name.toLowerCase()===r.topic.en.toLowerCase());if(j>=0)sel=j}else if(d.topics.length){const j=d.topics.findIndex(t=>t.id===S.edOpen);sel=j>=0?j:d.topics.length-1}
-    PREV={k,items:r.items,sel:String(sel),nt:{en:r.topic?r.topic.en:'',sl:r.topic?r.topic.sl:'',icon:(r.topic&&r.topic.icon)||(r.items[0]&&r.items[0].pic)||'📘'}};S.status='';render();break}
+    PREV={k,items:r.items,sel:String(sel),ncls:k==='pub'?defaultNewCls():null,nt:{en:r.topic?r.topic.en:'',sl:r.topic?r.topic.sl:'',icon:(r.topic&&r.topic.icon)||(r.items[0]&&r.items[0].pic)||'📘'}};S.status='';render();break}
   case 'pfix':PREV.items[i].en=ukFix(PREV.items[i].en);PREV.items[i].pic=PREV.items[i].pic||guessPic(PREV.items[i].en);render();break;
   case 'pdel':PREV.items.splice(i,1);if(!PREV.items.length)PREV=null;render();break;
   case 'pcancel':PREV=null;render();break;
   case 'padd':{const d=DS(k);let t;
-    if(PREV.sel==='new'){const en=PREV.nt.en.trim();if(!en){S.status='Vpiši ime nove teme.';return render()}t=makeTopic(k,en,PREV.nt.sl.trim()||en,PREV.nt.icon.trim()||'📘');d.topics.push(t)}else t=d.topics[+PREV.sel];
+    if(PREV.sel==='new'){const en=PREV.nt.en.trim();if(!en){S.status='Vpiši ime nove teme.';return render()}t=makeTopic(k,en,PREV.nt.sl.trim()||en,PREV.nt.icon.trim()||'📘');if(k==='pub')t.classes=(PREV.ncls&&PREV.ncls.length?PREV.ncls:defaultNewCls()).slice();d.topics.push(t)}else t=d.topics[+PREV.sel];
     let added=0,skipped=0;for(const it of PREV.items){const en=it.en.trim(),sl=it.sl.trim();if(!en||!sl)continue;if(t.words.some(w=>w.en.toLowerCase()===en.toLowerCase())){skipped++;continue}t.words.push({en,sl,pic:it.pic.trim()||'⭐',added:today()});added++}
     PREV=null;PASTE[k]='';S.dirty[k]=true;S.edOpen=t.id;S.status=`Dodano: ${besed(added)}${skipped?`, ${skipped} že obstaja`:''}. ${k==='my'?'Ne pozabi shraniti.':'Ko je vse prav, tapni »Objavi za vse«.'}`;render();break}
   case 'addw':{const d=DS(k),t=d.topics[+b.dataset.t],id=k+'-'+b.dataset.t,en=val('en-'+id),sl=val('sl-'+id),pic=val('pic-'+id)||guessPic(en)||'⭐';
@@ -1085,7 +1100,7 @@ function act(a,b){
   case 'delw':{const t=DS(k).topics[+b.dataset.t];S.edOpen=t.id;t.words.splice(i,1);S.dirty[k]=true;S.status='Beseda izbrisana.';render();break}
   case 'delt':{const d=DS(k),t=d.topics[+b.dataset.t];if(!confirm('Izbrišem temo '+t.name+' z vsemi besedami?'))break;d.topics.splice(+b.dataset.t,1);S.dirty[k]=true;S.status='Tema izbrisana.';render();break}
   case 'addt':{const name=val('nt-en-'+k),sl=val('nt-sl-'+k)||name,icon=val('nt-ico-'+k)||'📘';if(!name){S.status='Vpiši ime nove teme.';return render()}
-    const t=makeTopic(k,name,sl,icon);DS(k).topics.push(t);S.edOpen=t.id;S.dirty[k]=true;S.status='Tema dodana. Zdaj ji dodaj besede.';render();break}
+    const t=makeTopic(k,name,sl,icon);if(k==='pub')t.classes=(S.ntcls&&S.ntcls.length?S.ntcls:defaultNewCls()).slice();S.ntcls=null;DS(k).topics.push(t);S.edOpen=t.id;S.dirty[k]=true;S.status='Tema dodana. Zdaj ji dodaj besede.';render();break}
   case 'save':saveDS(k);break;
   }
 }
@@ -1112,6 +1127,8 @@ app.addEventListener('input',e=>{const t=e.target,d=t.dataset;
   else if(d.fbtxt!==undefined){S.fbtxt=t.value}
   else if(d.fbdb!==undefined){S.fbdb=t.value}});
 app.addEventListener('change',e=>{const t=e.target;
+  if(t.dataset.pcls!==undefined&&PREV){const v=[...document.querySelectorAll('[data-pcls]')].filter(x=>x.checked).map(x=>x.value);if(!v.length){t.checked=true;return}PREV.ncls=v;return}
+  if(t.dataset.ntcls!==undefined){const v=[...document.querySelectorAll('[data-ntcls]')].filter(x=>x.checked).map(x=>x.value);if(!v.length){t.checked=true;return}S.ntcls=v;return}
   if(t.dataset.tcls!==undefined&&ADM){const tp=ADM.topics[+t.dataset.tcls];const all=[...document.querySelectorAll(`[data-tcls="${t.dataset.tcls}"]`)].filter(x=>x.checked).map(x=>x.value);
     if(!all.length){t.checked=true;S.status='Tema mora pripadati vsaj enemu razredu.'}else{tp.classes=all;S.dirty.pub=true;S.status='Razredi teme bodo spremenjeni po objavi.'}S.edOpen=tp.id;render();return}if(t.dataset.psel!==undefined&&PREV){PREV.sel=t.value;render()}else if(t.dataset.import!==undefined&&t.files&&t.files[0]){importMy(t.files[0]);t.value=''}});
 app.addEventListener('toggle',e=>{if(e.target.matches('details.ed')&&e.target.open&&e.target.dataset.id)S.edOpen=e.target.dataset.id},true);
