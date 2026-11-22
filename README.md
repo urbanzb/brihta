@@ -1,19 +1,21 @@
 # Brihta
 
-Brihta je aplikacija z igrivimi vajami za razred A. Zdaj vsebuje angleške besede iz šole: kartice, poveži, spomin, poslušaj, sestavi besedo, najdi, igro za dva (na enem telefonu ali vsak s svojim) in slovarček.
+Brihta je aplikacija z igrivimi vajami za angleške besede iz šole, ločeno za vsak razred (1.a, 1.b …). Vsebuje: kartice, poveži, spomin, poslušaj, sestavi besedo, najdi, igro za dva (na enem telefonu ali vsak s svojim) in slovarček.
 
 Dodatno:
-- **Pametno ponavljanje:** besede, ki jih otrok zgreši, se pojavljajo pogosteje. Ko so vsaj tri takšne, se na začetnem zaslonu pokaže tema **🎯 Vadi**.
+- **Pametno ponavljanje:** besede, ki jih otrok zgreši, se pojavljajo pogosteje. Ko so vsaj tri takšne, se med temami pokaže **🔁 Ponovi**.
 - **Zvočni učinki** ob pravilnem in napačnem odgovoru. Izklopiš jih z gumbom **🔔 / 🔕** na začetnem zaslonu.
 - **Nove besede** so 14 dni označene z ✨ in zbrane v temi **Novo**.
 
 Aplikacija deluje na Android telefonih in iPhonih, se namesti kot prava aplikacija z ikono in deluje tudi brez povezave. Nove besede in posodobitve dobite samodejno.
 
-Kratka navodila za igre so v aplikaciji pod **❓ Navodila** na začetnem zaslonu.
+Na začetnem zaslonu so zgoraj teme, pod njimi zavihka **🙋 Za enega** in **👫 Za dva** z igrami, spodaj pa **Slovarček**, **Navodila** in **Nastavitve**. Vse teme razreda, razvrščene po mesecih, odprete z gumbom **Vse teme**. Kratka navodila za igre so v aplikaciji pod **❓ Navodila**.
 
 ## Namestitev na telefon
 
 Povezava: **https://urbanzb.github.io/brihta/**
+
+Ob prvem zagonu aplikacija vpraša za razred. Povezava z oznako razreda ga izbere sama, na primer **https://urbanzb.github.io/brihta/#1b** za 1.b. Razred zamenjate z gumbom ob imenu Brihta.
 
 **Android:** povezavo odpri v **Chromu** (ali Samsung Internetu). Aplikacija sama ponudi gumb **Namesti**. Če ga ni, odpri meni **⋮** in izberi **Namesti aplikacijo**. Aplikacija se pojavi med ostalimi aplikacijami z imenom **Brihta**.
 
@@ -118,6 +120,17 @@ Nastavitve Firebase niso skrivnost. Bazo varujejo pravila iz 3. koraka.
 ## Stanje objave
 
 V zavihku **Actions** na GitHubu sta dva postopka: **pages build and deployment** (spletna aplikacija, 1 do 2 minuti) in **Zgradi APK** (približno 5 minut). Rumeni krogec pomeni, da postopek še teče, zelena kljukica uspeh, rdeči križec napako.
+
+## Razredi
+
+V **Skrbniški način → 🏫 Razredi** urejaš seznam razredov. Ime lahko spremeniš (naslednje leto 1.a v 2.a), teme ostanejo. Dodaš lahko nov razred ali odstraniš obstoječega. Spremembe objaviš z **Objavi za vse**.
+
+- Vsaka objavljena tema ima v urejevalniku vrstico **Razred** s polji za izbiro. Tema lahko pripada enemu ali več razredom, na primer skupna tema za 1.a in 1.b.
+- Teme brez oznake pripadajo prvemu razredu na seznamu, zato vse dosedanje teme ostanejo v 1.a.
+- Nova tema, ki jo dodaš, privzeto pripada razredu, ki je trenutno izbran v aplikaciji.
+- Staršem posameznega razreda pošlji povezavo z oznako razreda, na primer `…/brihta/#1b`. Oznako (`1a`, `1b` …) vidiš v razdelku Razredi.
+- Lastne besede staršev so vidne v vseh razredih.
+- Statistika uporabe prikazuje tudi število odprtij po razredih.
 
 ## Navodila in novosti
 
