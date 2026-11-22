@@ -150,6 +150,21 @@ code{background:var(--paper);padding:1px 6px;border-radius:6px;font-size:15px}
 .hint{color:var(--soft);font-size:15px;margin:8px 0 12px}
 .ukhint{font-size:14px;color:var(--ink);background:var(--nobg);border-radius:8px;padding:6px 10px;margin:-2px 0 10px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .ukhint .sm{padding:3px 10px;font-size:14px}
+.chg h4{font-size:18px;margin:10px 0 4px}.chg h4 small{font-family:var(--body);font-weight:400;color:var(--soft);font-size:14px}
+.older summary{cursor:pointer;color:var(--sky);font-weight:700;margin-top:10px}
+#helpprev .card{border-width:1.5px}
+.homebtns{display:flex;flex-direction:column;gap:10px}
+.help ol,.help ul{margin:0;padding-left:22px}.help li{margin-bottom:6px}.help p{margin:0}
+.help ul.hl{list-style:none;padding-left:0}.help ul.hl li{padding-left:0}
+.f2lab{display:flex;flex-direction:column;gap:4px;font-size:15px;color:var(--soft);margin:4px 0 12px}
+.f2lab input{font:inherit;font-size:16px;padding:10px;border:2px solid var(--soft);border-radius:10px;background:var(--paper);color:var(--ink)}
+.days{display:flex;align-items:flex-end;gap:3px;height:52px;margin:6px 0 10px}
+.days i{flex:1;background:var(--sky);border-radius:3px 3px 0 0;min-width:3px}
+.sh{font-size:17px;margin:14px 0 6px}
+.srow{display:grid;grid-template-columns:minmax(90px,38%) 1fr auto;gap:8px;align-items:center;font-size:15px;margin-bottom:4px}
+.sbar{background:var(--line);border-radius:6px;height:12px;overflow:hidden}.sbar i{display:block;height:100%;background:var(--sun)}
+.sv{color:var(--soft);white-space:nowrap}
+.hardl{margin:0;padding-left:22px;font-size:15px}.hardl span{color:var(--berry);font-weight:700}
 .ukflag{font-style:normal;font-size:13px;color:var(--berry)}
 details.ed{background:var(--card);border:2.5px solid var(--ink);border-radius:16px;margin-bottom:14px;overflow:hidden}
 details.ed summary{padding:14px 16px;font-family:var(--display);font-weight:800;font-size:20px;cursor:pointer;list-style-position:inside}
@@ -207,7 +222,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <div id="app"><p class="loading">Nalagam …</p></div>
 <script>
 'use strict';
-const APP_VERSION='1.5';
+const APP_VERSION='1.8';
+const FEEDBACK_TO_DEFAULT='uzbmobileapps@gmail.com';
 /* JEZIK: Brihta uporablja izključno BRITANSKO angleščino (zapis in izgovorjava en-GB).
    Ameriške oblike pri vnosu zaznamo s US_UK in predlagamo britansko različico. */
 const US_UK={color:'colour',colors:'colours',colored:'coloured',favorite:'favourite',favorites:'favourites',gray:'grey',center:'centre',theater:'theatre',meter:'metre',liter:'litre',
@@ -226,9 +242,9 @@ const NEW_DAYS=14;
 function lsGet(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}}
 function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}
 
-const S={view:'home',topic:'all',caps:true,stars:0,memPairs:6,duoPairs:6,slo:true,sfx:true,subject:'ang',animal:'🦊',q:'',loaded:false,status:'',edOpen:null,dirty:{my:false,pub:false}};
-(function(){const p=lsGet('besede-prefs',{});if(typeof p.caps==='boolean')S.caps=p.caps;if(p.stars)S.stars=p.stars;if([4,6,8,10].includes(p.memPairs))S.memPairs=p.memPairs;if(typeof p.slo==='boolean')S.slo=p.slo;if(p.animal)S.animal=p.animal;if([4,6,8,10].includes(p.duoPairs))S.duoPairs=p.duoPairs;if(typeof p.sfx==='boolean')S.sfx=p.sfx;if(p.subject)S.subject=p.subject})();
-function savePrefs(){lsSet('besede-prefs',{caps:S.caps,stars:S.stars,memPairs:S.memPairs,slo:S.slo,animal:S.animal,duoPairs:S.duoPairs,sfx:S.sfx,subject:S.subject})}
+const S={view:'home',topic:'all',caps:true,stars:0,memPairs:6,duoPairs:6,slo:true,sfx:true,subject:'ang',stats:true,animal:'🦊',q:'',loaded:false,status:'',edOpen:null,dirty:{my:false,pub:false}};
+(function(){const p=lsGet('besede-prefs',{});if(typeof p.caps==='boolean')S.caps=p.caps;if(p.stars)S.stars=p.stars;if([4,6,8,10].includes(p.memPairs))S.memPairs=p.memPairs;if(typeof p.slo==='boolean')S.slo=p.slo;if(p.animal)S.animal=p.animal;if([4,6,8,10].includes(p.duoPairs))S.duoPairs=p.duoPairs;if(typeof p.sfx==='boolean')S.sfx=p.sfx;if(typeof p.stats==='boolean')S.stats=p.stats;if(p.subject)S.subject=p.subject})();
+function savePrefs(){lsSet('besede-prefs',{caps:S.caps,stars:S.stars,memPairs:S.memPairs,slo:S.slo,animal:S.animal,duoPairs:S.duoPairs,sfx:S.sfx,subject:S.subject,stats:S.stats})}
 
 let PUB=lsGet('besede-cache',null)||{topics:[]};
 let MY=lsGet('moje-besede',null)||{topics:[]};
@@ -253,8 +269,26 @@ function topicsRaw(){return (PUB.topics||[]).concat(MY.topics||[])}
 function topicsAll(){const id=SUBJ().id;return topicsRaw().filter(t=>(t.subject||'ang')===id)}
 
 /* Pametno ponavljanje: za vsako besedo štejemo pravilne (o) in napačne (b) odgovore. */
+/* ANONIMNA STATISTIKA: v Firebase pošiljamo le dnevne seštevke (npr. »spomin začet: 5«),
+   brez oznake uporabnika ali naprave. Lastne besede staršev (teme my-*) se nikoli ne pošiljajo. */
+let STQ=lsGet('stat-vrsta',{});let stTimer=null,stBusy=false,sessionCounted=false;
+function dayKey(){return today()}
+function stKey(k){return encodeURIComponent(String(k)).replace(/\./g,'%2E').slice(0,180)}
+function track(key,n){if(!S.stats||!key)return;const d=dayKey();STQ[d]=STQ[d]||{};STQ[d][key]=(STQ[d][key]||0)+(n||1);lsSet('stat-vrsta',STQ);clearTimeout(stTimer);stTimer=setTimeout(flushStats,15000)}
+function trackMiss(w){if(!w||!w.key||String(w.key).startsWith('my-'))return;track('m/'+stKey(w.key))}
+function platform(){return AB?'apk':isIOS()?'ios':isAndroid()?'android':'splet'}
+function trackOpen(){if(sessionCounted)return;sessionCounted=true;track('open');track('plat_'+platform());track('v_'+APP_VERSION.replace(/\./g,'_'))}
+async function flushStats(){
+  if(stBusy||!S.stats||!navigator.onLine||!duoReady())return;const days=Object.keys(STQ);if(!days.length)return;
+  stBusy=true;const snap=JSON.parse(JSON.stringify(STQ));
+  try{const fb=await fbInit();const upd={};
+    for(const d of days)for(const k of Object.keys(snap[d]))upd['stats/'+d+'/'+k]=fb.inc(snap[d][k]);
+    await fb.update('/',upd);
+    for(const d of days){for(const k of Object.keys(snap[d])){STQ[d][k]-=snap[d][k];if(STQ[d][k]<=0)delete STQ[d][k]}if(!Object.keys(STQ[d]).length)delete STQ[d]}
+    lsSet('stat-vrsta',STQ)}
+  catch(e){}finally{stBusy=false}}
 let STATS=lsGet('besede-stat',{});
-function stat(w,ok){if(!w||!w.key)return;const x=STATS[w.key]||{o:0,b:0};if(ok)x.o++;else x.b++;x.t=Date.now();STATS[w.key]=x;lsSet('besede-stat',STATS)}
+function stat(w,ok){if(!w||!w.key)return;if(!ok)trackMiss(w);const x=STATS[w.key]||{o:0,b:0};if(ok)x.o++;else x.b++;x.t=Date.now();STATS[w.key]=x;lsSet('besede-stat',STATS)}
 function isHard(w){const x=STATS[w.key];return !!x&&x.b>0&&x.b>=x.o}
 function weight(w){const x=STATS[w.key];if(!x)return 1.5;return Math.min(6,Math.max(0.4,1+2*x.b-0.6*x.o))}
 function wpick(list,n){const a=list.slice(),out=[];while(out.length<n&&a.length){const tot=a.reduce((t,w)=>t+weight(w),0);let r=Math.random()*tot,i=0;for(;i<a.length-1;i++){r-=weight(a[i]);if(r<=0)break}out.push(a.splice(i,1)[0])}return out}
@@ -294,6 +328,10 @@ window.addEventListener('appinstalled',()=>{deferredPrompt=null;if(S.view==='hom
 const isStandalone=()=>!!AB||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
 const isIOS=()=>/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const isAndroid=()=>/android/i.test(navigator.userAgent);
+function helpBanner(){
+  if(lsGet('videl-navodila',false)){const lc=latestChange(),seen=lsGet('videl-novosti','');
+    if(lc&&(!seen||vcmp(lc.v,seen)>0))return `<div class="banner"><span>🆕 Novo v različici ${h(lc.v)}</span><button class="sm press" data-act="novosti">Poglej</button><button class="x" data-act="hidenews" aria-label="Skrij">×</button></div>`;
+    return ''}return `<div class="banner"><span>👋 Prvič tukaj? Poglej, kako se igra.</span><button class="sm press" data-act="nav" data-v="pomoc">Navodila</button><button class="x" data-act="hidehelp" aria-label="Skrij">×</button></div>`}
 function installBanner(){
   if(isStandalone()||lsGet('skrij-namestitev',false))return '';
   const x=`<button class="x" data-act="hideinst" aria-label="Skrij">×</button>`;
@@ -383,6 +421,7 @@ async function ghPut(path,text,msg){
 const GAMES={kartice:{ico:'🃏',name:'Kartice',desc:'Poglej, poslušaj in obrni.',need:1},povezi:{ico:'🔗',name:'Poveži',desc:'Angleška beseda najde slovenski par.',need:3},spomin:{ico:'🧠',name:'Spomin',desc:'Odkrivaj kartice in poišči pare.',need:3},kviz:{ico:'👂',name:'Poslušaj',desc:'Slišiš besedo, izbereš sliko.',need:4},crke:{ico:'🔤',name:'Sestavi besedo',desc:'Iz premešanih črk sestavi angleško besedo.',need:3},najdi:{ico:'🔍',name:'Najdi',desc:'Zapomni si, kje je katera slika.',need:6}};
 let G={};
 function star(){S.stars++;savePrefs();setTimeout(()=>sfx('win'),350)}
+function gameDone(g){track('gd_'+g);clearTimeout(stTimer);stTimer=setTimeout(flushStats,4000)}
 let actx=null;
 function sfx(kind){if(!S.sfx)return;try{actx=actx||new(window.AudioContext||window.webkitAudioContext)();if(actx.state==='suspended')actx.resume();const now=actx.currentTime+0.02;
   const seq={ok:[[660,0,.1],[880,.09,.16]],bad:[[247,0,.12],[196,.11,.2]],win:[[523,0,.11],[659,.11,.11],[784,.22,.11],[1047,.33,.3]]}[kind]||[];
@@ -396,7 +435,7 @@ function render(){
   switch(S.view){
     case 'home':return renderHome();case 'kartice':return renderFlash();case 'povezi':return renderMatch();case 'spomin':return renderMem();
     case 'kviz':return renderQuiz();case 'crke':return renderSpell();case 'najdi':return renderFind();case 'few':return renderFew();
-    case 'slovar':return renderDict();case 'duo1':return renderLocal();case 'duo':return renderDuo();case 'settings':return renderSettings();case 'my':return renderMy();case 'admin':return renderAdmin();
+    case 'slovar':return renderDict();case 'pomoc':return renderHelp();case 'mnenje':return renderFeedback();case 'duo1':return renderLocal();case 'duo':return renderDuo();case 'settings':return renderSettings();case 'my':return renderMy();case 'admin':return renderAdmin();
   }
 }
 function renderHome(){
@@ -411,10 +450,10 @@ function renderHome(){
   chips+=ts.map(t=>`<button class="chip ${S.topic===t.id?'on':''}" style="--c:${h(t.color)}" data-act="topic" data-id="${h(t.id)}">${h(t.icon)} ${h(t.name)}${t.words.some(isNew)?'<i class="dot" title="nove besede"></i>':''}<small>${t.words.length}</small></button>`).join('');
   const games=Object.entries(GAMES).map(([k,g])=>`<button class="game press" data-act="game" data-g="${k}"><span class="ico">${g.ico}</span><b>${g.name}</b><span>${g.desc}</span></button>`).join('');
   app.innerHTML=`<header class="hero"><div><h1>Brihta</h1><p>Angleške besede. Izberi temo in igro.</p></div><div class="tools"><span class="stars" title="Zbrane zvezdice">⭐ ${S.stars}</span><button class="pill press" data-act="caps" title="Velike ali male črke">${S.caps?'ABC':'abc'}</button><button class="pill press ${S.slo?'':'off'}" data-act="slo" aria-pressed="${S.slo}" title="Izgovorjava slovenskih besed">🔊 SLO</button><button class="pill press ${S.sfx?'':'off'}" data-act="sfx" aria-pressed="${S.sfx}" aria-label="Zvočni učinki" title="Zvočni učinki">${S.sfx?'🔔':'🔕'}</button></div></header>
-  ${installBanner()}${gbNote()}${slNote()}
+  ${installBanner()}${helpBanner()}${gbNote()}${slNote()}
   ${!ts.length&&!S.loaded?`<p class="loading">Nalagam besede …</p>`:`<h3 class="label">Tema</h3><div class="chips">${chips}</div><div class="games">${games}<button class="game wide press" data-act="duo"><span class="ico">👫</span><span class="txt"><b>Igra za dva</b><span>Spomin s prijateljem, na enem telefonu ali vsak s svojega.</span></span></button></div>
   <button class="dict-btn press" data-act="nav" data-v="slovar"><span class="ico">📖</span><span><b>Slovarček</b><span class="sub2">Vse besede na enem mestu, z izgovorjavo.</span></span></button>`}
-  <button class="ghost" data-act="nav" data-v="settings">⚙️ Moje besede in nastavitve</button>`;
+  <div class="homebtns"><button class="ghost" data-act="nav" data-v="pomoc">❓ Navodila</button><button class="ghost" data-act="nav" data-v="settings">⚙️ Moje besede in nastavitve</button></div>`;
 }
 function renderFew(){app.innerHTML=bar(GAMES[G.g].name)+`<div class="msg"><p>Za to igro potrebuješ vsaj ${GAMES[G.g].need} besede z različnimi slikicami. Izberi drugo temo ali dodaj nove besede.</p><button class="big press" data-act="nav" data-v="my">Dodaj besede</button></div>`}
 function start(g){
@@ -427,7 +466,7 @@ function start(g){
   if(g==='kviz'){G.p=p;G.total=Math.min(8,p.length);G.n=0;G.score=0;nextQ()}
   if(g==='crke'){G.list=wpick(p,6);G.n=0;G.score=0;newSpell()}
   if(g==='najdi'){G.items=wpick(p,6);G.order=shuffle(G.items);G.k=0;G.found=new Set();G.wrong=null;G.phase='look'}
-  S.view=g;render();
+  S.view=g;track('gs_'+g);track('t_'+stKey(S.topic));render();
 }
 function renderFlash(){
   const w=G.list[G.i];
@@ -497,6 +536,77 @@ function renderFind(){
 
 /* ---------- slovarček ---------- */
 function fold(s){return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
+/* NAVODILA: preprost zapis, ki ga ureja skrbnik (objavi se v besede.json kot "help").
+   # Naslov  → nov razdelek,  - besedilo → alineja,  **krepko** → krepko, ostale vrstice so odstavki. */
+const DEFAULT_HELP=`# 🚀 Kako začneš
+- Zgoraj izberi **temo**, na primer Feelings ali Transportation. »📚 Vse« pomeni vse besede skupaj.
+- Tapni **igro**.
+- Za vsako končano igro dobiš **zvezdico ⭐**. Koliko jih imaš, vidiš zgoraj desno.
+
+# 🎮 Igre
+- **🃏 Kartice:** poglej sliko in poslušaj besedo. Tapni kartico, da vidiš slovensko besedo.
+- **🔗 Poveži:** tapni angleško besedo na levi, nato njen slovenski par na desni.
+- **🧠 Spomin:** odkrivaj po dve kartici in poišči angleško besedo ter njen slovenski par. Število parov izbereš zgoraj.
+- **👂 Poslušaj:** poslušaj besedo in tapni pravo sliko. Z gumbom 🔊 jo slišiš še enkrat.
+- **🔤 Sestavi besedo:** iz premešanih črk sestavi angleško besedo. Če ne gre, tapni 💡 Pomoč.
+- **🔍 Najdi:** zapomni si, kje je katera slika. Ko se kartice obrnejo, poišči besedo, ki jo slišiš.
+
+# 👫 Igra za dva
+- **Na enem telefonu:** vsak izbere svojo živalco. Ko aplikacija napiše »Podaj telefon!«, je na vrsti drugi.
+- **Vsak s svojim telefonom:** eden tapne »Ustvari igro« in prijatelju pove kodo. Drugi kodo vpiše in tapne »Pridruži se«.
+- Kdor najde par, je še enkrat na vrsti. Zmaga tisti, ki najde več parov.
+
+# 📖 Slovarček
+Vse besede na enem mestu. Išči angleško ali slovensko in tapni 🔊, da besedo slišiš.
+
+# ✨ Posebne teme
+- **✨ Novo:** besede, ki so bile dodane v zadnjih 14 dneh.
+- **🎯 Vadi:** besede, ki so ti delale težave. Ko jih večkrat pravilno rešiš, izginejo.
+
+# 🔘 Gumbi zgoraj
+- **ABC / abc:** velike ali male tiskane črke.
+- **🔊 SLO:** vklopi ali izklopi izgovorjavo slovenskih besed.
+- **🔔 / 🔕:** vklopi ali izklopi zvočne učinke.
+
+# 📊 Anonimna statistika
+Brihta pošilja le skupne dnevne seštevke, brez imen in brez podatkov o napravi:
+- kolikokrat je bila aplikacija odprta in na kateri različici,
+- katere igre so bile začete in katere končane,
+- katere teme so bile izbrane,
+- katere besede iz šole so bile zgrešene.
+Seštevki pomagajo pri odločitvah, katere igre obdržati, katere izboljšati ali zamenjati in katere besede potrebujejo več vaje. Lastne besede se nikoli ne pošljejo. Statistiko izklopiš v **⚙️ Nastavitve**.`;
+const DEFAULT_CHANGES=[
+ {v:'1.8',t:'- Navodila ureja skrbnik.\n- Novosti po različicah so zapisane na koncu navodil.'},
+ {v:'1.7',t:'- Navodila za uporabo v aplikaciji.'},
+ {v:'1.6',t:'- Pošiljanje mnenja.\n- Anonimna statistika uporabe, ki jo lahko izklopiš.'},
+ {v:'1.5',t:'- Samo britanska angleščina: opozorilo pri ameriških oblikah in pri manjkajočem britanskem glasu.'},
+ {v:'1.4',t:'- Zvočni učinki, ki jih lahko izklopiš.\n- Pametno ponavljanje in tema 🎯 Vadi.\n- Igra za dva na enem telefonu.\n- Nova ikona: sovica Brihta.'},
+ {v:'1.3',t:'- Novo ime Brihta.\n- Nova igra Sestavi besedo.\n- Deljenje Android aplikacije (APK).'},
+ {v:'1.2',t:'- Android aplikacija (APK).'},
+ {v:'1.1',t:'- Slovarček in igra za dva.'},
+ {v:'1.0',t:'- Prva različica.'}];
+function helpText(){return typeof PUB.help==='string'&&PUB.help.trim()?PUB.help:DEFAULT_HELP}
+function changes(){return Array.isArray(PUB.changes)&&PUB.changes.length?PUB.changes:DEFAULT_CHANGES}
+function vcmp(a,b){const x=String(a).split('.').map(Number),y=String(b).split('.').map(Number);for(let i=0;i<Math.max(x.length,y.length);i++){const d=(x[i]||0)-(y[i]||0);if(d)return d}return 0}
+function sortedChanges(list){return list.slice().sort((a,b)=>vcmp(b.v,a.v))}
+function inlineMd(t){return h(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')}
+function mdBlocks(text){let out='',list=false;const close=()=>{if(list){out+='</ul>';list=false}};
+  for(const raw of String(text).split('\n')){const l=raw.trim();if(!l){close();continue}
+    if(/^[-•*]\s+/.test(l)){if(!list){out+='<ul class="hl">';list=true}out+='<li>'+inlineMd(l.replace(/^[-•*]\s+/,''))+'</li>'}
+    else{close();out+='<p>'+inlineMd(l)+'</p>'}}
+  close();return out}
+function mdSections(text){const secs=[];let cur=null;
+  for(const raw of String(text).split('\n')){const m=raw.match(/^#\s+(.+)$/);if(m){cur={title:m[1].trim(),body:''};secs.push(cur)}else{if(!cur){cur={title:'',body:''};secs.push(cur)}cur.body+=raw+'\n'}}
+  return secs.filter(x=>x.title||x.body.trim()).map(x=>`<section class="card help">${x.title?`<h3>${inlineMd(x.title)}</h3>`:''}${mdBlocks(x.body)}</section>`).join('')}
+function latestChange(){const c=sortedChanges(changes());return c[0]||null}
+function renderHelp(){
+  lsSet('videl-navodila',true);const lc=latestChange();if(lc)lsSet('videl-novosti',lc.v);
+  const ch=sortedChanges(changes()),first=ch.slice(0,3),rest=ch.slice(3);
+  const one=c=>`<div class="chg"><h4>Različica ${h(c.v)}${c.d?` <small>${h(c.d)}</small>`:''}</h4>${mdBlocks(c.t||'')}</div>`;
+  app.innerHTML=bar('Navodila')+mdSections(helpText())+
+   `<section class="card help" id="novosti"><h3>🆕 Novosti</h3>${first.map(one).join('')}${rest.length?`<details class="older"><summary>Starejše različice</summary>${rest.map(one).join('')}</details>`:''}</section>
+   <div class="center"><button class="big press" data-act="nav" data-v="home">Začni igrati</button></div>`;
+}
 function renderDict(){app.innerHTML=bar('Slovarček')+`<div class="search"><input type="search" data-dq value="${h(S.q)}" placeholder="Išči angleško ali slovensko …" aria-label="Iskanje" autocomplete="off"></div><div id="dlist"></div>`;dictList()}
 function dictList(){const el=document.getElementById('dlist');if(!el)return;const q=fold(S.q).trim();let out='';
   for(const t of topicsAll()){const ws=t.words.filter(w=>!q||fold(w.en).includes(q)||fold(w.sl).includes(q));if(!ws.length)continue;
@@ -513,7 +623,7 @@ async function fbConnect(cfg,name){
   const base='https://www.gstatic.com/firebasejs/'+FBV+'/';
   const [a,au,d]=await Promise.all([import(base+'firebase-app.js'),import(base+'firebase-auth.js'),import(base+'firebase-database.js')]);
   const app=a.getApps().find(x=>x.name===name)||a.initializeApp(cfg,name);await au.signInAnonymously(au.getAuth(app));const db=d.getDatabase(app);
-  return{ref:p=>d.ref(db,p),get:d.get,set:d.set,remove:d.remove,onValue:d.onValue,tx:d.runTransaction,onDisconnect:d.onDisconnect};
+  return{ref:p=>d.ref(db,p),get:d.get,set:d.set,remove:d.remove,onValue:d.onValue,tx:d.runTransaction,onDisconnect:d.onDisconnect,update:(p,o)=>d.update(d.ref(db,p),o),inc:n=>d.increment(n)};
 }
 async function fbInit(){if(!FB)FB=await fbConnect(PUB.firebase,'besede');return FB}
 function duoReady(){return !!(window.__FAKE_FB||(PUB.firebase&&PUB.firebase.databaseURL&&PUB.firebase.apiKey))}
@@ -537,7 +647,7 @@ async function duoCreate(){
     for(let n=0;n<8;n++){const code=String(1000+Math.floor(Math.random()*9000)),r=fb.ref('rooms/'+code),room=newRoom();
       const res=await fb.tx(r,cur=>{if(cur&&Date.now()-(cur.created||0)<3*3600e3)return;return room});
       const made=res&&res.snapshot&&res.snapshot.val();
-      if(res.committed&&made&&made.created===room.created){D.code=code;D.role='h';D.ref=r;fb.onDisconnect(r).remove();duoListen();D.phase='wait';return renderIfDuo()}}
+      if(res.committed&&made&&made.created===room.created){track('gs_duo');track('t_'+stKey(S.topic));D.code=code;D.role='h';D.ref=r;fb.onDisconnect(r).remove();duoListen();D.phase='wait';return renderIfDuo()}}
     throw new Error('koda')}catch(e){duoFail(e)}
 }
 async function duoJoin(){
@@ -560,7 +670,7 @@ function duoListen(){return new Promise(resolve=>{let first=true;
     if(v.guestGone&&D.role==='h'){D.phase='left';D.err='Prijatelj je zapustil igro.';return renderIfDuo()}
     if(v.state==='play'||v.state==='done')D.phase=v.state;
     if(v.state==='play')D.starred=false;
-    if(v.state==='done'&&!D.starred){D.starred=true;star()}
+    if(v.state==='done'&&!D.starred){D.starred=true;star();gameDone('duo')}
     const mc=Object.keys(v.matched||{}).length,pmc=prev?Object.keys(prev.matched||{}).length:mc;if(mc>pmc)sfx('ok');
     const o=v.open||[],po=(prev&&prev.open)||[];
     if(o.length>po.length){const c=v.cards[o[o.length-1]];if(c){if(c.t==='en')say(c.en);else saySl(c.sl)}}
@@ -582,7 +692,7 @@ function duoLeave(){if(!D)return;const r=D.ref,role=D.role,code=D.code,gone=D.go
 function startLocal(){const p=uniqPics(pool());if(p.length<3){D.err='Za igro potrebuješ vsaj 3 besede v izbrani temi.';return render()}
   const pick=wpick(p,Math.min(S.duoPairs,p.length));
   G={g:'duo1',a:[D.animal,D.animal2],cards:shuffle(pick.flatMap(w=>[{w,t:'en'},{w,t:'sl'}])),open:[],who:{},turn:Math.random()<.5?0:1,score:[0,0],lock:false,done:false,pass:false};
-  S.view='duo1';render();scrollTo(0,0)}
+  S.view='duo1';track('gs_duo1');track('t_'+stKey(S.topic));render();scrollTo(0,0)}
 function renderLocal(){
   const head=bar('Igra na enem telefonu','duo'),t=G.turn;
   const score=`<div class="score"><span class="pl ${!G.done&&t===0?'turn':''}">${h(G.a[0])} ${G.score[0]}</span>:<span class="pl ${!G.done&&t===1?'turn':''}">${G.score[1]} ${h(G.a[1])}</span></div>`;
@@ -632,11 +742,40 @@ function renderSettings(){
   app.innerHTML=bar('Nastavitve')+`
   <section class="card"><h3>✏️ Moje besede</h3><p class="instr">Besede, ki jih dodaš tukaj, so samo na tej napravi. Zdaj imaš ${besed(myN)}. Ob menjavi telefona jih izvozi in na novem telefonu uvozi.</p>
    <div class="btns"><button class="sm press" data-act="nav" data-v="my">Uredi moje besede</button><button class="sm press" data-act="export" ${MY.topics.length?'':'disabled'}>⬇️ Izvozi</button><label class="sm press filebtn">⬆️ Uvozi<input type="file" accept=".json,application/json" data-import hidden></label></div></section>
+  <section class="card"><h3>💬 Pošlji mnenje</h3><p class="instr">Povejte nam, kaj vam je všeč in kaj bi izboljšali.</p><button class="sm press" data-act="nav" data-v="mnenje">Pošlji mnenje</button></section>
+  <section class="card"><h3>📊 Anonimna statistika</h3><p class="instr">Brihta pošilja le skupne seštevke, na primer katere igre se igrajo in katere besede so težke. Brez imen, brez podatkov o napravi in brez lastnih besed.</p><button class="sm press" data-act="stattoggle" aria-pressed="${S.stats}">${S.stats?'✅ Vklopljeno':'⬜ Izklopljeno'}</button></section>
   <section class="card"><h3>🔗 Deli aplikacijo</h3><p class="instr">Pošlji povezavo drugim staršem iz razreda. Spletna povezava deluje na vseh telefonih. APK je dodatna možnost samo za Android, če se nameščena aplikacija odpira v brskalniku.</p><div class="btns"><button class="sm press" data-act="share">🌐 Deli povezavo</button><button class="sm press" data-act="shareapk">🤖 Deli APK</button></div></section>
   ${isAndroid()&&!AB?`<section class="card"><h3>🤖 Android aplikacija (APK)</h3><p class="instr">Če se nameščena aplikacija na tvojem telefonu odpira v brskalniku, namesti to različico. Telefon bo vprašal za dovoljenje za namestitev.</p><a class="sm press linkbtn" href="${h(apkUrl())}">⬇️ Prenesi APK</a></section>`:''}
   <section class="card"><h3>🔑 Za skrbnika</h3><p class="instr">Objava novih besed za vse uporabnike. Potrebuješ GitHub žeton.</p><button class="sm press" data-act="nav" data-v="admin">Skrbniški način</button></section>
   ${S.status?`<p class="status" role="status">${h(S.status)}</p>`:''}
   <p class="meta">Besede posodobljene: ${h(PUB.updated||'–')}. Različica ${APP_VERSION}${AB?' (APK '+(()=>{try{return AB.versionCode()}catch(e){return '?'}})()+')':''}.</p>`;
+}
+function feedbackTo(){return (PUB.feedbackTo||FEEDBACK_TO_DEFAULT).trim()}
+let FBK={mood:'',text:'',reply:'',state:'',err:''};
+function renderFeedback(){
+  const moods=[['😍','Odlično'],['🙂','Dobro'],['😐','Tako tako'],['🙁','Slabo']];
+  if(FBK.state==='sent'){app.innerHTML=bar('Pošlji mnenje','settings')+`<div class="msg"><div class="win">Hvala!</div><p>Vaše mnenje je poslano in nam pomaga, da je Brihta še boljša.</p><button class="big press" data-act="nav" data-v="settings">Nazaj</button></div>`;return}
+  app.innerHTML=bar('Pošlji mnenje','settings')+`<section class="card"><h3>Kako vam je všeč Brihta?</h3><div class="animals">${moods.map(([m,l])=>`<button class="animal press ${FBK.mood===m?'on':''}" data-act="fbmood" data-m="${m}" aria-label="${l}" aria-pressed="${FBK.mood===m}">${m}</button>`).join('')}</div></section>
+  <section class="card"><h3>Vaše mnenje</h3><p class="instr">Kaj vam je všeč, kaj bi izboljšali, katera igra ali beseda manjka? Prosimo, ne navajajte imena otroka.</p>
+   <textarea data-fbk="text" rows="6" maxlength="3000" placeholder="Napišite mnenje …">${h(FBK.text)}</textarea>
+   <label class="f2lab">Če želite odgovor, vpišite svoj e-poštni naslov (neobvezno)<input type="email" data-fbk="reply" value="${h(FBK.reply)}" autocomplete="email" inputmode="email"></label>
+   ${FBK.err?`<p class="note">${h(FBK.err)}</p>`:''}
+   <div class="btns"><button class="big press" data-act="fbsend" ${FBK.state==='sending'?'disabled':''}>${FBK.state==='sending'?'Pošiljam …':'Pošlji mnenje'}</button></div></section>`;
+}
+async function sendFeedback(){
+  const text=FBK.text.trim();if(!text&&!FBK.mood){FBK.err='Izberite oceno ali napišite nekaj besed.';return render()}
+  if(!navigator.onLine){FBK.err='Telefon ni povezan z internetom. Poskusite znova pozneje.';return render()}
+  FBK.state='sending';FBK.err='';render();
+  const body={_subject:'Brihta: novo mnenje '+(FBK.mood||''),_template:'table',_captcha:'false',_honey:'',
+    Ocena:FBK.mood||'–',Mnenje:text||'–',Odgovor_na:FBK.reply.trim()||'–',Razlicica:APP_VERSION+(AB?' (APK '+(()=>{try{return AB.versionCode()}catch(e){return '?'}})()+')':''),Naprava:platform(),Datum:today()};
+  if(FBK.reply.trim())body._replyto=FBK.reply.trim();
+  try{const r=await fetch('https://formsubmit.co/ajax/'+feedbackTo().replace(/[^\w@.+-]/g,''),{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(body)});
+    const j=await r.json().catch(()=>({}));
+    if(r.ok&&(j.success===true||j.success==='true')){FBK={mood:'',text:'',reply:'',state:'sent',err:''}}
+    else if(/activat/i.test(j.message||'')){FBK.state='';FBK.err='Pošiljanje mnenj še ni aktivirano. Skrbnik mora potrditi e-poštno sporočilo storitve FormSubmit.'}
+    else throw new Error(j.message||r.status)}
+  catch(e){FBK.state='';FBK.err='Mnenja ni bilo mogoče poslati. Poskusite znova pozneje.'}
+  render();
 }
 function apkUrl(){return `https://github.com/${CFG.owner}/${CFG.repo}/releases/download/apk/Brihta.apk`}
 async function shareApk(){const url=apkUrl(),text='Brihta za Android (APK). Odpri povezavo na Android telefonu in dovoli namestitev:';
@@ -696,7 +835,21 @@ function renderAdmin(){
    <label class="wide">Prilepi firebaseConfig iz Firebase konzole<textarea data-fbtxt rows="5" placeholder="const firebaseConfig = { apiKey: …">${h(S.fbtxt||'')}</textarea></label>
    <label class="wide">Database URL<input data-fbdb value="${h(S.fbdb!=null?S.fbdb:(fbc.databaseURL||''))}" placeholder="https://…firebasedatabase.app" autocapitalize="off" autocomplete="off"></label>
    <div class="actions"><button class="sm press" data-act="fbset">Uporabi nastavitve</button>${fbc.databaseURL?'<button class="sm press" data-act="fbtest">Preizkusi povezavo</button><button class="danger" data-act="fbclear">Izklopi igro za dva</button>':''}</div></div></details>`;
-  app.innerHTML=bar('Skrbniški način','settings')+cfg+fbSec+`<p class="instr">Spremembe tukaj po objavi vidijo vsi uporabniki.</p>`+editorBody('pub');
+  const fbtoSec=`<details class="ed" ${S.edOpen==='fbto'?'open':''} data-id="fbto"><summary>✉️ Mnenja<small>${ADM.feedbackTo?'vzdevek nastavljen':'privzeti naslov'}</small></summary><div class="f2">
+   <label class="wide">Naslov ali vzdevek FormSubmit<input data-fbto value="${h(S.fbto!=null?S.fbto:(ADM.feedbackTo||FEEDBACK_TO_DEFAULT))}" autocapitalize="off" autocomplete="off"></label>
+   <div class="actions"><button class="sm press" data-act="fbtoset">Uporabi</button></div></div></details>`;
+  const stSec=`<details class="ed" ${S.edOpen==='stat'?'open':''} data-id="stat"><summary>📊 Statistika uporabe<small>anonimni seštevki</small></summary><div style="padding:12px 16px 16px">${renderStatsBody()}</div></details>`;
+  const helpSec=`<details class="ed" ${S.edOpen==='help'?'open':''} data-id="help"><summary>❓ Navodila<small>${ADM.help?'prilagojena':'privzeta'}</small></summary><div class="f2">
+   <p class="hint wide"><b># Naslov</b> začne nov razdelek, <b>- besedilo</b> je alineja, <b>**besedilo**</b> je krepko. Ostale vrstice so odstavki.</p>
+   <label class="wide">Besedilo navodil<textarea data-helptxt rows="16">${h(S.helptxt!=null?S.helptxt:(ADM.help||DEFAULT_HELP))}</textarea></label>
+   <div class="actions"><button class="sm press" data-act="helpset">Uporabi</button><button class="sm press" data-act="helpview">Predogled</button><button class="danger" data-act="helpreset">Ponastavi na privzeta</button></div></div></details>`;
+  const chList=sortedChanges(Array.isArray(ADM.changes)&&ADM.changes.length?ADM.changes:DEFAULT_CHANGES);
+  const chSec=`<details class="ed" ${S.edOpen==='chg'?'open':''} data-id="chg"><summary>🆕 Novosti po različicah<small>zadnja: ${h((chList[0]||{}).v||'–')}</small></summary><div class="f2">
+   <label>Različica<input data-chv value="${h(S.chv!=null?S.chv:APP_VERSION)}" inputmode="decimal"></label><label>Datum<input data-chd value="${h(S.chd!=null?S.chd:today())}"></label>
+   <label class="wide">Kaj je novega (vsaka sprememba v svoji vrstici, začni z »- «)<textarea data-cht rows="4" placeholder="- Nova igra …">${h(S.cht||'')}</textarea></label>
+   <div class="actions"><button class="sm press" data-act="chadd">Dodaj ali posodobi</button></div></div>
+   <ul class="wl">${chList.map((c,i)=>`<li><span class="t"><b>${h(c.v)}</b>${c.d?` <span>${h(c.d)}</span>`:''}<br><span>${h((c.t||'').replace(/^- /gm,'• ').replace(/\n/g,' '))}</span></span><button class="sm press" data-act="chedit" data-i="${i}">Uredi</button><button class="x" data-act="chdel" data-i="${i}" aria-label="Izbriši">×</button></li>`).join('')}</ul></details>`;
+  app.innerHTML=bar('Skrbniški način','settings')+cfg+fbSec+fbtoSec+stSec+helpSec+chSec+`<p class="instr">Spremembe tukaj po objavi vidijo vsi uporabniki.</p>`+editorBody('pub');
 }
 async function saveDS(k){
   if(k==='my'){S.status=lsSet('moje-besede',MY)?'Shranjeno na tej napravi.':'Shranjevanje ni uspelo.';S.dirty.my=false;return render()}
@@ -710,6 +863,33 @@ async function cfgSave(){
   try{const r=await fetch(ghRepoUrl()+'?t='+Date.now(),{headers:ghHeaders(),cache:'no-store'});if(!r.ok)throw await ghErr(r);S.status='Povezava deluje.';ADM=null;await loadPub()}
   catch(e){S.status='Povezava ne deluje: '+(e.message||e)}
   render();
+}
+function odprtij(n){const m=n%100;return n+' '+(m===1?'odprtje':m===2?'odprtji':(m===3||m===4)?'odprtja':'odprtij')}
+let STDATA=null,STERR='';
+async function loadStats(){S.edOpen='stat';STERR='Nalagam …';STDATA=null;render();
+  try{await flushStats();const fb=await fbInit();const v=(await fb.get(fb.ref('stats'))).val()||{};STDATA=v;STERR=''}catch(e){STERR='Statistike ni bilo mogoče naložiti: '+fbErrText(e)}render()}
+function renderStatsBody(){
+  if(!duoReady())return `<p class="instr">Statistika potrebuje nastavljen Firebase.</p>`;
+  const btn=`<div class="btns"><button class="sm press" data-act="statload">${STDATA?'Osveži':'Naloži statistiko'}</button>${[7,30,90].map(n=>`<button class="chip ${(S.statDays||7)===n?'on':''}" style="--c:#FFC93C" data-act="statdays" data-n="${n}">${n} dni</button>`).join('')}</div>`;
+  if(!STDATA)return btn+(STERR?`<p class="status">${h(STERR)}</p>`:'');
+  const N=S.statDays||7,days=[];for(let i=N-1;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'))}
+  const sum={},miss={};for(const d of days){const o=STDATA[d]||{};for(const k in o){if(k==='m'){for(const w in o.m)miss[w]=(miss[w]||0)+o.m[w]}else sum[k]=(sum[k]||0)+o[k]}}
+  const opens=days.map(d=>(STDATA[d]||{}).open||0),maxO=Math.max(1,...opens),active=opens.filter(x=>x>0).length;
+  const gname={kartice:'Kartice',povezi:'Poveži',spomin:'Spomin',kviz:'Poslušaj',crke:'Sestavi besedo',najdi:'Najdi',duo1:'Za dva, en telefon',duo:'Za dva, dva telefona'};
+  const games=Object.keys(gname).map(g=>[g,sum['gs_'+g]||0,sum['gd_'+g]||0]).filter(x=>x[1]).sort((a,b)=>b[1]-a[1]);const maxG=Math.max(1,...games.map(x=>x[1]));
+  const allT=topicsRaw(),tname=id=>id==='all'?'📚 Vse':id==='novo'?'✨ Novo':id==='vadi'?'🎯 Vadi':((allT.find(t=>t.id===id)||{}).name||id);
+  const topics=Object.keys(sum).filter(k=>k.startsWith('t_')).map(k=>[decodeURIComponent(k.slice(2)),sum[k]]).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const wordOf=key=>{const[tid,...rest]=key.split('|');const en=rest.join('|');const t=allT.find(x=>x.id===tid);const w=t&&t.words.find(x=>x.en===en);return w?`${w.pic} ${w.en} = ${w.sl}`:en};
+  const hard=Object.keys(miss).map(k=>[decodeURIComponent(k),miss[k]]).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const pl=Object.keys(sum).filter(k=>k.startsWith('plat_')).map(k=>`${k.slice(5)}: ${sum[k]}`).join(', ')||'–';
+  const vv=Object.keys(sum).filter(k=>k.startsWith('v_')).map(k=>`${k.slice(2).replace(/_/g,'.')}: ${sum[k]}`).join(', ')||'–';
+  const barRow=(l,v,max,extra)=>`<div class="srow"><span class="sl">${h(l)}</span><span class="sbar"><i style="width:${Math.round(v/max*100)}%"></i></span><span class="sv">${v}${extra||''}</span></div>`;
+  return btn+`<p class="instr" style="margin-top:12px">Zadnjih ${N} dni: <b>${odprtij(sum.open||0)}</b> aplikacije, uporaba v <b>${active}</b> od ${N} dni.</p>
+   <div class="days">${opens.map((o,i)=>`<i title="${days[i]}: ${o}" style="height:${Math.max(4,Math.round(o/maxO*48))}px"></i>`).join('')}</div>
+   <h4 class="sh">Igre (začete, v oklepaju končane)</h4>${games.length?games.map(([g,a,b])=>barRow(gname[g],a,maxG,` (${b})`)).join(''):'<p class="instr">Ni podatkov.</p>'}
+   <h4 class="sh">Teme</h4>${topics.length?topics.map(([t,v])=>barRow(tname(t),v,topics[0][1])).join(''):'<p class="instr">Ni podatkov.</p>'}
+   <h4 class="sh">Najtežje besede</h4>${hard.length?`<ol class="hardl">${hard.map(([k,v])=>`<li>${h(wordOf(k))} <span>${v}×</span></li>`).join('')}</ol>`:'<p class="instr">Ni podatkov.</p>'}
+   <p class="instr">Naprave: ${h(pl)}<br>Različice: ${h(vv)}</p>`;
 }
 function parseFbCfg(t){const o={};for(const k of ['apiKey','authDomain','databaseURL','projectId','storageBucket','messagingSenderId','appId']){const m=String(t||'').match(new RegExp(k+'["\']?\\s*:\\s*["\']([^"\']+)["\']'));if(m)o[k]=m[1].trim()}return o}
 async function fbTest(){S.edOpen='fb';S.status='Preizkušam povezavo …';render();
@@ -730,7 +910,7 @@ function act(a,b){
   case 'lagain':startLocal();break;
   case 'lflip':{if(G.done||G.lock||G.open.includes(i)||G.who[G.cards[i].w.key]!==undefined)break;G.pass=false;G.open.push(i);const c=G.cards[i];if(c.t==='en')say(c.w.en);else saySl(c.w.sl);
     if(G.open.length===2){const[x,y]=G.open.map(j=>G.cards[j]);
-      if(x.w.key===y.w.key){G.who[x.w.key]=G.turn;G.score[G.turn]++;G.open=[];sfx('ok');if(Object.keys(G.who).length===G.cards.length/2){G.done=true;star()}}
+      if(x.w.key===y.w.key){G.who[x.w.key]=G.turn;G.score[G.turn]++;G.open=[];sfx('ok');if(Object.keys(G.who).length===G.cards.length/2){G.done=true;star();gameDone('duo1')}}
       else{G.lock=true;setTimeout(()=>{if(S.view!=='duo1')return;G.open=[];G.lock=false;G.turn=1-G.turn;G.pass=true;render()},1300)}}
     render();break}
   case 'dcreate':duoCreate();break;
@@ -749,21 +929,24 @@ function act(a,b){
   case 'sfx':S.sfx=!S.sfx;savePrefs();render();if(S.sfx)sfx('ok');break;
   case 'slo':S.slo=!S.slo;savePrefs();render();if(S.slo)saySl('Živijo');break;
   case 'install':if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.finally(()=>{deferredPrompt=null;render()})}break;
+  case 'novosti':S.view='pomoc';render();setTimeout(()=>{const e=document.getElementById('novosti');if(e&&e.scrollIntoView)e.scrollIntoView()},30);break;
+  case 'hidenews':{const lc=latestChange();if(lc)lsSet('videl-novosti',lc.v);render();break}
+  case 'hidehelp':lsSet('videl-navodila',true);render();break;
   case 'hideinst':lsSet('skrij-namestitev',true);render();break;
   case 'topic':S.topic=b.dataset.id;render();break;
   case 'game':start(b.dataset.g);scrollTo(0,0);break;
   case 'say':if(b.dataset.sl)saySl(b.dataset.t);else say(b.dataset.t);break;
   case 'flip':G.flipped=!G.flipped;if(G.flipped)saySl(G.list[G.i].sl);else say(G.list[G.i].en);render();break;
-  case 'next':case 'prev':{const n=G.list.length;const ni=a==='next'?G.i+1:G.i-1;if(a==='next'&&ni===n)star();G.i=(ni+n)%n;G.flipped=false;say(G.list[G.i].en);render();break}
+  case 'next':case 'prev':{const n=G.list.length;const ni=a==='next'?G.i+1:G.i-1;if(a==='next'&&ni===n){star();gameDone('kartice')}G.i=(ni+n)%n;G.flipped=false;say(G.list[G.i].en);render();break}
   case 'L':G.sel=i;say(G.left[i].en);render();break;
-  case 'R':saySl(G.right[i].sl);if(G.sel===null)break;if(G.right[i].key===G.left[G.sel].key){const lw=G.left[G.sel];if(!(G.missed&&G.missed[lw.key]))stat(lw,true);G.done.add(G.right[i].key);G.sel=null;sfx('ok');if(G.done.size===G.left.length)star()}else{const lw=G.left[G.sel];G.missed=G.missed||{};if(!G.missed[lw.key]){G.missed[lw.key]=1;stat(lw,false)}sfx('bad');G.wrong=i;setTimeout(()=>{G.wrong=null;if(S.view==='povezi')render()},500)}render();break;
+  case 'R':saySl(G.right[i].sl);if(G.sel===null)break;if(G.right[i].key===G.left[G.sel].key){const lw=G.left[G.sel];if(!(G.missed&&G.missed[lw.key]))stat(lw,true);G.done.add(G.right[i].key);G.sel=null;sfx('ok');if(G.done.size===G.left.length){star();gameDone('povezi')}}else{const lw=G.left[G.sel];G.missed=G.missed||{};if(!G.missed[lw.key]){G.missed[lw.key]=1;stat(lw,false)}sfx('bad');G.wrong=i;setTimeout(()=>{G.wrong=null;if(S.view==='povezi')render()},500)}render();break;
   case 'mem':{if(G.lock||G.open.includes(i)||G.ok.has(G.cards[i].w.key))break;G.open.push(i);const c=G.cards[i];if(c.t==='en')say(c.w.en);else saySl(c.w.sl);
-    if(G.open.length===2){const[x,y]=G.open.map(j=>G.cards[j]);if(x.w.key===y.w.key){G.ok.add(x.w.key);G.open=[];sfx('ok');if(G.ok.size===G.cards.length/2)star()}else{G.lock=true;setTimeout(()=>{G.open=[];G.lock=false;if(S.view==='spomin')render()},1100)}}
+    if(G.open.length===2){const[x,y]=G.open.map(j=>G.cards[j]);if(x.w.key===y.w.key){G.ok.add(x.w.key);G.open=[];sfx('ok');if(G.ok.size===G.cards.length/2){star();gameDone('spomin')}}else{G.lock=true;setTimeout(()=>{G.open=[];G.lock=false;if(S.view==='spomin')render()},1100)}}
     render();break}
   case 'msize':S.memPairs=+b.dataset.n;savePrefs();start('spomin');break;
   case 'qsay':say(G.cur.en);break;
   case 'qopt':{if(G.ans!==null)break;G.ans=i;const right=G.opts[i].key===G.cur.key;if(right)G.score++;stat(G.cur,right);sfx(right?'ok':'bad');say(G.cur.en);saySl(G.cur.sl,true);render();break}
-  case 'qnext':G.n++;if(G.n>=G.total){if(G.score>=G.total/2)star()}else nextQ();render();break;
+  case 'qnext':G.n++;if(G.n>=G.total){gameDone('kviz');if(G.score>=G.total/2)star()}else nextQ();render();break;
   case 'stile':{if(G.state!=='play'||G.bad||G.tiles[i].used)break;const k=G.slots.indexOf(null);if(k<0)break;G.slots[k]=i;G.tiles[i].used=true;spellCheck();render();break}
   case 'sslot':{if(G.state!=='play'||G.bad)break;const t=G.slots[i];if(t===null)break;G.tiles[t].used=false;G.slots[i]=null;render();break}
   case 'shint':{if(G.state!=='play'||G.bad)break;const w=G.cur.spell;const k=G.slots.findIndex((t,j)=>t===null||G.tiles[t].c!==w[j]);if(k<0)break;
@@ -772,14 +955,29 @@ function act(a,b){
     if(ti>=0){G.slots[k]=ti;G.tiles[ti].used=true;G.hinted=true;if(!G.marked){G.marked=true;stat(G.cur,false)}spellCheck()}render();break}
   case 'sclear':if(G.state!=='play'||G.bad)break;G.slots=G.slots.map(()=>null);G.tiles.forEach(t=>t.used=false);render();break;
   case 'ssay':say(G.cur.en);break;
-  case 'snext':G.n++;if(G.n>=G.list.length){if(G.score>=G.list.length/2)star()}else newSpell();render();scrollTo(0,0);break;
+  case 'snext':G.n++;if(G.n>=G.list.length){gameDone('crke');if(G.score>=G.list.length/2)star()}else newSpell();render();scrollTo(0,0);break;
   case 'nflip':G.phase='find';say(G.order[0].en);render();break;
   case 'nsay':say(G.order[G.k].en);break;
   case 'npick':{const w=G.items[i];if(G.phase!=='find'||G.found.has(w.key)||G.wrong!==null)break;
-    if(w.key===G.order[G.k].key){const tg=G.order[G.k];if(!(G.missed&&G.missed[tg.key]))stat(tg,true);sfx('ok');G.found.add(w.key);G.k++;if(G.k>=G.order.length){G.phase='done';star()}else setTimeout(()=>{if(S.view==='najdi')say(G.order[G.k].en)},500)}
+    if(w.key===G.order[G.k].key){const tg=G.order[G.k];if(!(G.missed&&G.missed[tg.key]))stat(tg,true);sfx('ok');G.found.add(w.key);G.k++;if(G.k>=G.order.length){G.phase='done';star();gameDone('najdi')}else setTimeout(()=>{if(S.view==='najdi')say(G.order[G.k].en)},500)}
     else{const tg=G.order[G.k];G.missed=G.missed||{};if(!G.missed[tg.key]){G.missed[tg.key]=1;stat(tg,false)}sfx('bad');G.wrong=i;say(w.en);setTimeout(()=>{G.wrong=null;if(S.view==='najdi')render()},1000)}
     render();break}
   case 'share':shareApp();break;
+  case 'fbmood':FBK.mood=FBK.mood===b.dataset.m?'':b.dataset.m;render();break;
+  case 'fbsend':sendFeedback();break;
+  case 'stattoggle':S.stats=!S.stats;savePrefs();if(!S.stats){STQ={};lsSet('stat-vrsta',STQ)}render();break;
+  case 'statload':loadStats();break;
+  case 'statdays':S.statDays=+b.dataset.n;render();break;
+  case 'helpset':{const t=(S.helptxt!=null?S.helptxt:(ADM.help||DEFAULT_HELP));ADM.help=t.trim()===DEFAULT_HELP.trim()?undefined:t;if(ADM.help===undefined)delete ADM.help;S.helptxt=null;S.dirty.pub=true;S.edOpen='help';S.status='Navodila bodo spremenjena po objavi.';render();break}
+  case 'helpreset':if(!confirm('Ponastavim navodila na privzeta?'))break;delete ADM.help;S.helptxt=null;S.dirty.pub=true;S.edOpen='help';S.status='Navodila bodo ponastavljena po objavi.';render();break;
+  case 'helpview':{const t=S.helptxt!=null?S.helptxt:(ADM.help||DEFAULT_HELP);const w=document.createElement('div');w.innerHTML=mdSections(t);const box=document.querySelector('[data-id=help] .f2');let p=document.getElementById('helpprev');if(!p){p=document.createElement('div');p.id='helpprev';p.className='wide';box.appendChild(p)}p.innerHTML='<h4 class="sh">Predogled</h4>'+w.innerHTML;break}
+  case 'chadd':{const v=(S.chv!=null?S.chv:APP_VERSION).trim(),t=(S.cht||'').trim(),d=(S.chd!=null?S.chd:today()).trim();S.edOpen='chg';
+    if(!/^\d+(\.\d+)*$/.test(v)||!t){S.status='Vpiši različico (npr. 1.9) in vsaj eno spremembo.';return render()}
+    const list=(Array.isArray(ADM.changes)&&ADM.changes.length?ADM.changes:DEFAULT_CHANGES).map(x=>({...x}));const j=list.findIndex(x=>x.v===v);const item={v,d,t};if(j>=0)list[j]=item;else list.push(item);
+    ADM.changes=sortedChanges(list);S.cht='';S.chv=null;S.chd=null;S.dirty.pub=true;S.status='Novosti za različico '+v+' bodo objavljene po »Objavi za vse«.';render();break}
+  case 'chedit':{const list=sortedChanges(Array.isArray(ADM.changes)&&ADM.changes.length?ADM.changes:DEFAULT_CHANGES);const c=list[i];S.chv=c.v;S.chd=c.d||'';S.cht=c.t||'';S.edOpen='chg';render();break}
+  case 'chdel':{const list=sortedChanges(Array.isArray(ADM.changes)&&ADM.changes.length?ADM.changes:DEFAULT_CHANGES).map(x=>({...x}));const c=list[i];if(!confirm('Izbrišem novosti za različico '+c.v+'?'))break;list.splice(i,1);ADM.changes=list;S.dirty.pub=true;S.edOpen='chg';S.status='Izbrisano po objavi.';render();break}
+  case 'fbtoset':{const v=(S.fbto!=null?S.fbto:'').trim();if(!v){S.status='Vpiši naslov ali vzdevek FormSubmit.';return render()}ADM.feedbackTo=v;S.fbto=null;S.dirty.pub=true;S.edOpen='fbto';S.status='Naslov za mnenja bo spremenjen po objavi.';render();break}
   case 'shareapk':shareApk();break;
   case 'export':exportMy();break;
   case 'cfgsave':cfgSave();break;
@@ -804,7 +1002,7 @@ function act(a,b){
   case 'save':saveDS(k);break;
   }
 }
-window.__androidBack=()=>{if(S.view==='home')return false;const v=(S.view==='my'||S.view==='admin')?'settings':S.view==='duo1'?'duo':'home';act('nav',{dataset:{v}});return true};
+window.__androidBack=()=>{if(S.view==='home')return false;const v=(S.view==='my'||S.view==='admin'||S.view==='mnenje')?'settings':S.view==='duo1'?'duo':'home';act('nav',{dataset:{v}});return true};
 function val(id){const e=document.getElementById(id);return e?e.value.trim():''}
 
 app.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(b&&!b.disabled)act(b.dataset.act,b)});
@@ -815,15 +1013,21 @@ app.addEventListener('input',e=>{const t=e.target,d=t.dataset;
   else if(d.cfg){CFG[d.cfg]=t.value.trim()}
   else if(d.paste){PASTE[d.paste]=t.value}
   else if(d.dq!==undefined){S.q=t.value;dictList()}
+  else if(d.fbk){FBK[d.fbk]=t.value}
+  else if(d.fbto!==undefined){S.fbto=t.value}
+  else if(d.helptxt!==undefined){S.helptxt=t.value}
+  else if(d.chv!==undefined){S.chv=t.value}
+  else if(d.chd!==undefined){S.chd=t.value}
+  else if(d.cht!==undefined){S.cht=t.value}
   else if(d.dcode!==undefined&&D){t.value=t.value.replace(/\D/g,'').slice(0,4);D.code=t.value}
   else if(d.fbtxt!==undefined){S.fbtxt=t.value}
   else if(d.fbdb!==undefined){S.fbdb=t.value}});
 app.addEventListener('change',e=>{const t=e.target;if(t.dataset.psel!==undefined&&PREV){PREV.sel=t.value;render()}else if(t.dataset.import!==undefined&&t.files&&t.files[0]){importMy(t.files[0]);t.value=''}});
 app.addEventListener('toggle',e=>{if(e.target.matches('details.ed')&&e.target.open&&e.target.dataset.id)S.edOpen=e.target.dataset.id},true);
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&S.view==='home')loadPub()});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&S.view==='home')loadPub();if(document.visibilityState==='hidden')flushStats()});
 try{speechSynthesis.getVoices();speechSynthesis.addEventListener('voiceschanged',()=>{if(S.view==='home')render()})}catch(e){}
 if('serviceWorker' in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
-render();loadPub();
+render();loadPub().then(()=>{trackOpen();setTimeout(flushStats,15000)});
 </script>
 </body>
 </html>

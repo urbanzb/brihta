@@ -1,5 +1,5 @@
 // Service worker: najprej omrežje (vedno najnovejše besede in koda), brez povezave pa shranjena kopija.
-const CACHE = 'brihta-v6';
+const CACHE = 'brihta-v9';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'besede.json', 'icon-192.png', 'icon-512.png',
   'apple-touch-icon.png', 'grandstander.woff2', 'atkinson-regular.woff2', 'atkinson-bold.woff2'];
 

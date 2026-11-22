@@ -6,6 +6,22 @@
         ".write": "auth != null && $code.matches(/^[0-9]{4}$/)",
         ".validate": "newData.hasChildren(['created', 'cards', 'state'])"
       }
+    },
+    "stats": {
+      ".read": "auth != null",
+      "$day": {
+        ".validate": "$day.matches(/^20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/)",
+        "m": {
+          "$word": {
+            ".write": "auth != null && $word.length < 200",
+            ".validate": "newData.isNumber() && newData.val() > (data.exists() ? data.val() : 0) && newData.val() <= (data.exists() ? data.val() : 0) + 200"
+          }
+        },
+        "$key": {
+          ".write": "auth != null && $key.length < 200",
+          ".validate": "newData.isNumber() && newData.val() > (data.exists() ? data.val() : 0) && newData.val() <= (data.exists() ? data.val() : 0) + 200"
+        }
+      }
     }
   }
 }

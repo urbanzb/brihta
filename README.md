@@ -9,6 +9,8 @@ Dodatno:
 
 Aplikacija deluje na Android telefonih in iPhonih, se namesti kot prava aplikacija z ikono in deluje tudi brez povezave. Nove besede in posodobitve dobite samodejno.
 
+Kratka navodila za igre so v aplikaciji pod **❓ Navodila** na začetnem zaslonu.
+
 ## Namestitev na telefon
 
 Povezava: **https://urbanzb.github.io/brihta/**
@@ -38,10 +40,16 @@ Brihta uporablja **britansko angleščino**. Če telefon nima britanskega glasu,
 
 Slovenske besede bere slovenski glas, če ga telefon ima, sicer hrvaški. Izgovorjavo slovenskih besed izklopite z gumbom **🔊 SLO**.
 
+## Mnenje
+
+V **⚙️ → Pošlji mnenje** nam lahko sporočite, kaj vam je všeč in kaj bi izboljšali. E-poštni naslov za odgovor je neobvezen. Prosimo, ne navajajte imena otroka.
+
 ## Zasebnost
 
-Aplikacija nima prijav in ne zbira podatkov. Zvezdice, nastavitve, statistika odgovorov in lastne besede so shranjene samo na vaši napravi.
-Edina zunanja storitev je Firebase pri igri vsak s svojim telefonom: med igro se tam shranijo le kartice, živalci in točke, brez imen. Igra se izbriše, ko jo ustvarjalec zapusti.
+Aplikacija nima prijav. Zvezdice, nastavitve, napredek otroka in lastne besede so shranjeni samo na vaši napravi.
+- **Anonimna statistika:** Brihta pošilja le skupne dnevne seštevke, na primer koliko iger spomina je bilo odigranih in katere besede iz šole so bile zgrešene. Ne pošilja imen, oznak naprave ali lastnih besed. Izklopite jo v **⚙️ → Anonimna statistika**.
+- **Igra vsak s svojim telefonom:** med igro se v Firebase shranijo le kartice, živalci in točke, brez imen. Igra se izbriše, ko jo ustvarjalec zapusti.
+- **Mnenje:** poslano mnenje gre prek storitve FormSubmit na e-pošto avtorja aplikacije.
 
 ## Pogoste težave
 
@@ -111,6 +119,26 @@ Nastavitve Firebase niso skrivnost. Bazo varujejo pravila iz 3. koraka.
 
 V zavihku **Actions** na GitHubu sta dva postopka: **pages build and deployment** (spletna aplikacija, 1 do 2 minuti) in **Zgradi APK** (približno 5 minut). Rumeni krogec pomeni, da postopek še teče, zelena kljukica uspeh, rdeči križec napako.
 
+## Navodila in novosti
+
+V **Skrbniški način** urejaš besedilo zaslona **❓ Navodila** in seznam novosti po različicah. Spremembe objaviš z **Objavi za vse**, nalaganje datotek na GitHub ni potrebno.
+
+- **❓ Navodila:** preprost zapis, kjer `# Naslov` začne nov razdelek, `- besedilo` je alineja, `**besedilo**` pa krepko. **Predogled** pokaže, kako bo izgledalo, **Ponastavi na privzeta** pa vrne prvotno besedilo.
+- **🆕 Novosti po različicah:** vpiši različico (npr. 1.9), datum in spremembe, vsako v svoji vrstici z »- «. Novosti se pokažejo na koncu navodil, zadnje tri v celoti, starejše pod »Starejše različice«. Ko objaviš novo različico, uporabniki na začetnem zaslonu vidijo pasico »🆕 Novo v različici …«.
+- Z **Uredi** lahko obstoječe novosti popraviš, z **×** pa jih izbrišeš.
+
+## Statistika uporabe
+
+V **Skrbniški način → 📊 Statistika uporabe** tapni **Naloži statistiko** in izberi obdobje (7, 30 ali 90 dni). Vidiš število odprtij in dni uporabe, katere igre se začnejo in končajo, priljubljene teme, najtežje besede (koristno tudi za učiteljico) ter naprave in različice. Podatki so anonimni dnevni seštevki v Firebase (`stats`). Za delovanje morajo biti v Firebase objavljena pravila iz `firebase-pravila.json`.
+
+Statistika trgovine (namestitve, ocene, sesutja) bo na voljo v Play Console, ko bo aplikacija objavljena v Trgovini Play.
+
+## Mnenja
+
+Mnenja se pošiljajo prek storitve FormSubmit na **uzbmobileapps@gmail.com**. Naslov v aplikaciji ni prikazan.
+1. **Aktivacija (enkrat):** v aplikaciji sam pošlji prvo mnenje. FormSubmit na uzbmobileapps@gmail.com pošlje potrditveno sporočilo: odpri ga in potrdi. Dokler to ni narejeno, aplikacija napiše, da pošiljanje še ni aktivirano.
+2. **Skrij naslov tudi v kodi (priporočeno):** po potrditvi FormSubmit pošlje naključni vzdevek. V **Skrbniški način → ✉️ Mnenja** ga vpiši namesto naslova, tapni **Uporabi** in **Objavi za vse**.
+
 ## Britanska angleščina
 
 Brihta uporablja izključno britansko angleščino v zapisu (colour, favourite, grey, lorry, biscuit, sweets, mum, trousers, rubber, football) in izgovorjavi (en-GB). Pri dodajanju besed aplikacija zazna ameriške oblike in ponudi popravek. Ameriške besede so v seznamu označene s 💂. Navodila za Claude projekt prav tako zahtevajo britansko angleščino.
@@ -119,7 +147,7 @@ Brihta uporablja izključno britansko angleščino v zapisu (colour, favourite, 
 
 - **»Žeton nima pravice za pisanje«:** pri žetonu preveri dovoljenje **Contents: Read and write** in izbrani repozitorij `brihta`.
 - **Napaka v objavljeni besedi:** v skrbniškem načinu besedo izbriši, jo dodaj pravilno in znova objavi.
-- **Firebase javi napako o dostopu:** preveri, ali so v Realtime Database objavljena pravila.
+- **Firebase javi napako o dostopu ali se statistika ne naloži:** preveri, ali so v Realtime Database objavljena najnovejša pravila iz `firebase-pravila.json`.
 - **Gradnja APK ima rdeči križec:** odpri zagon v zavihku **Actions** in preberi besedilo napake v koraku z rdečim križcem.
 - **Datoteke `besede.json` ne vpisuj imen otrok** ali drugih osebnih podatkov, ker je javna.
 
