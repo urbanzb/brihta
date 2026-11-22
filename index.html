@@ -153,6 +153,10 @@ code{background:var(--paper);padding:1px 6px;border-radius:6px;font-size:15px}
 .chg h4{font-size:18px;margin:10px 0 4px}.chg h4 small{font-family:var(--body);font-weight:400;color:var(--soft);font-size:14px}
 .older summary{cursor:pointer;color:var(--sky);font-weight:700;margin-top:10px}
 #helpprev .card{border-width:1.5px}
+.fbitem{border-top:1px solid var(--line);padding:10px 0}.fbitem:first-of-type{border-top:0}
+.fbitem.new{border-left:4px solid var(--sun);padding-left:10px}
+.fbmeta{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--soft)}.fbmeta .x{margin-left:auto}
+.fbitem p{margin:6px 0 0}
 .homebtns{display:flex;flex-direction:column;gap:10px}
 .help ol,.help ul{margin:0;padding-left:22px}.help li{margin-bottom:6px}.help p{margin:0}
 .help ul.hl{list-style:none;padding-left:0}.help ul.hl li{padding-left:0}
@@ -222,8 +226,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <div id="app"><p class="loading">Nalagam …</p></div>
 <script>
 'use strict';
-const APP_VERSION='1.8';
-const FEEDBACK_TO_DEFAULT='uzbmobileapps@gmail.com';
+const APP_VERSION='1.9';
+const FEEDBACK_EMAIL='uzbmobileapps@gmail.com'; // mnenja se pošljejo iz uporabnikovega poštnega programa
 /* JEZIK: Brihta uporablja izključno BRITANSKO angleščino (zapis in izgovorjava en-GB).
    Ameriške oblike pri vnosu zaznamo s US_UK in predlagamo britansko različico. */
 const US_UK={color:'colour',colors:'colours',colored:'coloured',favorite:'favourite',favorites:'favourites',gray:'grey',center:'centre',theater:'theatre',meter:'metre',liter:'litre',
@@ -576,6 +580,7 @@ Brihta pošilja le skupne dnevne seštevke, brez imen in brez podatkov o napravi
 - katere besede iz šole so bile zgrešene.
 Seštevki pomagajo pri odločitvah, katere igre obdržati, katere izboljšati ali zamenjati in katere besede potrebujejo več vaje. Lastne besede se nikoli ne pošljejo. Statistiko izklopiš v **⚙️ Nastavitve**.`;
 const DEFAULT_CHANGES=[
+ {v:'1.9',t:'- Mnenje se pošlje iz vaše e-pošte in deluje na vseh omrežjih.'},
  {v:'1.8',t:'- Navodila ureja skrbnik.\n- Novosti po različicah so zapisane na koncu navodil.'},
  {v:'1.7',t:'- Navodila za uporabo v aplikaciji.'},
  {v:'1.6',t:'- Pošiljanje mnenja.\n- Anonimna statistika uporabe, ki jo lahko izklopiš.'},
@@ -622,8 +627,12 @@ async function fbConnect(cfg,name){
   if(!cfg||!cfg.apiKey||!cfg.databaseURL)throw new Error('nastavitve');
   const base='https://www.gstatic.com/firebasejs/'+FBV+'/';
   const [a,au,d]=await Promise.all([import(base+'firebase-app.js'),import(base+'firebase-auth.js'),import(base+'firebase-database.js')]);
-  const app=a.getApps().find(x=>x.name===name)||a.initializeApp(cfg,name);await au.signInAnonymously(au.getAuth(app));const db=d.getDatabase(app);
-  return{ref:p=>d.ref(db,p),get:d.get,set:d.set,remove:d.remove,onValue:d.onValue,tx:d.runTransaction,onDisconnect:d.onDisconnect,update:(p,o)=>d.update(d.ref(db,p),o),inc:n=>d.increment(n)};
+  const app=a.getApps().find(x=>x.name===name)||a.initializeApp(cfg,name);const auth=au.getAuth(app);
+  if(auth.authStateReady)await auth.authStateReady();
+  if(!auth.currentUser)await au.signInAnonymously(auth);
+  const db=d.getDatabase(app);
+  return{ref:p=>d.ref(db,p),get:d.get,set:d.set,remove:d.remove,onValue:d.onValue,tx:d.runTransaction,onDisconnect:d.onDisconnect,update:(p,o)=>d.update(d.ref(db,p),o),inc:n=>d.increment(n),
+  };
 }
 async function fbInit(){if(!FB)FB=await fbConnect(PUB.firebase,'besede');return FB}
 function duoReady(){return !!(window.__FAKE_FB||(PUB.firebase&&PUB.firebase.databaseURL&&PUB.firebase.apiKey))}
@@ -750,33 +759,23 @@ function renderSettings(){
   ${S.status?`<p class="status" role="status">${h(S.status)}</p>`:''}
   <p class="meta">Besede posodobljene: ${h(PUB.updated||'–')}. Različica ${APP_VERSION}${AB?' (APK '+(()=>{try{return AB.versionCode()}catch(e){return '?'}})()+')':''}.</p>`;
 }
-function feedbackTo(){return (PUB.feedbackTo||FEEDBACK_TO_DEFAULT).trim()}
-let FBK={mood:'',text:'',reply:'',state:'',err:''};
+let FBK={mood:'',text:'',state:'',err:''};
 function renderFeedback(){
   const moods=[['😍','Odlično'],['🙂','Dobro'],['😐','Tako tako'],['🙁','Slabo']];
-  if(FBK.state==='sent'){app.innerHTML=bar('Pošlji mnenje','settings')+`<div class="msg"><div class="win">Hvala!</div><p>Vaše mnenje je poslano in nam pomaga, da je Brihta še boljša.</p><button class="big press" data-act="nav" data-v="settings">Nazaj</button></div>`;return}
+  if(FBK.state==='sent'){app.innerHTML=bar('Pošlji mnenje','settings')+`<div class="msg"><div class="win">Hvala!</div><p>Odpre se vaša e-pošta z že pripravljenim sporočilom. Tapnite še <b>Pošlji</b>.</p><p class="instr">Če se e-pošta ne odpre, pišite na <b>${h(FEEDBACK_EMAIL)}</b>.</p><div class="btns" style="justify-content:center"><button class="sm press" data-act="fbsend">Odpri e-pošto znova</button><button class="big press" data-act="nav" data-v="settings">Nazaj</button></div></div>`;return}
   app.innerHTML=bar('Pošlji mnenje','settings')+`<section class="card"><h3>Kako vam je všeč Brihta?</h3><div class="animals">${moods.map(([m,l])=>`<button class="animal press ${FBK.mood===m?'on':''}" data-act="fbmood" data-m="${m}" aria-label="${l}" aria-pressed="${FBK.mood===m}">${m}</button>`).join('')}</div></section>
   <section class="card"><h3>Vaše mnenje</h3><p class="instr">Kaj vam je všeč, kaj bi izboljšali, katera igra ali beseda manjka? Prosimo, ne navajajte imena otroka.</p>
    <textarea data-fbk="text" rows="6" maxlength="3000" placeholder="Napišite mnenje …">${h(FBK.text)}</textarea>
-   <label class="f2lab">Če želite odgovor, vpišite svoj e-poštni naslov (neobvezno)<input type="email" data-fbk="reply" value="${h(FBK.reply)}" autocomplete="email" inputmode="email"></label>
+   <p class="instr">Mnenje bo poslano iz vaše e-pošte na <b>${h(FEEDBACK_EMAIL)}</b>.</p>
    ${FBK.err?`<p class="note">${h(FBK.err)}</p>`:''}
-   <div class="btns"><button class="big press" data-act="fbsend" ${FBK.state==='sending'?'disabled':''}>${FBK.state==='sending'?'Pošiljam …':'Pošlji mnenje'}</button></div></section>`;
+   <div class="btns"><button class="big press" data-act="fbsend">Pošlji mnenje</button></div></section>`;
 }
-async function sendFeedback(){
-  const text=FBK.text.trim();if(!text&&!FBK.mood){FBK.err='Izberite oceno ali napišite nekaj besed.';return render()}
-  if(!navigator.onLine){FBK.err='Telefon ni povezan z internetom. Poskusite znova pozneje.';return render()}
-  FBK.state='sending';FBK.err='';render();
-  const body={_subject:'Brihta: novo mnenje '+(FBK.mood||''),_template:'table',_captcha:'false',_honey:'',
-    Ocena:FBK.mood||'–',Mnenje:text||'–',Odgovor_na:FBK.reply.trim()||'–',Razlicica:APP_VERSION+(AB?' (APK '+(()=>{try{return AB.versionCode()}catch(e){return '?'}})()+')':''),Naprava:platform(),Datum:today()};
-  if(FBK.reply.trim())body._replyto=FBK.reply.trim();
-  try{const r=await fetch('https://formsubmit.co/ajax/'+feedbackTo().replace(/[^\w@.+-]/g,''),{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(body)});
-    const j=await r.json().catch(()=>({}));
-    if(r.ok&&(j.success===true||j.success==='true')){FBK={mood:'',text:'',reply:'',state:'sent',err:''}}
-    else if(/activat/i.test(j.message||'')){FBK.state='';FBK.err='Pošiljanje mnenj še ni aktivirano. Skrbnik mora potrditi e-poštno sporočilo storitve FormSubmit.'}
-    else throw new Error((j.message||('HTTP '+r.status)))}
-  catch(e){FBK.state='';const det=String((e&&e.message)||e||'').replace(/\s+/g,' ').slice(0,120);
-    FBK.err='Mnenja ni bilo mogoče poslati. Poskusite znova pozneje.'+(det?' (Podrobnosti: '+(/failed to fetch|load failed|networkerror/i.test(det)?'povezava do strežnika je blokirana ali ni dosegljiva':det)+')':'')}
-  render();
+function sendFeedback(){
+  const text=FBK.text.trim();if(!text&&!FBK.mood&&FBK.state!=='sent'){FBK.err='Izberite oceno ali napišite nekaj besed.';return render()}
+  if(FBK.state!=='sent'){FBK.mail={subject:'Brihta: mnenje '+(FBK.mood||''),body:(FBK.mood?'Ocena: '+FBK.mood+'\n\n':'')+(text||'')+'\n\n—\nRazličica: '+APP_VERSION+(AB?' (APK '+(()=>{try{return AB.versionCode()}catch(e){return '?'}})()+')':'')+', naprava: '+platform()}}
+  const m=FBK.mail;const url='mailto:'+FEEDBACK_EMAIL+'?subject='+encodeURIComponent(m.subject)+'&body='+encodeURIComponent(m.body);
+  FBK={mood:'',text:'',state:'sent',err:'',mail:m};render();
+  try{window.location.href=url}catch(e){}
 }
 function apkUrl(){return `https://github.com/${CFG.owner}/${CFG.repo}/releases/download/apk/Brihta.apk`}
 async function shareApk(){const url=apkUrl(),text='Brihta za Android (APK). Odpri povezavo na Android telefonu in dovoli namestitev:';
@@ -836,9 +835,6 @@ function renderAdmin(){
    <label class="wide">Prilepi firebaseConfig iz Firebase konzole<textarea data-fbtxt rows="5" placeholder="const firebaseConfig = { apiKey: …">${h(S.fbtxt||'')}</textarea></label>
    <label class="wide">Database URL<input data-fbdb value="${h(S.fbdb!=null?S.fbdb:(fbc.databaseURL||''))}" placeholder="https://…firebasedatabase.app" autocapitalize="off" autocomplete="off"></label>
    <div class="actions"><button class="sm press" data-act="fbset">Uporabi nastavitve</button>${fbc.databaseURL?'<button class="sm press" data-act="fbtest">Preizkusi povezavo</button><button class="danger" data-act="fbclear">Izklopi igro za dva</button>':''}</div></div></details>`;
-  const fbtoSec=`<details class="ed" ${S.edOpen==='fbto'?'open':''} data-id="fbto"><summary>✉️ Mnenja<small>${ADM.feedbackTo?'vzdevek nastavljen':'privzeti naslov'}</small></summary><div class="f2">
-   <label class="wide">Naslov ali vzdevek FormSubmit<input data-fbto value="${h(S.fbto!=null?S.fbto:(ADM.feedbackTo||FEEDBACK_TO_DEFAULT))}" autocapitalize="off" autocomplete="off"></label>
-   <div class="actions"><button class="sm press" data-act="fbtoset">Uporabi</button></div></div></details>`;
   const stSec=`<details class="ed" ${S.edOpen==='stat'?'open':''} data-id="stat"><summary>📊 Statistika uporabe<small>anonimni seštevki</small></summary><div style="padding:12px 16px 16px">${renderStatsBody()}</div></details>`;
   const helpSec=`<details class="ed" ${S.edOpen==='help'?'open':''} data-id="help"><summary>❓ Navodila<small>${ADM.help?'prilagojena':'privzeta'}</small></summary><div class="f2">
    <p class="hint wide"><b># Naslov</b> začne nov razdelek, <b>- besedilo</b> je alineja, <b>**besedilo**</b> je krepko. Ostale vrstice so odstavki.</p>
@@ -850,7 +846,7 @@ function renderAdmin(){
    <label class="wide">Kaj je novega (vsaka sprememba v svoji vrstici, začni z »- «)<textarea data-cht rows="4" placeholder="- Nova igra …">${h(S.cht||'')}</textarea></label>
    <div class="actions"><button class="sm press" data-act="chadd">Dodaj ali posodobi</button></div></div>
    <ul class="wl">${chList.map((c,i)=>`<li><span class="t"><b>${h(c.v)}</b>${c.d?` <span>${h(c.d)}</span>`:''}<br><span>${h((c.t||'').replace(/^- /gm,'• ').replace(/\n/g,' '))}</span></span><button class="sm press" data-act="chedit" data-i="${i}">Uredi</button><button class="x" data-act="chdel" data-i="${i}" aria-label="Izbriši">×</button></li>`).join('')}</ul></details>`;
-  app.innerHTML=bar('Skrbniški način','settings')+cfg+fbSec+fbtoSec+stSec+helpSec+chSec+`<p class="instr">Spremembe tukaj po objavi vidijo vsi uporabniki.</p>`+editorBody('pub');
+  app.innerHTML=bar('Skrbniški način','settings')+cfg+fbSec+stSec+helpSec+chSec+`<p class="instr">Spremembe tukaj po objavi vidijo vsi uporabniki.</p>`+editorBody('pub');
 }
 async function saveDS(k){
   if(k==='my'){S.status=lsSet('moje-besede',MY)?'Shranjeno na tej napravi.':'Shranjevanje ni uspelo.';S.dirty.my=false;return render()}
@@ -925,7 +921,7 @@ function act(a,b){
     c.databaseURL=c.databaseURL.replace(/\/$/,'');ADM.firebase=c;S.fbtxt='';S.fbdb=null;S.dirty.pub=true;S.status='Nastavitve so pripravljene. Preizkusi povezavo in tapni »Objavi za vse«.';render();break}
   case 'fbtest':fbTest();break;
   case 'fbclear':if(!confirm('Izklopim igro za dva za vse uporabnike?'))break;delete ADM.firebase;S.dirty.pub=true;S.edOpen='fb';S.status='Igra za dva bo izklopljena po objavi.';render();break;
-  case 'nav':{if(!leaveOk())break;if(S.view==='duo')duoLeave();try{speechSynthesis.cancel()}catch(e){}const v=b.dataset.v;S.view=v;S.status='';if(v==='admin'&&!S.dirty.pub){ADM=null;loadPub().then(()=>{if(S.view==='admin'&&!S.dirty.pub){ADM=null;render()}})}render();scrollTo(0,0);break}
+  case 'nav':{if(!leaveOk())break;if(S.view==='duo')duoLeave();try{speechSynthesis.cancel()}catch(e){}const v=b.dataset.v;if(v==='mnenje'&&FBK.state==='sent')FBK.state='';S.view=v;S.status='';if(v==='admin'&&!S.dirty.pub){ADM=null;loadPub().then(()=>{if(S.view==='admin'&&!S.dirty.pub){ADM=null;render()}})}render();scrollTo(0,0);break}
   case 'caps':S.caps=!S.caps;savePrefs();render();break;
   case 'sfx':S.sfx=!S.sfx;savePrefs();render();if(S.sfx)sfx('ok');break;
   case 'slo':S.slo=!S.slo;savePrefs();render();if(S.slo)saySl('Živijo');break;
@@ -978,7 +974,15 @@ function act(a,b){
     ADM.changes=sortedChanges(list);S.cht='';S.chv=null;S.chd=null;S.dirty.pub=true;S.status='Novosti za različico '+v+' bodo objavljene po »Objavi za vse«.';render();break}
   case 'chedit':{const list=sortedChanges(Array.isArray(ADM.changes)&&ADM.changes.length?ADM.changes:DEFAULT_CHANGES);const c=list[i];S.chv=c.v;S.chd=c.d||'';S.cht=c.t||'';S.edOpen='chg';render();break}
   case 'chdel':{const list=sortedChanges(Array.isArray(ADM.changes)&&ADM.changes.length?ADM.changes:DEFAULT_CHANGES).map(x=>({...x}));const c=list[i];if(!confirm('Izbrišem novosti za različico '+c.v+'?'))break;list.splice(i,1);ADM.changes=list;S.dirty.pub=true;S.edOpen='chg';S.status='Izbrisano po objavi.';render();break}
-  case 'fbtoset':{const v=(S.fbto!=null?S.fbto:'').trim();if(!v){S.status='Vpiši naslov ali vzdevek FormSubmit.';return render()}ADM.feedbackTo=v;S.fbto=null;S.dirty.pub=true;S.edOpen='fbto';S.status='Naslov za mnenja bo spremenjen po objavi.';render();break}
+  case 'helpset':{const t=(S.helptxt!=null?S.helptxt:(ADM.help||DEFAULT_HELP));ADM.help=t.trim()===DEFAULT_HELP.trim()?undefined:t;if(ADM.help===undefined)delete ADM.help;S.helptxt=null;S.dirty.pub=true;S.edOpen='help';S.status='Navodila bodo spremenjena po objavi.';render();break}
+  case 'helpreset':if(!confirm('Ponastavim navodila na privzeta?'))break;delete ADM.help;S.helptxt=null;S.dirty.pub=true;S.edOpen='help';S.status='Navodila bodo ponastavljena po objavi.';render();break;
+  case 'helpview':{const t=S.helptxt!=null?S.helptxt:(ADM.help||DEFAULT_HELP);const w=document.createElement('div');w.innerHTML=mdSections(t);const box=document.querySelector('[data-id=help] .f2');let p=document.getElementById('helpprev');if(!p){p=document.createElement('div');p.id='helpprev';p.className='wide';box.appendChild(p)}p.innerHTML='<h4 class="sh">Predogled</h4>'+w.innerHTML;break}
+  case 'chadd':{const v=(S.chv!=null?S.chv:APP_VERSION).trim(),t=(S.cht||'').trim(),d=(S.chd!=null?S.chd:today()).trim();S.edOpen='chg';
+    if(!/^\d+(\.\d+)*$/.test(v)||!t){S.status='Vpiši različico (npr. 1.9) in vsaj eno spremembo.';return render()}
+    const list=(Array.isArray(ADM.changes)&&ADM.changes.length?ADM.changes:DEFAULT_CHANGES).map(x=>({...x}));const j=list.findIndex(x=>x.v===v);const item={v,d,t};if(j>=0)list[j]=item;else list.push(item);
+    ADM.changes=sortedChanges(list);S.cht='';S.chv=null;S.chd=null;S.dirty.pub=true;S.status='Novosti za različico '+v+' bodo objavljene po »Objavi za vse«.';render();break}
+  case 'chedit':{const list=sortedChanges(Array.isArray(ADM.changes)&&ADM.changes.length?ADM.changes:DEFAULT_CHANGES);const c=list[i];S.chv=c.v;S.chd=c.d||'';S.cht=c.t||'';S.edOpen='chg';render();break}
+  case 'chdel':{const list=sortedChanges(Array.isArray(ADM.changes)&&ADM.changes.length?ADM.changes:DEFAULT_CHANGES).map(x=>({...x}));const c=list[i];if(!confirm('Izbrišem novosti za različico '+c.v+'?'))break;list.splice(i,1);ADM.changes=list;S.dirty.pub=true;S.edOpen='chg';S.status='Izbrisano po objavi.';render();break}
   case 'shareapk':shareApk();break;
   case 'export':exportMy();break;
   case 'cfgsave':cfgSave();break;
@@ -1015,7 +1019,6 @@ app.addEventListener('input',e=>{const t=e.target,d=t.dataset;
   else if(d.paste){PASTE[d.paste]=t.value}
   else if(d.dq!==undefined){S.q=t.value;dictList()}
   else if(d.fbk){FBK[d.fbk]=t.value}
-  else if(d.fbto!==undefined){S.fbto=t.value}
   else if(d.helptxt!==undefined){S.helptxt=t.value}
   else if(d.chv!==undefined){S.chv=t.value}
   else if(d.chd!==undefined){S.chd=t.value}

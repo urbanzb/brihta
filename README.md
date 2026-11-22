@@ -42,14 +42,14 @@ Slovenske besede bere slovenski glas, če ga telefon ima, sicer hrvaški. Izgovo
 
 ## Mnenje
 
-V **⚙️ → Pošlji mnenje** nam lahko sporočite, kaj vam je všeč in kaj bi izboljšali. E-poštni naslov za odgovor je neobvezen. Prosimo, ne navajajte imena otroka.
+V **⚙️ → Pošlji mnenje** nam lahko sporočite, kaj vam je všeč in kaj bi izboljšali. Ob pošiljanju se odpre vaša e-pošta s pripravljenim sporočilom za **uzbmobileapps@gmail.com**, vi pa tapnete še **Pošlji**. Prosimo, ne navajajte imena otroka.
 
 ## Zasebnost
 
 Aplikacija nima prijav. Zvezdice, nastavitve, napredek otroka in lastne besede so shranjeni samo na vaši napravi.
 - **Anonimna statistika:** Brihta pošilja le skupne dnevne seštevke, na primer koliko iger spomina je bilo odigranih in katere besede iz šole so bile zgrešene. Ne pošilja imen, oznak naprave ali lastnih besed. Izklopite jo v **⚙️ → Anonimna statistika**.
 - **Igra vsak s svojim telefonom:** med igro se v Firebase shranijo le kartice, živalci in točke, brez imen. Igra se izbriše, ko jo ustvarjalec zapusti.
-- **Mnenje:** poslano mnenje gre prek storitve FormSubmit na e-pošto avtorja aplikacije.
+- **Mnenje:** pošljete ga iz svoje e-pošte, zato avtor vidi vaš e-poštni naslov in vam lahko odgovori.
 
 ## Pogoste težave
 
@@ -135,9 +135,7 @@ Statistika trgovine (namestitve, ocene, sesutja) bo na voljo v Play Console, ko 
 
 ## Mnenja
 
-Mnenja se pošiljajo prek storitve FormSubmit na **uzbmobileapps@gmail.com**. Naslov v aplikaciji ni prikazan.
-1. **Aktivacija (enkrat):** v aplikaciji sam pošlji prvo mnenje. FormSubmit na uzbmobileapps@gmail.com pošlje potrditveno sporočilo: odpri ga in potrdi. Dokler to ni narejeno, aplikacija napiše, da pošiljanje še ni aktivirano.
-2. **Skrij naslov tudi v kodi (priporočeno):** po potrditvi FormSubmit pošlje naključni vzdevek. V **Skrbniški način → ✉️ Mnenja** ga vpiši namesto naslova, tapni **Uporabi** in **Objavi za vse**.
+Mnenja prihajajo na **uzbmobileapps@gmail.com** kot navadna e-pošta z zadevo »Brihta: mnenje …«. V sporočilu sta tudi različica aplikacije in vrsta naprave. Odgovoriš neposredno iz pošte. Naslov za mnenja je zapisan v kodi (`FEEDBACK_EMAIL` v `index.html`).
 
 ## Britanska angleščina
 
