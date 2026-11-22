@@ -773,8 +773,9 @@ async function sendFeedback(){
     const j=await r.json().catch(()=>({}));
     if(r.ok&&(j.success===true||j.success==='true')){FBK={mood:'',text:'',reply:'',state:'sent',err:''}}
     else if(/activat/i.test(j.message||'')){FBK.state='';FBK.err='Pošiljanje mnenj še ni aktivirano. Skrbnik mora potrditi e-poštno sporočilo storitve FormSubmit.'}
-    else throw new Error(j.message||r.status)}
-  catch(e){FBK.state='';FBK.err='Mnenja ni bilo mogoče poslati. Poskusite znova pozneje.'}
+    else throw new Error((j.message||('HTTP '+r.status)))}
+  catch(e){FBK.state='';const det=String((e&&e.message)||e||'').replace(/\s+/g,' ').slice(0,120);
+    FBK.err='Mnenja ni bilo mogoče poslati. Poskusite znova pozneje.'+(det?' (Podrobnosti: '+(/failed to fetch|load failed|networkerror/i.test(det)?'povezava do strežnika je blokirana ali ni dosegljiva':det)+')':'')}
   render();
 }
 function apkUrl(){return `https://github.com/${CFG.owner}/${CFG.repo}/releases/download/apk/Brihta.apk`}
