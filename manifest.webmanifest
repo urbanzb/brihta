@@ -1,8 +1,8 @@
 {
  "id": "./",
- "name": "Brihta",
- "short_name": "Brihta",
- "description": "Brihta: igrive vaje za angleške besede iz šole.",
+ "name": "Ludamus",
+ "short_name": "Ludamus",
+ "description": "Ludamus: igrajmo se! Igrive vaje za angleške besede iz šole.",
  "lang": "sl",
  "start_url": "./",
  "scope": "./",

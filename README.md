@@ -1,6 +1,8 @@
-# Brihta
+# Ludamus
 
-Brihta je aplikacija z igrivimi vajami za angleške besede iz šole, ločeno za vsak razred (1.a, 1.b …). Vsebuje: kartice, poveži, spomin, poslušaj, sestavi besedo, najdi, igro za dva (na enem telefonu ali vsak s svojim) in slovarček.
+*Ludamus* je latinsko in pomeni »igrajmo se!«. Aplikacija se je prej imenovala Brihta. Naslov je **https://ludamus.si/**; dokler domena ni nastavljena, deluje na **https://urbanzb.github.io/ludamus/**.
+
+Ludamus je aplikacija z igrivimi vajami za angleške besede iz šole, ločeno za vsak razred (1.a, 1.b …). Vsebuje: kartice, poveži, spomin, poslušaj, sestavi besedo, najdi, igro za dva (na enem telefonu ali vsak s svojim) in slovarček.
 
 Dodatno:
 - **Pametno ponavljanje:** besede, ki jih otrok zgreši, se pojavljajo pogosteje. Ko so vsaj tri takšne, se med temami pokaže **🔁 Ponovi**.
@@ -13,15 +15,15 @@ Na začetnem zaslonu najprej izberete temo (okvir **Izberi temo**), nato igro (o
 
 ## Namestitev na telefon
 
-Povezava: **https://urbanzb.github.io/brihta/**
+Povezava: **https://ludamus.si/**
 
-Ob prvem zagonu aplikacija vpraša za razred. Povezava z oznako razreda ga izbere sama, na primer **https://urbanzb.github.io/brihta/#1b** za 1.b. Razred zamenjate z gumbom ob imenu Brihta.
+Ob prvem zagonu aplikacija vpraša za razred. Povezava z oznako razreda ga izbere sama, na primer **https://ludamus.si/#1b** za 1.b. Razred zamenjate z gumbom ob imenu Ludamus.
 
-**Android:** povezavo odpri v **Chromu** (ali Samsung Internetu). Aplikacija sama ponudi gumb **Namesti**. Če ga ni, odpri meni **⋮** in izberi **Namesti aplikacijo**. Aplikacija se pojavi med ostalimi aplikacijami z imenom **Brihta**.
+**Android:** povezavo odpri v **Chromu** (ali Samsung Internetu). Aplikacija sama ponudi gumb **Namesti**. Če ga ni, odpri meni **⋮** in izberi **Namesti aplikacijo**. Aplikacija se pojavi med ostalimi aplikacijami z imenom **Ludamus**.
 
 **iPhone:** povezavo odpri v **Safariju**, tapni gumb **Deli** (kvadrat s puščico) in izberi **Dodaj na začetni zaslon**.
 
-**Android, če se aplikacija odpira v brskalniku:** namesti različico APK s povezave **https://github.com/urbanzb/brihta/releases/download/apk/Brihta.apk**. Telefon bo vprašal, ali dovoliš namestitev iz tega vira: dovoli in tapni **Namesti**. Če Play Protect opozori na neznano aplikacijo, izberi **Več podrobnosti → Vseeno namesti**.
+**Android, če se aplikacija odpira v brskalniku:** namesti različico APK s povezave **https://github.com/urbanzb/ludamus/releases/download/apk/Ludamus.apk**. Telefon bo vprašal, ali dovoliš namestitev iz tega vira: dovoli in tapni **Namesti**. Če Play Protect opozori na neznano aplikacijo, izberi **Več podrobnosti → Vseeno namesti**.
 
 Posodobitev ni treba nameščati. Zgodijo se same ob odprtju aplikacije, ko je telefon povezan s spletom.
 
@@ -38,7 +40,7 @@ V **⚙️ → Moje besede** lahko dodate svoje besede, tudi s prilepljanjem bes
 
 ## Izgovorjava
 
-Brihta uporablja **britansko angleščino**. Če telefon nima britanskega glasu, aplikacija na začetnem zaslonu opozori. Britanski glas namestite v nastavitvah telefona pod **Pretvorba besedila v govor** (jezik: angleščina, Združeno kraljestvo). Natančna pot se med telefoni nekoliko razlikuje.
+Ludamus uporablja **britansko angleščino**. Če telefon nima britanskega glasu, aplikacija na začetnem zaslonu opozori. Britanski glas namestite v nastavitvah telefona pod **Pretvorba besedila v govor** (jezik: angleščina, Združeno kraljestvo). Natančna pot se med telefoni nekoliko razlikuje.
 
 Slovenske besede bere slovenski glas, če ga telefon ima, sicer hrvaški. Izgovorjavo slovenskih besed izklopite z gumbom **🔊 SLO**.
 
@@ -49,7 +51,7 @@ V **⚙️ → Pošlji mnenje** nam lahko sporočite, kaj vam je všeč in kaj b
 ## Zasebnost
 
 Aplikacija nima prijav. Zvezdice, nastavitve, napredek otroka in lastne besede so shranjeni samo na vaši napravi.
-- **Anonimna statistika:** Brihta pošilja le skupne dnevne seštevke, na primer koliko iger spomina je bilo odigranih in katere besede iz šole so bile zgrešene. Ne pošilja imen, oznak naprave ali lastnih besed. Izklopite jo v **⚙️ → Anonimna statistika**.
+- **Anonimna statistika:** Ludamus pošilja le skupne dnevne seštevke, na primer koliko iger spomina je bilo odigranih in katere besede iz šole so bile zgrešene. Ne pošilja imen, oznak naprave ali lastnih besed. Izklopite jo v **⚙️ → Anonimna statistika**.
 - **Igra vsak s svojim telefonom:** med igro se v Firebase shranijo le kartice, živalci in točke, brez imen. Igra se izbriše, ko jo ustvarjalec zapusti.
 - **Mnenje:** pošljete ga iz svoje e-pošte, zato avtor vidi vaš e-poštni naslov in vam lahko odgovori.
 
@@ -92,7 +94,7 @@ Ostali dobijo nove besede v nekaj minutah. Datum zadnje objave je zapisan na dnu
 Skrbniški način za objavo potrebuje žeton, ki ostane samo na tvojem telefonu. Nikomur ga ne pošiljaj.
 
 1. V brskalniku odpri **github.com/settings/personal-access-tokens/new** (na telefonu po potrebi vklopi **Spletno mesto za računalnike**).
-2. **Token name:** `appANG`, **Expiration:** najdaljši možni rok, **Repository access:** **Only select repositories → brihta**, **Permissions:** **Contents → Read and write**.
+2. **Token name:** `appANG`, **Expiration:** najdaljši možni rok, **Repository access:** **Only select repositories → ludamus**, **Permissions:** **Contents → Read and write**.
 3. **Generate token**, žeton kopiraj in ga prilepi v **Skrbniški način → Žeton → Shrani in preveri**.
 
 Ko žeton poteče ali izgubiš telefon, ga na isti strani izbriši in ustvari novega. Žeton vpiši v aplikaciji, ki jo dejansko uporabljaš, ker ima vsak brskalnik svojo shrambo.
@@ -128,7 +130,7 @@ V **Skrbniški način → 🏫 Razredi** urejaš seznam razredov. Ime lahko spre
 - Vsaka objavljena tema ima v urejevalniku vrstico **Razred** s polji za izbiro. Tema lahko pripada enemu ali več razredom, na primer skupna tema za 1.a in 1.b.
 - Teme brez oznake pripadajo prvemu razredu na seznamu, zato vse dosedanje teme ostanejo v 1.a.
 - Ko ustvariš novo temo (s prilepljanjem besed ali z obrazcem **Nova tema**), v vrstici **Razred** izbereš, kateremu razredu ali razredom pripada. Privzeto je označen razred, ki je trenutno izbran v aplikaciji. Pri prilepljanju besed v obstoječo temo aplikacija pokaže njen razred.
-- Staršem posameznega razreda pošlji povezavo z oznako razreda, na primer `…/brihta/#1b`. Oznako (`1a`, `1b` …) vidiš v razdelku Razredi.
+- Staršem posameznega razreda pošlji povezavo z oznako razreda, na primer `ludamus.si/#1b`. Oznako (`1a`, `1b` …) vidiš v razdelku Razredi.
 - Lastne besede staršev so vidne v vseh razredih.
 - Statistika uporabe prikazuje tudi število odprtij po razredih.
 
@@ -148,15 +150,15 @@ Statistika trgovine (namestitve, ocene, sesutja) bo na voljo v Play Console, ko 
 
 ## Mnenja
 
-Mnenja prihajajo na **uzbmobileapps@gmail.com** kot navadna e-pošta z zadevo »Brihta: mnenje …«. V sporočilu sta tudi različica aplikacije in vrsta naprave. Odgovoriš neposredno iz pošte. Naslov za mnenja je zapisan v kodi (`FEEDBACK_EMAIL` v `index.html`).
+Mnenja prihajajo na **uzbmobileapps@gmail.com** kot navadna e-pošta z zadevo »Ludamus: mnenje …«. V sporočilu sta tudi različica aplikacije in vrsta naprave. Odgovoriš neposredno iz pošte. Naslov za mnenja je zapisan v kodi (`FEEDBACK_EMAIL` v `index.html`).
 
 ## Britanska angleščina
 
-Brihta uporablja izključno britansko angleščino v zapisu (colour, favourite, grey, lorry, biscuit, sweets, mum, trousers, rubber, football) in izgovorjavi (en-GB). Pri dodajanju besed aplikacija zazna ameriške oblike in ponudi popravek. Ameriške besede so v seznamu označene s 💂. Navodila za Claude projekt prav tako zahtevajo britansko angleščino.
+Ludamus uporablja izključno britansko angleščino v zapisu (colour, favourite, grey, lorry, biscuit, sweets, mum, trousers, rubber, football) in izgovorjavi (en-GB). Pri dodajanju besed aplikacija zazna ameriške oblike in ponudi popravek. Ameriške besede so v seznamu označene s 💂. Navodila za Claude projekt prav tako zahtevajo britansko angleščino.
 
 ## Težave pri skrbništvu
 
-- **»Žeton nima pravice za pisanje«:** pri žetonu preveri dovoljenje **Contents: Read and write** in izbrani repozitorij `brihta`.
+- **»Žeton nima pravice za pisanje«:** pri žetonu preveri dovoljenje **Contents: Read and write** in izbrani repozitorij `ludamus`.
 - **Napaka v objavljeni besedi:** v skrbniškem načinu besedo izbriši, jo dodaj pravilno in znova objavi.
 - **Firebase javi napako o dostopu ali se statistika ne naloži:** preveri, ali so v Realtime Database objavljena najnovejša pravila iz `firebase-pravila.json`.
 - **Gradnja APK ima rdeči križec:** odpri zagon v zavihku **Actions** in preberi besedilo napake v koraku z rdečim križcem.
@@ -170,3 +172,14 @@ Koda je pripravljena na druge predmete, uporabnik pa zaenkrat vidi samo angleš�
 - na začetni zaslon se doda izbira predmeta, ki nastavi `S.subject`.
 
 Igre delujejo za vse pare oblike *a = b*, izgovorjava pa sledi jezikoma `langA` in `langB` izbranega predmeta.
+
+
+## Lastna domena ludamus.si
+
+1. **DNS pri ponudniku domene.** Za `ludamus.si` dodaj štiri zapise **A**: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`. Za `www` dodaj zapis **CNAME** z vrednostjo `urbanzb.github.io`. Obstoječe zapise A za `ludamus.si` (npr. parkirna stran ponudnika) izbriši.
+2. **Datoteka CNAME.** Šele ko DNS deluje (lahko traja nekaj ur), v repozitorij naloži datoteko `CNAME` z vrstico `ludamus.si`. Prej je ne nalagaj, ker bi GitHub stran preusmeril na domeno, ki še ne deluje.
+3. **GitHub.** V **Settings → Pages** mora pri **Custom domain** pisati `ludamus.si` in zeleno potrditev. Vklopi **Enforce HTTPS** (možnost postane dostopna nekaj minut do ene ure po potrditvi).
+4. **APK.** Nalaganje datoteke `CNAME` samodejno zažene gradnjo APK, ki od zdaj nalaga `https://ludamus.si/`. V dnevniku gradnje piše »Naslov aplikacije: https://ludamus.si/«.
+5. **Firebase.** **Authentication → Settings → Authorized domains → Add domain:** `ludamus.si`.
+
+Stari naslov `urbanzb.github.io/ludamus/` GitHub sam preusmeri na domeno. Shranjeni podatki na telefonih (zvezdice, nastavitve, žeton) se ob prehodu na domeno ne prenesejo, ker telefon podatke hrani ločeno za vsak naslov.

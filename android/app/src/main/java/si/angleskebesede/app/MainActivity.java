@@ -21,7 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 /**
- * Ovoj za spletno aplikacijo »Brihta«.
+ * Ovoj za spletno aplikacijo »Ludamus«.
  * Aplikacija se naloži z GitHub Pages, zato se besede in igre posodabljajo same.
  * Most AndroidBridge doda izgovorjavo (Android TTS), shranjevanje datotek in deljenje.
  */
@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
         s.setDatabaseEnabled(true);
         s.setMediaPlaybackRequiresUserGesture(false);
         s.setTextZoom(100);
-        s.setUserAgentString(s.getUserAgentString() + " BrihtaApp/" + BuildConfig.VERSION_CODE);
+        s.setUserAgentString(s.getUserAgentString() + " LudamusApp/" + BuildConfig.VERSION_CODE);
 
         web.addJavascriptInterface(new Bridge(), "AndroidBridge");
         web.setWebViewClient(new AppClient());
