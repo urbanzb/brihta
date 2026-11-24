@@ -17,11 +17,11 @@
 @font-face{font-family:'Grandstander';src:url(grandstander.woff2) format('woff2');font-weight:600 800;font-display:swap}
 @font-face{font-family:'Atkinson Hyperlegible';src:url(atkinson-regular.woff2) format('woff2');font-weight:400;font-display:swap}
 @font-face{font-family:'Atkinson Hyperlegible';src:url(atkinson-bold.woff2) format('woff2');font-weight:700;font-display:swap}
-:root{--paper:#EAF3FB;--card:#FFFFFF;--ink:#1F2A44;--soft:#56688A;--line:#D3E4F4;--sun:#FFC93C;--sky:#3D8BFD;--leaf:#1E9E62;--berry:#D93D6E;--okbg:#DDF6E8;--thbg:#ECE6FF;--th:#7B61FF;--tabbg:#FFF0C2;--nobg:#FDE3EB;
+:root{--paper:#EAF3FB;--card:#FFFFFF;--ink:#1F2A44;--soft:#56688A;--line:#D3E4F4;--sun:#FFC93C;--sky:#3D8BFD;--leaf:#1E9E62;--berry:#D93D6E;--okbg:#DDF6E8;--thbg:#ECE6FF;--th:#7B61FF;--tabbg:#FFF0C2;--nobg:#FDE3EB;--edge:#1F2A44;--shadow:#1F2A44;--panel:#EAF3FB;
 --display:'Grandstander','Trebuchet MS',system-ui,sans-serif;--body:'Atkinson Hyperlegible',Verdana,system-ui,sans-serif;
 color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#132039;--card:#1E2C4B;--ink:#EEF3FB;--soft:#A9B9D4;--line:#1C2C4D;--sky:#6AA8FF;--leaf:#3CCB86;--berry:#FF6E98;--okbg:#18402F;--thbg:#2E2552;--th:#A894FF;--tabbg:#1F4B57;--nobg:#4A1D30;color-scheme:dark}}
-:root[data-theme="dark"]{--paper:#132039;--card:#1E2C4B;--ink:#EEF3FB;--soft:#A9B9D4;--line:#1C2C4D;--sky:#6AA8FF;--leaf:#3CCB86;--berry:#FF6E98;--okbg:#18402F;--thbg:#2E2552;--th:#A894FF;--tabbg:#1F4B57;--nobg:#4A1D30;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#0E1830;--card:#1B2A47;--ink:#EEF3FB;--soft:#A9B9D4;--line:#16233E;--edge:#3B5078;--shadow:#070E1E;--panel:#0F1B33;--sky:#6AA8FF;--leaf:#3CCB86;--berry:#FF6E98;--okbg:#18402F;--thbg:#2E2552;--th:#A894FF;--tabbg:#1F4B57;--nobg:#4A1D30;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#0E1830;--card:#1B2A47;--ink:#EEF3FB;--soft:#A9B9D4;--line:#16233E;--edge:#3B5078;--shadow:#070E1E;--panel:#0F1B33;--sky:#6AA8FF;--leaf:#3CCB86;--berry:#FF6E98;--okbg:#18402F;--thbg:#2E2552;--th:#A894FF;--tabbg:#1F4B57;--nobg:#4A1D30;color-scheme:dark}
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
 body{margin:0;background-color:var(--paper);background-image:repeating-linear-gradient(to bottom,transparent 0 35px,var(--line) 35px 37px);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.45;min-height:100vh;-webkit-tap-highlight-color:transparent}
@@ -31,8 +31,8 @@ button:focus-visible,[role=button]:focus-visible,input:focus-visible,select:focu
 h1,h2,h3,h4{font-family:var(--display);margin:0;line-height:1.1}
 .word{font-family:var(--display);font-weight:800;overflow-wrap:anywhere}
 .caps .word{text-transform:uppercase}
-.press{background:var(--card);border:2.5px solid var(--ink);box-shadow:0 5px 0 var(--ink);transition:transform .08s,box-shadow .08s}
-.press:active{transform:translateY(3px);box-shadow:0 2px 0 var(--ink)}
+.press{background:var(--card);border:2.5px solid var(--edge);box-shadow:0 5px 0 var(--shadow);transition:transform .08s,box-shadow .08s}
+.press:active{transform:translateY(3px);box-shadow:0 2px 0 var(--shadow)}
 .press:disabled{opacity:.5}
 .hero{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:8px 0 18px}
 .hero h1{font-size:clamp(34px,9vw,52px);font-weight:800}
@@ -55,13 +55,13 @@ body.flying .hero .owl{visibility:hidden}
 .pill{border-radius:999px;padding:5px 12px;font-family:var(--display);font-weight:800;min-width:60px;white-space:nowrap}
 .pill.off{opacity:.5;text-decoration:line-through}
 .note{font-size:15px;color:var(--soft);background:var(--card);border-left:4px solid var(--sun);border-radius:6px;padding:8px 12px;margin:0 0 16px}
-.banner{display:flex;align-items:center;gap:10px;background:var(--card);border:2.5px solid var(--ink);border-radius:14px;padding:10px 12px;margin:0 0 16px;font-size:16px}
+.banner{display:flex;align-items:center;gap:10px;background:var(--card);border:2.5px solid var(--edge);border-radius:14px;padding:10px 12px;margin:0 0 16px;font-size:16px}
 .banner span{flex:1}
 .label{font-size:20px;margin:6px 0 10px}
 .chips{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 12px;margin:0 -2px}
-.chip{flex-shrink:0;border-radius:999px;padding:8px 16px;background:var(--card);border:2.5px solid var(--ink);font-weight:700}
+.chip{flex-shrink:0;border-radius:999px;padding:8px 16px;background:var(--card);border:2.5px solid var(--edge);font-weight:700}
 .chip small{color:var(--soft);font-weight:400;margin-left:4px}
-.chip.on{background:var(--c);color:#1F2A44;box-shadow:0 4px 0 var(--ink)}
+.chip.on{background:var(--c);color:#1F2A44;box-shadow:0 4px 0 var(--shadow)}
 .chip.on small{color:#1F2A44}
 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--berry);margin-left:6px;vertical-align:middle}
 .games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:14px 0 26px}
@@ -80,7 +80,7 @@ body.flying .hero .owl{visibility:hidden}
 .flash{position:relative;width:min(100%,360px);height:340px;perspective:1000px;cursor:pointer;transform:rotate(-1.5deg)}
 .flash .inner{position:absolute;inset:0;transition:transform .45s;transform-style:preserve-3d;-webkit-transform-style:preserve-3d}
 .flash.flipped .inner{transform:rotateY(180deg)}
-.face{position:absolute;inset:0;background:var(--card);border:2.5px solid var(--ink);border-radius:8px;box-shadow:0 6px 0 var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;backface-visibility:hidden;-webkit-backface-visibility:hidden;text-align:center}
+.face{position:absolute;inset:0;background:var(--card);border:2.5px solid var(--edge);border-radius:8px;box-shadow:0 6px 0 var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;backface-visibility:hidden;-webkit-backface-visibility:hidden;text-align:center}
 .face.back{transform:rotateY(180deg)}
 .tape{position:absolute;top:-14px;left:50%;width:110px;height:28px;margin-left:-55px;background:var(--c);opacity:.85;transform:rotate(3deg);z-index:2;border-radius:2px}
 .badge{position:absolute;top:14px;right:14px;background:var(--berry);color:#fff;font-family:var(--display);font-weight:800;font-size:14px;padding:3px 10px;border-radius:999px}
@@ -126,7 +126,7 @@ body.flying .hero .owl{visibility:hidden}
 .spell-pic{font-size:96px;line-height:1}
 .spell-sl{font-size:20px;color:var(--soft)}
 .slots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
-.slot{width:44px;height:54px;border:0;border-bottom:4px solid var(--ink);background:transparent;font-size:28px;padding:0;border-radius:4px}
+.slot{width:44px;height:54px;border:0;border-bottom:4px solid var(--edge);background:transparent;font-size:28px;padding:0;border-radius:4px}
 .slot.full{background:var(--card)}
 .slot.bad{background:var(--nobg);border-color:var(--berry);animation:shake .35s}
 .slot.good{background:var(--okbg);border-color:var(--leaf)}
@@ -147,8 +147,8 @@ body.flying .hero .owl{visibility:hidden}
 .opt.no{background:var(--nobg);border-color:var(--berry)}
 .fb{text-align:center;font-size:20px}
 .fb strong{font-family:var(--display);display:block;font-size:26px;margin-bottom:4px}
-.msg{background:var(--card);border:2.5px solid var(--ink);border-radius:16px;padding:20px;text-align:center}
-.card{background:var(--card);border:2.5px solid var(--ink);border-radius:16px;padding:16px;margin-bottom:16px}
+.msg{background:var(--card);border:2.5px solid var(--edge);border-radius:16px;padding:20px;text-align:center}
+.card{background:var(--card);border:2.5px solid var(--edge);border-radius:16px;padding:16px;margin-bottom:16px}
 .card h3{font-size:21px;margin-bottom:6px}
 .card .instr{margin-bottom:12px}
 .btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -178,47 +178,54 @@ code{background:var(--paper);padding:1px 6px;border-radius:6px;font-size:15px}
 .fbmeta{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--soft)}.fbmeta .x{margin-left:auto}
 .fbitem p{margin:6px 0 0}
 .chips.wrap{flex-wrap:wrap;overflow:visible;padding-bottom:4px}
-.hstep{background:var(--card);border:2.5px solid var(--ink);border-radius:20px;padding:14px 14px 16px;margin:0 0 16px}
+.hstep{background:var(--card);border:2.5px solid var(--edge);border-radius:20px;padding:14px 14px 16px;margin:0 0 16px}
 .hlab{font-size:22px;font-weight:800;margin:0 0 10px}
 .hqrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-4px 0 10px}
 .hq{margin:0;color:var(--soft);font-size:16px}
 .ftabs{display:flex;align-items:stretch}
-.ftab{flex:1 1 0;min-width:0;border:2.5px solid var(--ink);border-radius:14px 14px 0 0;background:var(--paper);padding:10px 4px;margin:0;font-family:var(--display);font-weight:800;font-size:17px;color:var(--soft);position:relative}
+.ftab{flex:1 1 0;min-width:0;border:2.5px solid var(--edge);border-radius:14px 14px 0 0;background:var(--paper);padding:10px 4px;margin:0;font-family:var(--display);font-weight:800;font-size:17px;color:var(--soft);position:relative}
 .ftab+.ftab{margin-left:-2.5px}
 .ftab.on{background:var(--tabbg);color:var(--ink);border-bottom-color:var(--tabbg);z-index:1}
-.fpanel{background:var(--tabbg);border:2.5px solid var(--ink);border-top:0;border-radius:0 0 16px 16px;padding:10px}
+.fpanel{background:var(--tabbg);border:2.5px solid var(--edge);border-top:0;border-radius:0 0 16px 16px;padding:10px}
 .hstep.hgame{padding-left:6px;padding-right:6px}
 .hstep.hgame .hlab,.hstep.hgame .hqrow{margin-left:8px;margin-right:8px}
 .fpanel .games{margin:0}
-.qbtn{width:36px;height:36px;border-radius:50%;font-family:var(--display);font-weight:800;font-size:20px;line-height:1;padding:0;flex-shrink:0;box-shadow:0 3px 0 var(--ink)}
+.qbtn{width:36px;height:36px;border-radius:50%;font-family:var(--display);font-weight:800;font-size:20px;line-height:1;padding:0;flex-shrink:0;box-shadow:0 3px 0 var(--shadow)}
 .qbtn.on{background:var(--sun);color:#1F2A44}
 .games.compact{gap:10px}
 /* 2.9: preprostejša izbira igre in barvne ploščice iger */
 .hhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}
 .hhead .hlab{margin:0}
 /* stikalo »Igram sam / Igrava dva« in podlaga z igrami, puščica kaže izbrano polovico */
-.gmode{display:grid;grid-template-columns:1fr 1fr;border:2.5px solid var(--ink);border-radius:16px;overflow:hidden;background:var(--card)}
+.gmode{display:grid;grid-template-columns:1fr 1fr;border:2.5px solid var(--edge);border-radius:16px;overflow:hidden;background:var(--card)}
 .gmode button{border:0;border-radius:0;margin:0;padding:11px 6px;background:var(--card);color:var(--soft);font-family:var(--display);font-weight:800;font-size:17px;box-shadow:none}
-.gmode button+button{border-left:2.5px solid var(--ink)}
+.gmode button+button{border-left:2.5px solid var(--edge)}
 .gmode button.on{background:var(--sun);color:#1F2A44}
 .gpoint{position:relative;height:12px}
-.gpoint svg{position:absolute;top:0;left:calc(25% - 12px);width:24px;height:12px;fill:var(--paper)}
+.gpoint svg{position:absolute;top:0;left:calc(25% - 12px);width:24px;height:12px;fill:var(--panel)}
 .gpoint.r svg{left:calc(75% - 12px)}
-.gpanel{background:var(--paper);border-radius:16px;padding:10px}
+.gpanel{background:var(--panel);border-radius:16px;padding:10px}
 .gpanel .games.gtiles{gap:8px}
 .games.gtiles{gap:10px;margin:0;max-width:none;grid-template-columns:repeat(2,minmax(0,1fr))}
-.games.gtiles .game.press{box-shadow:0 4px 0 var(--ink)}
-.games.gtiles .game{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:8px;row-gap:8px;min-height:0;padding:10px 8px;border-radius:16px;background:var(--card);background:color-mix(in srgb,var(--gc) 18%,var(--card))}
-.games.gtiles .game .ico{width:42px;height:42px;border-radius:11px;background:var(--card);border:2.5px solid var(--gc);display:flex;align-items:center;justify-content:center;font-size:23px;line-height:1;flex-shrink:0}
+.games.gtiles .game.press{box-shadow:0 4px 0 var(--shadow)}
+.games.gtiles .game{--g:var(--gc);display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:8px;row-gap:8px;min-height:0;padding:10px 8px;border-radius:16px;background:var(--card);background:color-mix(in srgb,var(--g) 18%,var(--card))}
+.games.gtiles .game .ico{width:42px;height:42px;border-radius:11px;background:var(--card);border:2.5px solid var(--g);display:flex;align-items:center;justify-content:center;font-size:23px;line-height:1;flex-shrink:0}
 .games.gtiles .game b{font-size:17px;line-height:1.15;color:var(--ink);hyphens:manual;overflow-wrap:normal}
 .games.gtiles .game>span:not(.ico):not(.txt){display:none}
 .games.gtiles.withdesc .game>span:not(.ico):not(.txt){display:block;grid-column:1/-1;color:var(--soft);font-size:15px;line-height:1.3}
 .games.gtiles.withdesc .game{align-content:start}
-.morehelp{display:flex;justify-content:center;margin-top:14px}
+/* temna tema: ploščice z obrobo v svoji barvi, izbrani rumeni elementi s temno obrobo */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .games.gtiles .game{--g:var(--gd,var(--gc));border-color:var(--g);background:color-mix(in srgb,var(--g) 22%,var(--card))}}
+:root[data-theme="dark"] .games.gtiles .game{--g:var(--gd,var(--gc));border-color:var(--g);background:color-mix(in srgb,var(--g) 22%,var(--card))}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .games.gtiles .game .ico{background:var(--paper)}}
+:root[data-theme="dark"] .games.gtiles .game .ico{background:var(--paper)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip.on,.stars,.qbtn.on{border-color:#1F2A44}}
+:root[data-theme="dark"] .chip.on,.stars,.qbtn.on{border-color:#1F2A44}
 @media (max-width:340px){.gpanel{padding:8px}.games.gtiles .game{column-gap:6px;padding:8px 6px}.games.gtiles .game .ico{width:30px;height:30px;font-size:17px}.games.gtiles .game b{font-size:14px}}
 @media (max-width:389px){.games.gtiles .game{column-gap:7px;padding:9px 7px}.games.gtiles .game .ico{width:34px;height:34px;font-size:19px;border-radius:9px}.games.gtiles .game b{font-size:15px}}
 .games.gtiles .game.wide{min-height:0;flex-direction:row;align-items:center;gap:12px}
-.games.gtiles .game.wide .txt span{color:var(--soft);font-size:15px}
+.games.gtiles .game.wide .txt span{display:none;color:var(--soft);font-size:15px}
+.games.gtiles.withdesc .game.wide .txt span{display:block}
 .botrow .botbtn{border-radius:999px;padding:12px 8px;font-family:var(--display);font-weight:800;font-size:17px;color:var(--ink)}
 .note.voice{display:flex;gap:10px;align-items:flex-start}.note.voice span{flex:1}
 .note.voice .x{background:none;border:0;font-size:22px;line-height:1;color:var(--soft);padding:0 2px;cursor:pointer}
@@ -230,10 +237,10 @@ code{background:var(--paper);padding:1px 6px;border-radius:6px;font-size:15px}
 .games.compact .game.wide .txt{gap:0}
 @media (max-width:380px){.ftab{font-size:15px}.hstep{padding:12px}}
 .chip.allt{background:transparent;border-style:dashed;color:var(--ink)}
-.seg{display:grid;grid-template-columns:1fr 1fr;border:2.5px solid var(--ink);border-radius:14px;overflow:hidden;margin:8px 0 4px}
+.seg{display:grid;grid-template-columns:1fr 1fr;border:2.5px solid var(--edge);border-radius:14px;overflow:hidden;margin:8px 0 4px}
 .seg button{border:0;background:var(--card);padding:10px 4px;font-family:var(--display);font-weight:800;font-size:18px}
 .seg button.on{background:var(--sun);color:#1F2A44}
-.seg button+button{border-left:2.5px solid var(--ink)}
+.seg button+button{border-left:2.5px solid var(--edge)}
 .botrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
 .botrow .ghost{padding:10px 6px;font-size:15px}
 .clspill{font-family:var(--body);font-size:16px;font-weight:700;border-radius:999px;padding:3px 12px;vertical-align:middle;margin-left:6px}
@@ -249,10 +256,10 @@ code{background:var(--paper);padding:1px 6px;border-radius:6px;font-size:15px}
 .tcard .tn small{font-size:13px;color:var(--soft)}
 .tcard.on .tn small{color:#1F2A44}
 .tcard.sel{background:var(--okbg);border-color:var(--leaf);box-shadow:0 3px 0 var(--leaf)}
-.tchk{position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;border:2px solid var(--ink);background:var(--card);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
+.tchk{position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;border:2px solid var(--edge);background:var(--card);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
 .tcard.sel .tchk{background:var(--leaf);border-color:var(--leaf);color:#fff}
 .sm.on{background:var(--sun);color:#1F2A44}
-.mixbar{position:sticky;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--paper);border-top:2.5px solid var(--ink);margin:12px -16px 0;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
+.mixbar{position:sticky;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--paper);border-top:2.5px solid var(--edge);margin:12px -16px 0;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
 .tnew{position:absolute;top:6px;right:8px;background:var(--berry);color:#fff;font-size:11px;font-weight:700;border-radius:999px;padding:1px 7px}
 .mon{font-size:18px;margin:16px 0 8px}
 .clsrow{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:0 16px 8px;font-size:15px}
@@ -271,7 +278,7 @@ code{background:var(--paper);padding:1px 6px;border-radius:6px;font-size:15px}
 .sv{color:var(--soft);white-space:nowrap}
 .hardl{margin:0;padding-left:22px;font-size:15px}.hardl span{color:var(--berry);font-weight:700}
 .ukflag{font-style:normal;font-size:13px;color:var(--berry)}
-details.ed{background:var(--card);border:2.5px solid var(--ink);border-radius:16px;margin-bottom:14px;overflow:hidden}
+details.ed{background:var(--card);border:2.5px solid var(--edge);border-radius:16px;margin-bottom:14px;overflow:hidden}
 details.ed summary{padding:14px 16px;font-family:var(--display);font-weight:800;font-size:20px;cursor:pointer;list-style-position:inside}
 details.ed summary small{font-family:var(--body);font-weight:400;color:var(--soft);font-size:15px;margin-left:6px}
 .wl{list-style:none;margin:0;padding:0 16px}
@@ -297,10 +304,10 @@ h3.sub{font-size:22px;margin:24px 0 10px}
 .dict-btn .sub2{color:var(--soft);font-size:15px}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
 .search{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);padding:6px 0 10px}
-.search input{width:100%;font:inherit;padding:12px 14px;border:2.5px solid var(--ink);border-radius:14px;background:var(--card);color:var(--ink)}
+.search input{width:100%;font:inherit;padding:12px 14px;border:2.5px solid var(--edge);border-radius:14px;background:var(--card);color:var(--ink)}
 .dgroup h3{font-size:21px;margin:18px 0 8px}
 .dgroup h3 small{font-family:var(--body);font-weight:400;color:var(--soft);font-size:15px;margin-left:4px}
-.dl{list-style:none;margin:0;padding:0;background:var(--card);border:2.5px solid var(--ink);border-radius:16px;overflow:hidden}
+.dl{list-style:none;margin:0;padding:0;background:var(--card);border:2.5px solid var(--edge);border-radius:16px;overflow:hidden}
 .dl li{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid var(--line)}
 .dl li:first-child{border-top:0}
 .dl .p{font-size:30px;width:40px;text-align:center;flex-shrink:0}
@@ -312,10 +319,10 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .animal{width:58px;height:58px;border-radius:50%;font-size:32px;line-height:1;padding:0}
 .animal.on{background:var(--sun)}
 .codebox{font-family:var(--display);font-weight:800;font-size:64px;letter-spacing:.15em;text-align:center;margin:6px 0 10px}
-.codein{font-family:var(--display);font-weight:800;font-size:30px;letter-spacing:.2em;text-align:center;width:6.5em;padding:8px;border:2.5px solid var(--ink);border-radius:14px;background:var(--card);color:var(--ink)}
+.codein{font-family:var(--display);font-weight:800;font-size:30px;letter-spacing:.2em;text-align:center;width:6.5em;padding:8px;border:2.5px solid var(--edge);border-radius:14px;background:var(--card);color:var(--ink)}
 .score{display:flex;justify-content:center;align-items:center;gap:12px;font-family:var(--display);font-weight:800;font-size:26px;margin:0 0 10px}
 .score .pl{display:flex;align-items:center;gap:6px;padding:4px 14px;border-radius:999px;border:2.5px solid transparent}
-.score .pl.turn{border-color:var(--ink);background:var(--sun);color:#1F2A44}
+.score .pl.turn{border-color:var(--edge);background:var(--sun);color:#1F2A44}
 .turnmsg{text-align:center;margin:0 0 14px;font-weight:700}
 .mcard.theirs{background:var(--thbg);border-color:var(--th);box-shadow:0 2px 0 var(--th)}
 .mcard.wait{opacity:.7}
@@ -553,6 +560,7 @@ async function ghPut(path,text,msg){
 
 /* ---------- igre ---------- */
 const GCOL={kartice:'#3D8BFD',povezi:'#1E9E62',spomin:'#D93D6E',kviz:'#7B61FF',crke:'#F08A24',najdi:'#0E9AA7'};
+const GCOLD={kartice:'#5B9DFF',povezi:'#3CCB86',spomin:'#FF6E98',kviz:'#A894FF',crke:'#FFA24C',najdi:'#2EC4CF'};
 const GAMES={kartice:{ico:'🃏',name:'Kartice',desc:'Poglej, poslušaj in obrni.',need:1},povezi:{ico:'🔗',name:'Poveži',desc:'Angleška beseda najde slovenski par.',need:3},spomin:{ico:'🧠',name:'Spomin',desc:'Odkrivaj kartice in poišči pare.',need:3},kviz:{ico:'👂',name:'Poslušaj',desc:'Slišiš besedo, izbereš sliko.',need:4},crke:{ico:'🔤',name:'Sestavi besedo',desc:'Iz premešanih črk sestavi angleško besedo.',need:3},najdi:{ico:'🔍',name:'Najdi',desc:'Zapomni si, kje je katera slika.',need:6}};
 let G={};
 function star(){S.stars++;savePrefs();setTimeout(()=>sfx('win'),350)}
@@ -599,18 +607,18 @@ function renderHome(){
     let show=rec.slice(0,3);const sel=ts.find(t=>t.id===S.topic);if(sel&&!show.includes(sel))show=[sel,...show.slice(0,2)];
     if(show.length<3)for(const t of ts.slice().reverse()){if(show.length>=3)break;if(!show.includes(t))show.push(t)}
     chips+=show.map(topicChip).join('')+`<button class="chip allt" data-act="nav" data-v="teme">Vse teme (${ts.length}) ›</button>`}
-  const games=Object.entries(GAMES).map(([k,g])=>`<button class="game press" style="--gc:${GCOL[k]||'#3D8BFD'}" data-act="game" data-g="${k}"><span class="ico">${g.ico}</span><b>${g.name}</b><span>${g.desc}</span></button>`).join('');
+  const games=Object.entries(GAMES).map(([k,g])=>`<button class="game press" style="--gc:${GCOL[k]||'#3D8BFD'};--gd:${GCOLD[k]||'#5B9DFF'}" data-act="game" data-g="${k}"><span class="ico">${g.ico}</span><b>${g.name}</b><span>${g.desc}</span></button>`).join('');
   const online=duoReady();
-  const duo=`<button class="game wide press" style="--gc:#D93D6E" data-act="duomode" data-m="local"><span class="ico">📱</span><span class="txt"><b>Spomin na enem telefonu</b><span>Igrata izmenično in si telefon podajata.</span></span></button>
-   ${online?`<button class="game press" style="--gc:#3D8BFD" data-act="duomode" data-m="create"><span class="ico">➕</span><b>Ustvari igro</b><span>Prijatelju poveš kodo in igrata vsak s svojim telefonom.</span></button>
-   <button class="game press" style="--gc:#1E9E62" data-act="duomode" data-m="join"><span class="ico">🔑</span><b>Pridruži se</b><span>Vpiši kodo, ki ti jo pove prijatelj.</span></button>`:`<p class="note" style="grid-column:1/-1">Igra vsak s svojim telefonom še ni nastavljena.</p>`}`;
+  const duo=`<button class="game wide press" style="--gc:#D93D6E;--gd:#FF6E98" data-act="duomode" data-m="local"><span class="ico">📱</span><span class="txt"><b>Spomin na enem telefonu</b><span>Igrata izmenično in si telefon podajata.</span></span></button>
+   ${online?`<button class="game press" style="--gc:#3D8BFD;--gd:#5B9DFF" data-act="duomode" data-m="create"><span class="ico">➕</span><b>Ustvari igro</b><span>Prijatelju poveš kodo in igrata vsak s svojim telefonom.</span></button>
+   <button class="game press" style="--gc:#1E9E62;--gd:#3CCB86" data-act="duomode" data-m="join"><span class="ico">🔑</span><b>Pridruži se</b><span>Vpiši kodo, ki ti jo pove prijatelj.</span></button>`:`<p class="note" style="grid-column:1/-1">Igra vsak s svojim telefonom še ni nastavljena.</p>`}`;
     app.innerHTML=`<header class="hero"><div class="brand"><h1><span class="sr">Ludamus</span>${OWL}</h1></div><div class="tools"><span class="stars" title="Zbrane zvezdice">⭐ ${S.stars}</span><button class="pill press" data-act="caps" title="Velike ali male črke">${S.caps?'ABC':'abc'}</button><button class="pill press ${S.slo?'':'off'}" data-act="slo" aria-pressed="${S.slo}" title="Izgovorjava slovenskih besed">🔊 SLO</button><button class="pill press ${S.sfx?'':'off'}" data-act="sfx" aria-pressed="${S.sfx}" aria-label="Zvočni učinki" title="Zvočni učinki">${S.sfx?'🔔':'🔕'}</button></div></header>
   ${installBanner()}${helpBanner()}${voiceNotesHome()}
   ${!ts.length&&!S.loaded?`<p class="loading">Nalagam besede …</p>`:`<section class="hstep" aria-labelledby="h-tema"><h2 class="hlab" id="h-tema">Izberi temo${classes().length>1?`<button class="clspill press" data-act="nav" data-v="razred" aria-label="Zamenjaj razred">${h(CLS().name)} ▾</button>`:''}</h2><div class="chips wrap">${chips}</div></section>
   <section class="hstep" aria-labelledby="h-igra"><div class="hhead"><h2 class="hlab" id="h-igra">Izberi igro</h2><button class="qbtn press ${S.desc?'on':''}" data-act="desc" aria-pressed="${S.desc}" aria-label="${S.desc?'Skrij opise iger':'Pokaži opise iger'}" title="${S.desc?'Skrij opise iger':'Kako se igra?'}">${S.desc?'✕':'?'}</button></div>
    <div class="gmode" role="group" aria-label="Koliko vas igra?"><button class="${S.tab==='one'?'on':''}" data-act="tab" data-t="one" aria-pressed="${S.tab==='one'}">🙋 Igram sam</button><button class="${S.tab==='two'?'on':''}" data-act="tab" data-t="two" aria-pressed="${S.tab==='two'}">👫 Igrava dva</button></div>
    <div class="gpoint ${S.tab==='two'?'r':''}" aria-hidden="true"><svg viewBox="0 0 24 12"><path d="M0 12 L12 0 L24 12 Z"/></svg></div>
-   <div class="gpanel"><div class="games gtiles ${S.desc?'withdesc':''}">${S.tab==='two'?duo:games}</div>${S.desc?`<div class="morehelp"><button class="sm press" data-act="nav" data-v="pomoc">❓ Vsa navodila</button></div>`:''}</div></section>`}
+   <div class="gpanel"><div class="games gtiles ${S.desc?'withdesc':''}">${S.tab==='two'?duo:games}</div></div></section>`}
   <div class="botrow"><button class="botbtn press" data-act="nav" data-v="slovar">Slovarček</button><button class="botbtn press" data-act="nav" data-v="settings">Nastavitve</button></div>`;
 }
 const MESECI=['januar','februar','marec','april','maj','junij','julij','avgust','september','oktober','november','december'];

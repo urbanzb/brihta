@@ -7,7 +7,8 @@ Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Nov
 - Prenovljena začetna stran: »Igram sam« in »Igrava dva« sta stikalo, igre pa so pod njim na svetlo modri podlagi s puščico, ki kaže izbrani način.
 - Ime igre je desno od ikone.
 - Barvne ploščice iger v mreži 2 × 3, vsaka igra ima svojo barvo.
-- Gumb ? ob naslovu »Izberi igro« pokaže kratke opise iger in gumb za vsa navodila. Spodaj sta le še Slovarček in Nastavitve.
+- Gumb ? ob naslovu »Izberi igro« pokaže kratke opise iger. Spodaj sta le še Slovarček in Nastavitve.
+- Prenovljena temna tema: jasne ravni svetlosti, temne sence, temnejša podlaga z igrami in ploščice z obrobo v svoji barvi.
 - Navodila so vedno dosegljiva v Nastavitvah. Razdelek o anonimni statistiki v navodilih je krajši.
 - Opozorilo o glasu se na začetni strani prikaže z gumbom za zapiranje, vedno pa je v nastavitvah.
 
