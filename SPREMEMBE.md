@@ -2,6 +2,11 @@
 
 Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Novosti). Od različice 2.6 jih aplikacija ne prikazuje več.
 
+## 2.7
+
+- Sovica ob vsakem zagonu pomežikne, pomaha z desno perutjo in v krogu z vrtenjem odleti v levi zgornji kot. Dotik zaslona jo takoj postavi na njeno mesto.
+- Izbira razreda je spet na začetnem zaslonu, ob naslovu »Izberi temo«. Ostaja tudi v nastavitvah.
+
 ## 2.6
 
 - Sovica ob zagonu počasi odleti v levi zgornji kot. Uvodni zaslon prikaže samo sovico.

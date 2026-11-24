@@ -41,13 +41,14 @@ h1,h2,h3,h4{font-family:var(--display);margin:0;line-height:1.1}
 .brand h1{line-height:0}
 .brand .owl{width:46px;height:auto;display:block}
 .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-#splash{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:var(--paper);transition:opacity .35s ease}
-#splash .owl{width:140px;height:auto;animation:owlin .5s ease-out both}
-#splash.hide{opacity:0;pointer-events:none}
-#splash.fly{background-color:transparent;pointer-events:none;transition:background-color .7s ease}
+#splash{position:fixed;inset:0;z-index:100;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#splash .sbg{position:absolute;inset:0;background:var(--paper)}
+#splash .owl{position:absolute;left:50%;top:50%;width:200px;height:200px;margin:-100px 0 0 -100px;overflow:visible;opacity:0}
+#splash .wl,#splash .wr,#splash .eyes{transform-box:view-box}
+#splash .wl{transform-origin:31px 62px}#splash .wr{transform-origin:89px 62px}#splash .eyes{transform-origin:60px 55px}
+#splash.fade{opacity:0;transition:opacity .35s ease}
 body.flying .hero .owl{visibility:hidden}
-@keyframes owlin{from{transform:scale(.6) translateY(12px);opacity:0}to{transform:none;opacity:1}}
-@media (prefers-reduced-motion:reduce){#splash .owl{animation:none}#splash{transition:none}}
+.hlab .clspill{font-size:15px;margin-left:8px;vertical-align:4px}
 .tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;max-width:52%}
 .stars{font-family:var(--display);font-weight:800;background:var(--sun);color:#1F2A44;border-radius:999px;padding:6px 12px;white-space:nowrap}
 .pill{border-radius:999px;padding:5px 12px;font-family:var(--display);font-weight:800;min-width:60px;white-space:nowrap}
@@ -292,12 +293,12 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 @media (prefers-reduced-motion:reduce){.flash .inner{transition:none}.tile.no,.mcard.no{animation:none}.press{transition:none}}
 </style>
 </head>
-<body>
-<div id="splash" aria-hidden="true"><svg class="owl" viewBox="24 10 72 102" aria-hidden="true" focusable="false"><path d="M30 42 L35 16 L50 32 H70 L85 16 L90 42 V80 Q90 104 60 104 Q30 104 30 80 Z" fill="#3D8BFD"/><ellipse cx="60" cy="88" rx="16" ry="10" fill="#8DBBFF"/><circle cx="47" cy="54" r="13" fill="#fff"/><circle cx="73" cy="54" r="13" fill="#fff"/><circle cx="48" cy="56" r="6" fill="#17324D"/><circle cx="74" cy="56" r="6" fill="#17324D"/><path d="M55 66 H65 L60 74 Z" fill="#F0A21A"/><ellipse cx="51" cy="106" rx="5" ry="3" fill="#F0A21A"/><ellipse cx="69" cy="106" rx="5" ry="3" fill="#F0A21A"/></svg></div>
+<body class="flying">
+<div id="splash" aria-hidden="true"><div class="sbg"></div><svg class="owl" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><g class="wl"><ellipse cx="28" cy="76" rx="7" ry="16" fill="#2B6FD6"/></g><g class="wr"><ellipse cx="92" cy="76" rx="7" ry="16" fill="#2B6FD6"/></g><path d="M30 42 L35 16 L50 32 H70 L85 16 L90 42 V80 Q90 104 60 104 Q30 104 30 80 Z" fill="#3D8BFD"/><ellipse cx="60" cy="88" rx="16" ry="10" fill="#8DBBFF"/><g class="eyes"><circle cx="47" cy="54" r="13" fill="#fff"/><circle cx="73" cy="54" r="13" fill="#fff"/><circle cx="48" cy="56" r="6" fill="#17324D"/><circle cx="74" cy="56" r="6" fill="#17324D"/></g><path d="M55 66 H65 L60 74 Z" fill="#F0A21A"/><ellipse cx="51" cy="106" rx="5" ry="3" fill="#F0A21A"/><ellipse cx="69" cy="106" rx="5" ry="3" fill="#F0A21A"/></svg></div>
 <div id="app"><p class="loading">Nalagam …</p></div>
 <script>
 'use strict';
-const APP_VERSION='2.6';
+const APP_VERSION='2.7';
 const FEEDBACK_EMAIL='uzbmobileapps@gmail.com'; // mnenja se pošljejo iz uporabnikovega poštnega programa
 /* JEZIK: Ludamus uporablja izključno BRITANSKO angleščino (zapis in izgovorjava en-GB).
    Ameriške oblike pri vnosu zaznamo s US_UK in predlagamo britansko različico. */
@@ -534,7 +535,7 @@ function render(){
 function renderClassPick(first){
   const cl=classes();
   app.innerHTML=(first?`<header class="hero"><div class="brand"><h1><span class="sr">Ludamus</span>${OWL}</h1></div></header>`:bar('Razred'))+
-   `<section class="card"><h3>V kateri razred hodiš?</h3><p class="instr">Prikazane bodo teme tvojega razreda. Razred lahko kadar koli zamenjaš v nastavitvah ⚙️.</p>
+   `<section class="card"><h3>V kateri razred hodiš?</h3><p class="instr">Prikazane bodo teme tvojega razreda. Razred lahko kadar koli zamenjaš ob naslovu »Izberi temo«.</p>
    <div class="clsgrid">${cl.map(c=>`<button class="clsbtn press ${!first&&c.id===CLS().id?'on':''}" data-act="clspick" data-id="${h(c.id)}">${h(c.name)}</button>`).join('')}</div></section>`;
 }
 function topicChip(t){return `<button class="chip ${S.topic===t.id?'on':''}" style="--c:${h(t.color)}" data-act="topic" data-id="${h(t.id)}">${h(t.icon)} ${h(t.name)}${t.words.some(isNew)?'<i class="dot" title="nove besede"></i>':''}<small>${t.words.length}</small></button>`}
@@ -564,7 +565,7 @@ function renderHome(){
    <button class="game press" data-act="duomode" data-m="join"><span class="ico">🔑</span><b>Pridruži se</b><span>Vpiši kodo, ki ti jo pove prijatelj.</span></button>`:`<p class="note" style="grid-column:1/-1">Igra vsak s svojim telefonom še ni nastavljena.</p>`}`;
     app.innerHTML=`<header class="hero"><div class="brand"><h1><span class="sr">Ludamus</span>${OWL}</h1></div><div class="tools"><span class="stars" title="Zbrane zvezdice">⭐ ${S.stars}</span><button class="pill press" data-act="caps" title="Velike ali male črke">${S.caps?'ABC':'abc'}</button><button class="pill press ${S.slo?'':'off'}" data-act="slo" aria-pressed="${S.slo}" title="Izgovorjava slovenskih besed">🔊 SLO</button><button class="pill press ${S.sfx?'':'off'}" data-act="sfx" aria-pressed="${S.sfx}" aria-label="Zvočni učinki" title="Zvočni učinki">${S.sfx?'🔔':'🔕'}</button></div></header>
   ${installBanner()}${helpBanner()}${gbNote()}${slNote()}
-  ${!ts.length&&!S.loaded?`<p class="loading">Nalagam besede …</p>`:`<section class="hstep" aria-labelledby="h-tema"><h2 class="hlab" id="h-tema">Izberi temo</h2><div class="chips wrap">${chips}</div></section>
+  ${!ts.length&&!S.loaded?`<p class="loading">Nalagam besede …</p>`:`<section class="hstep" aria-labelledby="h-tema"><h2 class="hlab" id="h-tema">Izberi temo${classes().length>1?`<button class="clspill press" data-act="nav" data-v="razred" aria-label="Zamenjaj razred">${h(CLS().name)} ▾</button>`:''}</h2><div class="chips wrap">${chips}</div></section>
   <section class="hstep hgame" aria-labelledby="h-igra"><h2 class="hlab" id="h-igra">Izberi igro</h2><div class="hqrow"><p class="hq">Koliko vas igra?</p><button class="qbtn press ${S.desc?'on':''}" data-act="desc" aria-pressed="${S.desc}" aria-label="${S.desc?'Skrij opise iger':'Pokaži opise iger'}" title="${S.desc?'Skrij opise iger':'Kako se igra?'}">${S.desc?'✕':'?'}</button></div>
    <div class="ftabs" role="tablist"><button role="tab" aria-selected="${S.tab==='one'}" class="ftab ${S.tab==='one'?'on':''}" data-act="tab" data-t="one">🙋 Igram sam</button><button role="tab" aria-selected="${S.tab==='two'}" class="ftab ${S.tab==='two'?'on':''}" data-act="tab" data-t="two">👫 Igrava dva</button></div>
    <div class="fpanel" role="tabpanel"><div class="games ${S.desc?'withdesc':'compact'}">${S.tab==='two'?duo:games}</div></div></section>`}
@@ -675,7 +676,7 @@ function fold(s){return String(s).toLowerCase().normalize('NFD').replace(/[\u030
 /* NAVODILA: preprost zapis, ki ga ureja skrbnik (objavi se v besede.json kot "help").
    # Naslov  → nov razdelek,  - besedilo → alineja,  **krepko** → krepko, ostale vrstice so odstavki. */
 const DEFAULT_HELP=`# 🚀 Kako začneš
-- V nastavitvah ⚙️ izberi svoj **razred**, na primer 1.a.
+- Ob naslovu **Izberi temo** izberi svoj **razred**, na primer 1.a. Najdeš ga tudi v nastavitvah ⚙️.
 - Izberi **temo**. Če je ni med prikazanimi, tapni **Vse teme**. Tam so teme razvrščene po mesecih.
 - Za ponavljanje lahko v **Vse teme** tapneš **🧩 Izberi več tem**, označiš več tem in tapneš **Vadi izbrane**.
 - Pri **Izberi igro** odgovori na vprašanje »Koliko vas igra?«: **🙋 Igram sam** ali **👫 Igrava dva**. Nato tapni igro. Z gumbom **?** ob vprašanju »Koliko vas igra?« pokažeš kratke opise iger.
@@ -1153,24 +1154,42 @@ app.addEventListener('toggle',e=>{if(e.target.matches('details.ed')&&e.target.op
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&S.view==='home')loadPub();if(document.visibilityState==='hidden')flushStats()});
 try{speechSynthesis.getVoices();speechSynthesis.addEventListener('voiceschanged',()=>{if(S.view==='home')render()})}catch(e){}
 if('serviceWorker' in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
-/* UVODNI ZASLON: sovica ostane vsaj 0,9 s in izgine, ko so besede naložene (najkasneje po 2 s). */
-const SPLASH_T0=performance.now();
-function hideSplash(now){const el=document.getElementById('splash');if(!el||el.dataset.out)return;el.dataset.out='1';const wait=now?0:Math.max(0,900-(performance.now()-SPLASH_T0));setTimeout(()=>flySplash(el),wait)}
-/* Sovica z uvodnega zaslona počasi odleti na svoje mesto v glavi (zgoraj levo). */
-function flySplash(el){const done=()=>{document.body.classList.remove('flying');el.remove()};
-  const fade=()=>{el.classList.add('hide');setTimeout(done,400)};
-  const from=el.querySelector('.owl'),to=document.querySelector('#app .hero .owl');
-  const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!from||!to||still)return fade();
-  const a=from.getBoundingClientRect(),b=to.getBoundingClientRect();
-  if(!a.width||!b.width||b.bottom<0||b.top>innerHeight)return fade();
-  document.body.classList.add('flying');
-  const dx=(b.left+b.width/2)-(a.left+a.width/2),dy=(b.top+b.height/2)-(a.top+a.height/2),k=b.width/a.width;
-  from.style.animation='none';el.classList.add('fly');
-  let fin=false;const end=()=>{if(fin)return;fin=true;done()};setTimeout(end,1300);
-  try{const an=from.animate([{transform:'none'},{transform:`translate(${dx}px,${dy}px) scale(${k})`}],{duration:900,easing:'cubic-bezier(.45,0,.2,1)',fill:'forwards'});an.onfinish=end}catch(e){end()}}
-document.getElementById('splash')?.addEventListener('click',()=>hideSplash(true));setTimeout(()=>hideSplash(true),2500);
-render();loadPub().then(()=>{hideSplash();trackOpen();setTimeout(flushStats,15000)});
+/* UVODNI ZASLON: sovica se pojavi, pomežikne, pomaha z desno perutjo in v krogu odleti na svoje mesto v glavi.
+   Dotik zaslona jo takoj postavi na končno mesto. Pri zmanjšanem gibanju uvod le zbledi. */
+const SPL={done:false,anims:[],timers:[]};
+function splA(el,k,o){try{const a=el.animate(k,o);SPL.anims.push(a);return a}catch(e){return null}}
+function splT(fn,ms){SPL.timers.push(setTimeout(()=>{if(!SPL.done)fn()},ms))}
+function splEnd(bounce){if(SPL.done)return;SPL.done=true;SPL.timers.forEach(clearTimeout);SPL.anims.forEach(a=>{try{a.cancel()}catch(e){}});
+  document.getElementById('splash')?.remove();document.body.classList.remove('flying');
+  const to=document.querySelector('#app .hero .owl');if(bounce&&to&&to.animate)to.animate([{transform:'scale(1.3)'},{transform:'scale(.92)'},{transform:'none'}],{duration:320,easing:'ease-out'})}
+function splFade(){const el=document.getElementById('splash');if(!el)return splEnd(false);el.classList.add('fade');setTimeout(()=>splEnd(false),380)}
+function splStart(){const el=document.getElementById('splash');if(!el)return;
+  el.addEventListener('click',()=>splEnd(false));
+  const owl=el.querySelector('.owl');
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches||!owl.animate){owl.style.opacity=1;splT(splFade,900);return}
+  const eyes=el.querySelector('.eyes'),wl=el.querySelector('.wl'),wr=el.querySelector('.wr');
+  const blink=()=>splA(eyes,[{transform:'none'},{transform:'scaleY(.1)'},{transform:'none'}],{duration:180});
+  splA(owl,[{transform:'scale(.5) translateY(30px)',opacity:0},{transform:'scale(1.06)',opacity:1,offset:.7},{transform:'none',opacity:1}],{duration:500,easing:'ease-out',fill:'forwards'});
+  splT(blink,550);
+  splT(()=>{splA(wl,[0,135,95,135,95,135,0].map(d=>({transform:`rotate(${d}deg)`})),{duration:1300,easing:'ease-in-out'});
+    splA(owl,[{transform:'none'},{transform:'rotate(5deg)'},{transform:'rotate(-4deg)'},{transform:'rotate(5deg)'},{transform:'rotate(-4deg)'},{transform:'none'}],{duration:1300,easing:'ease-in-out',composite:'add'})},800);
+  splT(blink,2050);
+  splT(()=>splFly(el,owl,wl,wr),2250)}
+function splFly(el,owl,wl,wr){const to=document.querySelector('#app .hero .owl');if(!to)return splFade();
+  const a=owl.getBoundingClientRect(),b=to.getBoundingClientRect();
+  if(!a.width||!b.width||b.bottom<0||b.top>innerHeight)return splFade();
+  const sx=a.left+a.width/2,sy=a.top+a.height/2,tx=b.left+b.width/2,ty=b.top+(50/102)*b.height,k=(b.width/72)/(a.width/120);
+  const W=[[0,0],[78,-30],[52,-120],[-30,-150],[tx-sx,ty-sy]];
+  const cr=(p0,p1,p2,p3,t)=>{const t2=t*t,t3=t2*t;return [0,1].map(i=>.5*((2*p1[i])+(-p0[i]+p2[i])*t+(2*p0[i]-5*p1[i]+4*p2[i]-p3[i])*t2+(-p0[i]+3*p1[i]-3*p2[i]+p3[i])*t3))};
+  const pt=u=>{const n=W.length-1,f=Math.min(u*n,n-1e-6),i=Math.floor(f),t=f-i;return cr(W[Math.max(i-1,0)],W[i],W[i+1],W[Math.min(i+2,n)],t)};
+  const ks=[];for(let i=0;i<=48;i++){const t=i/48,e=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;const [x,y]=pt(e);
+    ks.push({opacity:1,transform:`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) rotate(${(-360*e).toFixed(1)}deg) scale(${(1+(k-1)*Math.pow(e,1.4)).toFixed(3)})`})}
+  splA(el.querySelector('.sbg'),[{opacity:1},{opacity:0}],{duration:700,fill:'forwards'});
+  const fl=[0,-40,10,-40,10,-40,10,-40,0];
+  splA(wr,fl.map(d=>({transform:`rotate(${d}deg)`})),{duration:1400});splA(wl,fl.map(d=>({transform:`rotate(${-d}deg)`})),{duration:1400});
+  const f=splA(owl,ks,{duration:1400,easing:'linear',fill:'forwards'});
+  if(f)f.onfinish=()=>splEnd(true);else splEnd(true)}
+render();splStart();loadPub().then(()=>{trackOpen();setTimeout(flushStats,15000)});
 </script>
 </body>
 </html>
