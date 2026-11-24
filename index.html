@@ -39,11 +39,12 @@ h1,h2,h3,h4{font-family:var(--display);margin:0;line-height:1.1}
 .hero p{margin:6px 0 0;color:var(--soft)}
 .brand{display:flex;align-items:center;gap:4px}
 .brand h1{line-height:0}
-.brand .owl{width:46px;height:auto;display:block}
+.brand .owl{width:62px;height:auto;display:block}
 .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 #splash{position:fixed;inset:0;z-index:100;cursor:pointer;-webkit-tap-highlight-color:transparent}
 #splash .sbg{position:absolute;inset:0;background:var(--paper)}
-#splash .owl{position:absolute;left:50%;top:50%;width:200px;height:200px;margin:-100px 0 0 -100px;overflow:visible;opacity:0}
+#splash .obox{position:absolute;left:50%;top:50%;width:200px;height:200px;margin:-100px 0 0 -100px;opacity:0;will-change:transform}
+#splash .owl{width:100%;height:100%;display:block;overflow:visible}
 #splash .wl,#splash .wr,#splash .eyes{transform-box:view-box}
 #splash .wl{transform-origin:31px 62px}#splash .wr{transform-origin:89px 62px}#splash .eyes{transform-origin:60px 55px}
 #splash.fade{opacity:0;transition:opacity .35s ease}
@@ -294,7 +295,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 </style>
 </head>
 <body class="flying">
-<div id="splash" aria-hidden="true"><div class="sbg"></div><svg class="owl" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><g class="wl"><ellipse cx="28" cy="76" rx="7" ry="16" fill="#2B6FD6"/></g><g class="wr"><ellipse cx="92" cy="76" rx="7" ry="16" fill="#2B6FD6"/></g><path d="M30 42 L35 16 L50 32 H70 L85 16 L90 42 V80 Q90 104 60 104 Q30 104 30 80 Z" fill="#3D8BFD"/><ellipse cx="60" cy="88" rx="16" ry="10" fill="#8DBBFF"/><g class="eyes"><circle cx="47" cy="54" r="13" fill="#fff"/><circle cx="73" cy="54" r="13" fill="#fff"/><circle cx="48" cy="56" r="6" fill="#17324D"/><circle cx="74" cy="56" r="6" fill="#17324D"/></g><path d="M55 66 H65 L60 74 Z" fill="#F0A21A"/><ellipse cx="51" cy="106" rx="5" ry="3" fill="#F0A21A"/><ellipse cx="69" cy="106" rx="5" ry="3" fill="#F0A21A"/></svg></div>
+<div id="splash" aria-hidden="true"><div class="sbg"></div><div class="obox"><svg class="owl" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><g class="wl"><ellipse cx="28" cy="76" rx="7" ry="16" fill="#2B6FD6"/></g><g class="wr"><ellipse cx="92" cy="76" rx="7" ry="16" fill="#2B6FD6"/></g><path d="M30 42 L35 16 L50 32 H70 L85 16 L90 42 V80 Q90 104 60 104 Q30 104 30 80 Z" fill="#3D8BFD"/><ellipse cx="60" cy="88" rx="16" ry="10" fill="#8DBBFF"/><g class="eyes"><circle cx="47" cy="54" r="13" fill="#fff"/><circle cx="73" cy="54" r="13" fill="#fff"/><circle cx="48" cy="56" r="6" fill="#17324D"/><circle cx="74" cy="56" r="6" fill="#17324D"/></g><path d="M55 66 H65 L60 74 Z" fill="#F0A21A"/><ellipse cx="51" cy="106" rx="5" ry="3" fill="#F0A21A"/><ellipse cx="69" cy="106" rx="5" ry="3" fill="#F0A21A"/></svg></div></div>
 <div id="app"><p class="loading">Nalagam …</p></div>
 <script>
 'use strict';
@@ -1161,11 +1162,11 @@ function splA(el,k,o){try{const a=el.animate(k,o);SPL.anims.push(a);return a}cat
 function splT(fn,ms){SPL.timers.push(setTimeout(()=>{if(!SPL.done)fn()},ms))}
 function splEnd(bounce){if(SPL.done)return;SPL.done=true;SPL.timers.forEach(clearTimeout);SPL.anims.forEach(a=>{try{a.cancel()}catch(e){}});
   document.getElementById('splash')?.remove();document.body.classList.remove('flying');
-  const to=document.querySelector('#app .hero .owl');if(bounce&&to&&to.animate)to.animate([{transform:'scale(1.3)'},{transform:'scale(.92)'},{transform:'none'}],{duration:320,easing:'ease-out'})}
+  const to=document.querySelector('#app .hero .owl');if(bounce&&to&&to.animate)to.animate([{transform:'none'},{transform:'scale(1.15)'},{transform:'scale(.95)'},{transform:'none'}],{duration:380,easing:'ease-out'})}
 function splFade(){const el=document.getElementById('splash');if(!el)return splEnd(false);el.classList.add('fade');setTimeout(()=>splEnd(false),380)}
 function splStart(){const el=document.getElementById('splash');if(!el)return;
   el.addEventListener('click',()=>splEnd(false));
-  const owl=el.querySelector('.owl');
+  const owl=el.querySelector('.obox');
   if(matchMedia('(prefers-reduced-motion: reduce)').matches||!owl.animate){owl.style.opacity=1;splT(splFade,900);return}
   const eyes=el.querySelector('.eyes'),wl=el.querySelector('.wl'),wr=el.querySelector('.wr');
   const blink=()=>splA(eyes,[{transform:'none'},{transform:'scaleY(.1)'},{transform:'none'}],{duration:180});
@@ -1182,12 +1183,14 @@ function splFly(el,owl,wl,wr){const to=document.querySelector('#app .hero .owl')
   const W=[[0,0],[78,-30],[52,-120],[-30,-150],[tx-sx,ty-sy]];
   const cr=(p0,p1,p2,p3,t)=>{const t2=t*t,t3=t2*t;return [0,1].map(i=>.5*((2*p1[i])+(-p0[i]+p2[i])*t+(2*p0[i]-5*p1[i]+4*p2[i]-p3[i])*t2+(-p0[i]+3*p1[i]-3*p2[i]+p3[i])*t3))};
   const pt=u=>{const n=W.length-1,f=Math.min(u*n,n-1e-6),i=Math.floor(f),t=f-i;return cr(W[Math.max(i-1,0)],W[i],W[i+1],W[Math.min(i+2,n)],t)};
-  const ks=[];for(let i=0;i<=48;i++){const t=i/48,e=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;const [x,y]=pt(e);
-    ks.push({opacity:1,transform:`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) rotate(${(-360*e).toFixed(1)}deg) scale(${(1+(k-1)*Math.pow(e,1.4)).toFixed(3)})`})}
+  const M=400,P=[],L=[0];for(let i=0;i<=M;i++){P.push(pt(i/M));if(i)L.push(L[i-1]+Math.hypot(P[i][0]-P[i-1][0],P[i][1]-P[i-1][1]))}
+  const at=d=>{let j=1;while(j<M&&L[j]<d)j++;const f=(d-L[j-1])/((L[j]-L[j-1])||1);return [P[j-1][0]+(P[j][0]-P[j-1][0])*f,P[j-1][1]+(P[j][1]-P[j-1][1])*f]};
+  const ks=[],N=90;for(let i=0;i<=N;i++){const t=i/N,e=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;const [x,y]=at(e*L[M]);
+    ks.push({opacity:1,transform:`translate(${x.toFixed(2)}px,${y.toFixed(2)}px) rotate(${(-360*e).toFixed(2)}deg) scale(${(1+(k-1)*e).toFixed(4)})`})}
   splA(el.querySelector('.sbg'),[{opacity:1},{opacity:0}],{duration:700,fill:'forwards'});
   const fl=[0,-40,10,-40,10,-40,10,-40,0];
-  splA(wr,fl.map(d=>({transform:`rotate(${d}deg)`})),{duration:1400});splA(wl,fl.map(d=>({transform:`rotate(${-d}deg)`})),{duration:1400});
-  const f=splA(owl,ks,{duration:1400,easing:'linear',fill:'forwards'});
+  splA(wr,fl.map(d=>({transform:`rotate(${d}deg)`})),{duration:1500});splA(wl,fl.map(d=>({transform:`rotate(${-d}deg)`})),{duration:1500});
+  const f=splA(owl,ks,{duration:1500,easing:'linear',fill:'forwards'});
   if(f)f.onfinish=()=>splEnd(true);else splEnd(true)}
 render();splStart();loadPub().then(()=>{trackOpen();setTimeout(flushStats,15000)});
 </script>
