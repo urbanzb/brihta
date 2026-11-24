@@ -201,13 +201,14 @@ code{background:var(--paper);padding:1px 6px;border-radius:6px;font-size:15px}
 .gmode button.on{background:var(--sun);color:#1F2A44}
 .games.gtiles{gap:10px;margin:0;max-width:none;grid-template-columns:repeat(2,minmax(0,1fr))}
 .games.gtiles .game.press{box-shadow:0 4px 0 var(--ink)}
-.games.gtiles .game{min-height:112px;padding:14px;border-radius:16px;gap:10px;background:var(--card);background:color-mix(in srgb,var(--gc) 18%,var(--card))}
-.games.gtiles .game .ico{width:48px;height:48px;border-radius:12px;background:var(--card);border:2.5px solid var(--gc);display:flex;align-items:center;justify-content:center;font-size:26px;line-height:1;flex-shrink:0}
-.games.gtiles .game b{font-size:18px;line-height:1.15;color:var(--ink)}
+.games.gtiles .game{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:10px;row-gap:8px;min-height:0;padding:12px 10px;border-radius:16px;background:var(--card);background:color-mix(in srgb,var(--gc) 18%,var(--card))}
+.games.gtiles .game .ico{width:42px;height:42px;border-radius:11px;background:var(--card);border:2.5px solid var(--gc);display:flex;align-items:center;justify-content:center;font-size:23px;line-height:1;flex-shrink:0}
+.games.gtiles .game b{font-size:17px;line-height:1.15;color:var(--ink);hyphens:manual;overflow-wrap:normal}
 .games.gtiles .game>span:not(.ico):not(.txt){display:none}
-.games.gtiles.withdesc .game>span:not(.ico):not(.txt){display:block;color:var(--soft);font-size:15px;line-height:1.3}
-.games.gtiles.withdesc .game{justify-content:flex-start}
+.games.gtiles.withdesc .game>span:not(.ico):not(.txt){display:block;grid-column:1/-1;color:var(--soft);font-size:15px;line-height:1.3}
+.games.gtiles.withdesc .game{align-content:start}
 .morehelp{display:flex;justify-content:center;margin-top:14px}
+@media (max-width:350px){.games.gtiles .game{column-gap:8px;padding:10px 8px}.games.gtiles .game .ico{width:34px;height:34px;font-size:19px;border-radius:9px}.games.gtiles .game b{font-size:15px}}
 .games.gtiles .game.wide{min-height:0;flex-direction:row;align-items:center;gap:12px}
 .games.gtiles .game.wide .txt span{color:var(--soft);font-size:15px}
 .botrow .botbtn{border-radius:999px;padding:12px 8px;font-family:var(--display);font-weight:800;font-size:17px;color:var(--ink)}
