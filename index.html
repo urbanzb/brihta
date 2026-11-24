@@ -193,6 +193,26 @@ code{background:var(--paper);padding:1px 6px;border-radius:6px;font-size:15px}
 .qbtn{width:36px;height:36px;border-radius:50%;font-family:var(--display);font-weight:800;font-size:20px;line-height:1;padding:0;flex-shrink:0;box-shadow:0 3px 0 var(--ink)}
 .qbtn.on{background:var(--sun);color:#1F2A44}
 .games.compact{gap:10px}
+/* 2.9: preprostejša izbira igre in barvne ploščice iger */
+.hhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}
+.hhead .hlab{margin:0}
+.gmode{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 12px}
+.gmode button{border-radius:14px;padding:10px 6px;font-family:var(--display);font-weight:800;font-size:17px;color:var(--ink);box-shadow:0 4px 0 var(--ink)}
+.gmode button.on{background:var(--sun);color:#1F2A44}
+.games.gtiles{gap:10px;margin:0;max-width:none;grid-template-columns:repeat(2,minmax(0,1fr))}
+.games.gtiles .game.press{box-shadow:0 4px 0 var(--ink)}
+.games.gtiles .game{min-height:112px;padding:14px;border-radius:16px;gap:10px;background:var(--card);background:color-mix(in srgb,var(--gc) 18%,var(--card))}
+.games.gtiles .game .ico{width:48px;height:48px;border-radius:12px;background:var(--card);border:2.5px solid var(--gc);display:flex;align-items:center;justify-content:center;font-size:26px;line-height:1;flex-shrink:0}
+.games.gtiles .game b{font-size:18px;line-height:1.15;color:var(--ink)}
+.games.gtiles .game>span:not(.ico):not(.txt){display:none}
+.games.gtiles.withdesc .game>span:not(.ico):not(.txt){display:block;color:var(--soft);font-size:15px;line-height:1.3}
+.games.gtiles.withdesc .game{justify-content:flex-start}
+.morehelp{display:flex;justify-content:center;margin-top:14px}
+.games.gtiles .game.wide{min-height:0;flex-direction:row;align-items:center;gap:12px}
+.games.gtiles .game.wide .txt span{color:var(--soft);font-size:15px}
+.botrow .botbtn{border-radius:999px;padding:12px 8px;font-family:var(--display);font-weight:800;font-size:17px;color:var(--ink)}
+.note.voice{display:flex;gap:10px;align-items:flex-start}.note.voice span{flex:1}
+.note.voice .x{background:none;border:0;font-size:22px;line-height:1;color:var(--soft);padding:0 2px;cursor:pointer}
 .games.compact .game{min-height:0;flex-direction:row;align-items:center;gap:10px;padding:12px;border-radius:16px}
 .games.compact .game .ico{flex-shrink:0}
 .games.compact .game .ico{font-size:30px}
@@ -205,7 +225,7 @@ code{background:var(--paper);padding:1px 6px;border-radius:6px;font-size:15px}
 .seg button{border:0;background:var(--card);padding:10px 4px;font-family:var(--display);font-weight:800;font-size:18px}
 .seg button.on{background:var(--sun);color:#1F2A44}
 .seg button+button{border-left:2.5px solid var(--ink)}
-.botrow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.botrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
 .botrow .ghost{padding:10px 6px;font-size:15px}
 .clspill{font-family:var(--body);font-size:16px;font-weight:700;border-radius:999px;padding:3px 12px;vertical-align:middle;margin-left:6px}
 .clsgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -299,7 +319,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <div id="app"><p class="loading">Nalagam …</p></div>
 <script>
 'use strict';
-const APP_VERSION='2.8';
+const APP_VERSION='2.9';
 const FEEDBACK_EMAIL='uzbmobileapps@gmail.com'; // mnenja se pošljejo iz uporabnikovega poštnega programa
 /* JEZIK: Ludamus uporablja izključno BRITANSKO angleščino (zapis in izgovorjava en-GB).
    Ameriške oblike pri vnosu zaznamo s US_UK in predlagamo britansko različico. */
@@ -422,6 +442,9 @@ function gbNote(){
   if(AB){try{if(!AB.ttsLang('en'))return '';if(apkGb===null)apkGb=AB.ttsLang('en-GB')||''}catch(e){return ''}if(apkGb)return ''}
   else{const vs=voices();if(!vs.length||!vs.some(v=>/^en/i.test(v.lang))||vs.some(v=>/^en[-_]GB/i.test(v.lang)))return ''}
   return `<p class="note">Ta naprava nima britanskega angleškega glasu, zato angleščino morda bere ameriški. Britanski glas namestiš v nastavitvah telefona pod <b>Pretvorba besedila v govor</b> (jezik: angleščina, Združeno kraljestvo).</p>`}
+/* Opozorilo o glasu: na začetni strani enkrat (z gumbom ✕), v nastavitvah vedno. */
+function voiceNotesHome(){if(lsGet('glas-zaprto',false))return '';const n=(gbNote()+slNote()).replace(/<p class="note">|<\/p>/g,' ').trim();
+  return n?`<div class="note voice"><span>${n}</span><button class="x" data-act="hidevoice" aria-label="Zapri opozorilo">×</button></div>`:''}
 function slNote(){if(!S.slo)return '';const v=slVoice();if(!v)return `<p class="note">Ta naprava nima glasu za slovenščino, zato se slovenske besede ne izgovarjajo.</p>`;if(/^sl/i.test(v.lang))return '';return `<p class="note">Ta naprava nima slovenskega glasu, zato slovenske besede bere ${/^hr/i.test(v.lang)?'hrvaški':'soroden'} glas. Izgovorjava je približna.</p>`}
 
 /* ---------- namestitev ---------- */
@@ -520,6 +543,7 @@ async function ghPut(path,text,msg){
 }
 
 /* ---------- igre ---------- */
+const GCOL={kartice:'#3D8BFD',povezi:'#1E9E62',spomin:'#D93D6E',kviz:'#7B61FF',crke:'#F08A24',najdi:'#0E9AA7'};
 const GAMES={kartice:{ico:'🃏',name:'Kartice',desc:'Poglej, poslušaj in obrni.',need:1},povezi:{ico:'🔗',name:'Poveži',desc:'Angleška beseda najde slovenski par.',need:3},spomin:{ico:'🧠',name:'Spomin',desc:'Odkrivaj kartice in poišči pare.',need:3},kviz:{ico:'👂',name:'Poslušaj',desc:'Slišiš besedo, izbereš sliko.',need:4},crke:{ico:'🔤',name:'Sestavi besedo',desc:'Iz premešanih črk sestavi angleško besedo.',need:3},najdi:{ico:'🔍',name:'Najdi',desc:'Zapomni si, kje je katera slika.',need:6}};
 let G={};
 function star(){S.stars++;savePrefs();setTimeout(()=>sfx('win'),350)}
@@ -566,18 +590,18 @@ function renderHome(){
     let show=rec.slice(0,3);const sel=ts.find(t=>t.id===S.topic);if(sel&&!show.includes(sel))show=[sel,...show.slice(0,2)];
     if(show.length<3)for(const t of ts.slice().reverse()){if(show.length>=3)break;if(!show.includes(t))show.push(t)}
     chips+=show.map(topicChip).join('')+`<button class="chip allt" data-act="nav" data-v="teme">Vse teme (${ts.length}) ›</button>`}
-  const games=Object.entries(GAMES).map(([k,g])=>`<button class="game press" data-act="game" data-g="${k}"><span class="ico">${g.ico}</span><b>${g.name}</b><span>${g.desc}</span></button>`).join('');
+  const games=Object.entries(GAMES).map(([k,g])=>`<button class="game press" style="--gc:${GCOL[k]||'#3D8BFD'}" data-act="game" data-g="${k}"><span class="ico">${g.ico}</span><b>${g.name}</b><span>${g.desc}</span></button>`).join('');
   const online=duoReady();
-  const duo=`<button class="game wide press" data-act="duomode" data-m="local"><span class="ico">📱</span><span class="txt"><b>Spomin na enem telefonu</b><span>Igrata izmenično in si telefon podajata.</span></span></button>
-   ${online?`<button class="game press" data-act="duomode" data-m="create"><span class="ico">➕</span><b>Ustvari igro</b><span>Prijatelju poveš kodo in igrata vsak s svojim telefonom.</span></button>
-   <button class="game press" data-act="duomode" data-m="join"><span class="ico">🔑</span><b>Pridruži se</b><span>Vpiši kodo, ki ti jo pove prijatelj.</span></button>`:`<p class="note" style="grid-column:1/-1">Igra vsak s svojim telefonom še ni nastavljena.</p>`}`;
+  const duo=`<button class="game wide press" style="--gc:#D93D6E" data-act="duomode" data-m="local"><span class="ico">📱</span><span class="txt"><b>Spomin na enem telefonu</b><span>Igrata izmenično in si telefon podajata.</span></span></button>
+   ${online?`<button class="game press" style="--gc:#3D8BFD" data-act="duomode" data-m="create"><span class="ico">➕</span><b>Ustvari igro</b><span>Prijatelju poveš kodo in igrata vsak s svojim telefonom.</span></button>
+   <button class="game press" style="--gc:#1E9E62" data-act="duomode" data-m="join"><span class="ico">🔑</span><b>Pridruži se</b><span>Vpiši kodo, ki ti jo pove prijatelj.</span></button>`:`<p class="note" style="grid-column:1/-1">Igra vsak s svojim telefonom še ni nastavljena.</p>`}`;
     app.innerHTML=`<header class="hero"><div class="brand"><h1><span class="sr">Ludamus</span>${OWL}</h1></div><div class="tools"><span class="stars" title="Zbrane zvezdice">⭐ ${S.stars}</span><button class="pill press" data-act="caps" title="Velike ali male črke">${S.caps?'ABC':'abc'}</button><button class="pill press ${S.slo?'':'off'}" data-act="slo" aria-pressed="${S.slo}" title="Izgovorjava slovenskih besed">🔊 SLO</button><button class="pill press ${S.sfx?'':'off'}" data-act="sfx" aria-pressed="${S.sfx}" aria-label="Zvočni učinki" title="Zvočni učinki">${S.sfx?'🔔':'🔕'}</button></div></header>
-  ${installBanner()}${helpBanner()}${gbNote()}${slNote()}
+  ${installBanner()}${helpBanner()}${voiceNotesHome()}
   ${!ts.length&&!S.loaded?`<p class="loading">Nalagam besede …</p>`:`<section class="hstep" aria-labelledby="h-tema"><h2 class="hlab" id="h-tema">Izberi temo${classes().length>1?`<button class="clspill press" data-act="nav" data-v="razred" aria-label="Zamenjaj razred">${h(CLS().name)} ▾</button>`:''}</h2><div class="chips wrap">${chips}</div></section>
-  <section class="hstep hgame" aria-labelledby="h-igra"><h2 class="hlab" id="h-igra">Izberi igro</h2><div class="hqrow"><p class="hq">Koliko vas igra?</p><button class="qbtn press ${S.desc?'on':''}" data-act="desc" aria-pressed="${S.desc}" aria-label="${S.desc?'Skrij opise iger':'Pokaži opise iger'}" title="${S.desc?'Skrij opise iger':'Kako se igra?'}">${S.desc?'✕':'?'}</button></div>
-   <div class="ftabs" role="tablist"><button role="tab" aria-selected="${S.tab==='one'}" class="ftab ${S.tab==='one'?'on':''}" data-act="tab" data-t="one">🙋 Igram sam</button><button role="tab" aria-selected="${S.tab==='two'}" class="ftab ${S.tab==='two'?'on':''}" data-act="tab" data-t="two">👫 Igrava dva</button></div>
-   <div class="fpanel" role="tabpanel"><div class="games ${S.desc?'withdesc':'compact'}">${S.tab==='two'?duo:games}</div></div></section>`}
-  <div class="botrow"><button class="ghost" data-act="nav" data-v="slovar">📖 Slovarček</button><button class="ghost" data-act="nav" data-v="pomoc">❓ Navodila</button><button class="ghost" data-act="nav" data-v="settings">⚙️ Nastavitve</button></div>`;
+  <section class="hstep" aria-labelledby="h-igra"><div class="hhead"><h2 class="hlab" id="h-igra">Izberi igro</h2><button class="qbtn press ${S.desc?'on':''}" data-act="desc" aria-pressed="${S.desc}" aria-label="${S.desc?'Skrij opise iger':'Pokaži opise iger'}" title="${S.desc?'Skrij opise iger':'Kako se igra?'}">${S.desc?'✕':'?'}</button></div>
+   <div class="gmode" role="group" aria-label="Koliko vas igra?"><button class="press ${S.tab==='one'?'on':''}" data-act="tab" data-t="one" aria-pressed="${S.tab==='one'}">🙋 Igram sam</button><button class="press ${S.tab==='two'?'on':''}" data-act="tab" data-t="two" aria-pressed="${S.tab==='two'}">👫 Igrava dva</button></div>
+   <div class="games gtiles ${S.desc?'withdesc':''}">${S.tab==='two'?duo:games}</div>${S.desc?`<div class="morehelp"><button class="sm press" data-act="nav" data-v="pomoc">❓ Vsa navodila</button></div>`:''}</section>`}
+  <div class="botrow"><button class="botbtn press" data-act="nav" data-v="slovar">Slovarček</button><button class="botbtn press" data-act="nav" data-v="settings">Nastavitve</button></div>`;
 }
 const MESECI=['januar','februar','marec','april','maj','junij','julij','avgust','september','oktober','november','december'];
 function topicDate(t){if(t.created)return t.created;const ds=t.words.map(w=>w.added).filter(Boolean).sort();return ds[0]||''}
@@ -687,7 +711,7 @@ const DEFAULT_HELP=`# 🚀 Kako začneš
 - Ob naslovu **Izberi temo** izberi svoj **razred**, na primer 1.a. Najdeš ga tudi v nastavitvah ⚙️.
 - Izberi **temo**. Če je ni med prikazanimi, tapni **Vse teme**. Tam so teme razvrščene po mesecih.
 - Za ponavljanje lahko v **Vse teme** tapneš **🧩 Izberi več tem**, označiš več tem in tapneš **Vadi izbrane**.
-- Pri **Izberi igro** odgovori na vprašanje »Koliko vas igra?«: **🙋 Igram sam** ali **👫 Igrava dva**. Nato tapni igro. Z gumbom **?** ob vprašanju »Koliko vas igra?« pokažeš kratke opise iger.
+- Pri **Izberi igro** odgovori na vprašanje »Koliko vas igra?«: **🙋 Igram sam** ali **👫 Igrava dva**. Nato tapni igro. Z gumbom **?** ob naslovu »Izberi igro« pokažeš kratke opise iger. Ta navodila so vedno v **⚙️ Nastavitve → ❓ Navodila**.
 - Za vsako končano igro dobiš **zvezdico ⭐**. Koliko jih imaš, vidiš zgoraj desno.
 
 # 🎮 Igre
@@ -716,13 +740,9 @@ Vse besede na enem mestu. Išči angleško ali slovensko in tapni 🔊, da besed
 - **🔔 / 🔕:** vklopi ali izklopi zvočne učinke.
 
 # 📊 Anonimna statistika
-Ludamus pošilja le skupne dnevne seštevke, brez imen in brez oznake naprave:
-- kolikokrat je bila aplikacija odprta in na kateri različici,
-- koliko naprav jo uporablja (vsaka naprava se v dnevu in mesecu prešteje le enkrat) in ali je nameščena ali odprta v brskalniku,
-- katere igre so bile začete in katere končane,
-- katere teme so bile izbrane,
-- katere besede iz šole so bile zgrešene.
-Seštevki pomagajo pri odločitvah, katere igre obdržati, katere izboljšati ali zamenjati in katere besede potrebujejo več vaje. Lastne besede se nikoli ne pošljejo. Statistiko izklopiš v **⚙️ Nastavitve**.`;
+Ludamus pošilja anonimne skupne seštevke o uporabi aplikacije, na primer kako pogosto se uporablja ter katere igre in besede so priljubljene ali težke.
+Ne pošilja imen, podatkov o otroku, oznake naprave, lokacije ali lastnih besed. Iz seštevkov ni mogoče ugotoviti, kdo je aplikacijo uporabljal.
+Seštevki pomagajo izboljševati igre in pokažejo, katere besede iz šole potrebujejo več vaje. Statistiko izklopiš v **⚙️ Nastavitve**.`;
 function helpText(){return typeof PUB.help==='string'&&PUB.help.trim()?PUB.help:DEFAULT_HELP}
 function inlineMd(t){return h(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')}
 function mdBlocks(text){let out='',list=false;const close=()=>{if(list){out+='</ul>';list=false}};
@@ -873,6 +893,8 @@ function renderDuo(){
 function renderSettings(){
   const myN=MY.topics.reduce((n,t)=>n+t.words.length,0);
   app.innerHTML=bar('Nastavitve')+`
+  ${(gbNote()+slNote())?`<section class="card"><h3>🔊 Glas</h3>${gbNote()+slNote()}</section>`:''}
+  <section class="card"><h3>❓ Navodila</h3><p class="instr">Kako se igra, kaj pomenijo gumbi in kako dodaš svoje besede.</p><button class="sm press" data-act="nav" data-v="pomoc">Odpri navodila</button></section>
   ${classes().length>1?`<section class="card"><h3>🏫 Razred</h3><p class="instr">Zdaj so prikazane teme razreda <b>${h(CLS().name)}</b>.</p><button class="sm press" data-act="nav" data-v="razred">Zamenjaj razred</button></section>`:''}
   <section class="card"><h3>✏️ Moje besede</h3><p class="instr">Besede, ki jih dodaš tukaj, so samo na tej napravi. Zdaj imaš ${besed(myN)}. Ob menjavi telefona jih izvozi in na novem telefonu uvozi.</p>
    <div class="btns"><button class="sm press" data-act="nav" data-v="my">Uredi moje besede</button><button class="sm press" data-act="export" ${MY.topics.length?'':'disabled'}>⬇️ Izvozi</button><label class="sm press filebtn">⬆️ Uvozi<input type="file" accept=".json,application/json" data-import hidden></label></div></section>
@@ -1072,6 +1094,7 @@ function act(a,b){
   case 'topic':S.topic=b.dataset.id;pushRecent(S.topic);render();break;
   case 'tpick':S.topic=b.dataset.id;pushRecent(S.topic);S.tq='';S.view='home';render();scrollTo(0,0);break;
   case 'tab':S.tab=b.dataset.t;savePrefs();render();break;
+  case 'hidevoice':lsSet('glas-zaprto',true);render();break;
   case 'multi':S.multi=!S.multi;S.msel=S.topic==='mix'?(S.mix||[]).slice():(S.topic&&!['all','novo','vadi'].includes(S.topic)?[S.topic]:[]);render();break;
   case 'tmsel':{const id=b.dataset.id,a=S.msel||(S.msel=[]);const j=a.indexOf(id);if(j>=0)a.splice(j,1);else a.push(id);topicsList();mixBar();break}
   case 'mixgo':{const a=(S.msel||[]).slice();if(!a.length)break;if(a.length===1){S.topic=a[0];pushRecent(a[0])}else{S.topic='mix';S.mix=a}S.multi=false;S.tq='';savePrefs();S.view='home';render();scrollTo(0,0);break}

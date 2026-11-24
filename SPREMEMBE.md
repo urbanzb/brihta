@@ -2,6 +2,14 @@
 
 Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Novosti). Od različice 2.6 jih aplikacija ne prikazuje več.
 
+## 2.9
+
+- Prenovljena začetna stran: izbira »Igram sam« ali »Igrava dva« z dvema gumboma, brez dodatnega okvirja.
+- Barvne ploščice iger v mreži 2 × 3, vsaka igra ima svojo barvo.
+- Gumb ? ob naslovu »Izberi igro« pokaže kratke opise iger in gumb za vsa navodila. Spodaj sta le še Slovarček in Nastavitve.
+- Navodila so vedno dosegljiva v Nastavitvah. Razdelek o anonimni statistiki v navodilih je krajši.
+- Opozorilo o glasu se na začetni strani prikaže z gumbom za zapiranje, vedno pa je v nastavitvah.
+
 ## 2.8
 
 - Anonimno štetje naprav: aktivne naprave na dan in v mesecu, nove naprave in delež nameščenih. Vsaka naprava se prešteje le enkrat, brez oznake naprave.
