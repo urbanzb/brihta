@@ -4,7 +4,8 @@ Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Nov
 
 ## 2.9
 
-- Prenovljena začetna stran: izbira »Igram sam« ali »Igrava dva« z dvema gumboma, brez dodatnega okvirja.
+- Prenovljena začetna stran: »Igram sam« in »Igrava dva« sta stikalo, igre pa so pod njim na svetlo modri podlagi s puščico, ki kaže izbrani način.
+- Ime igre je desno od ikone.
 - Barvne ploščice iger v mreži 2 × 3, vsaka igra ima svojo barvo.
 - Gumb ? ob naslovu »Izberi igro« pokaže kratke opise iger in gumb za vsa navodila. Spodaj sta le še Slovarček in Nastavitve.
 - Navodila so vedno dosegljiva v Nastavitvah. Razdelek o anonimni statistiki v navodilih je krajši.

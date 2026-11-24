@@ -196,19 +196,27 @@ code{background:var(--paper);padding:1px 6px;border-radius:6px;font-size:15px}
 /* 2.9: preprostejša izbira igre in barvne ploščice iger */
 .hhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}
 .hhead .hlab{margin:0}
-.gmode{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 12px}
-.gmode button{border-radius:14px;padding:10px 6px;font-family:var(--display);font-weight:800;font-size:17px;color:var(--ink);box-shadow:0 4px 0 var(--ink)}
+/* stikalo »Igram sam / Igrava dva« in podlaga z igrami, puščica kaže izbrano polovico */
+.gmode{display:grid;grid-template-columns:1fr 1fr;border:2.5px solid var(--ink);border-radius:16px;overflow:hidden;background:var(--card)}
+.gmode button{border:0;border-radius:0;margin:0;padding:11px 6px;background:var(--card);color:var(--soft);font-family:var(--display);font-weight:800;font-size:17px;box-shadow:none}
+.gmode button+button{border-left:2.5px solid var(--ink)}
 .gmode button.on{background:var(--sun);color:#1F2A44}
+.gpoint{position:relative;height:12px}
+.gpoint svg{position:absolute;top:0;left:calc(25% - 12px);width:24px;height:12px;fill:var(--paper)}
+.gpoint.r svg{left:calc(75% - 12px)}
+.gpanel{background:var(--paper);border-radius:16px;padding:10px}
+.gpanel .games.gtiles{gap:8px}
 .games.gtiles{gap:10px;margin:0;max-width:none;grid-template-columns:repeat(2,minmax(0,1fr))}
 .games.gtiles .game.press{box-shadow:0 4px 0 var(--ink)}
-.games.gtiles .game{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:10px;row-gap:8px;min-height:0;padding:12px 10px;border-radius:16px;background:var(--card);background:color-mix(in srgb,var(--gc) 18%,var(--card))}
+.games.gtiles .game{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:8px;row-gap:8px;min-height:0;padding:10px 8px;border-radius:16px;background:var(--card);background:color-mix(in srgb,var(--gc) 18%,var(--card))}
 .games.gtiles .game .ico{width:42px;height:42px;border-radius:11px;background:var(--card);border:2.5px solid var(--gc);display:flex;align-items:center;justify-content:center;font-size:23px;line-height:1;flex-shrink:0}
 .games.gtiles .game b{font-size:17px;line-height:1.15;color:var(--ink);hyphens:manual;overflow-wrap:normal}
 .games.gtiles .game>span:not(.ico):not(.txt){display:none}
 .games.gtiles.withdesc .game>span:not(.ico):not(.txt){display:block;grid-column:1/-1;color:var(--soft);font-size:15px;line-height:1.3}
 .games.gtiles.withdesc .game{align-content:start}
 .morehelp{display:flex;justify-content:center;margin-top:14px}
-@media (max-width:350px){.games.gtiles .game{column-gap:8px;padding:10px 8px}.games.gtiles .game .ico{width:34px;height:34px;font-size:19px;border-radius:9px}.games.gtiles .game b{font-size:15px}}
+@media (max-width:340px){.gpanel{padding:8px}.games.gtiles .game{column-gap:6px;padding:8px 6px}.games.gtiles .game .ico{width:30px;height:30px;font-size:17px}.games.gtiles .game b{font-size:14px}}
+@media (max-width:389px){.games.gtiles .game{column-gap:7px;padding:9px 7px}.games.gtiles .game .ico{width:34px;height:34px;font-size:19px;border-radius:9px}.games.gtiles .game b{font-size:15px}}
 .games.gtiles .game.wide{min-height:0;flex-direction:row;align-items:center;gap:12px}
 .games.gtiles .game.wide .txt span{color:var(--soft);font-size:15px}
 .botrow .botbtn{border-radius:999px;padding:12px 8px;font-family:var(--display);font-weight:800;font-size:17px;color:var(--ink)}
@@ -600,8 +608,9 @@ function renderHome(){
   ${installBanner()}${helpBanner()}${voiceNotesHome()}
   ${!ts.length&&!S.loaded?`<p class="loading">Nalagam besede …</p>`:`<section class="hstep" aria-labelledby="h-tema"><h2 class="hlab" id="h-tema">Izberi temo${classes().length>1?`<button class="clspill press" data-act="nav" data-v="razred" aria-label="Zamenjaj razred">${h(CLS().name)} ▾</button>`:''}</h2><div class="chips wrap">${chips}</div></section>
   <section class="hstep" aria-labelledby="h-igra"><div class="hhead"><h2 class="hlab" id="h-igra">Izberi igro</h2><button class="qbtn press ${S.desc?'on':''}" data-act="desc" aria-pressed="${S.desc}" aria-label="${S.desc?'Skrij opise iger':'Pokaži opise iger'}" title="${S.desc?'Skrij opise iger':'Kako se igra?'}">${S.desc?'✕':'?'}</button></div>
-   <div class="gmode" role="group" aria-label="Koliko vas igra?"><button class="press ${S.tab==='one'?'on':''}" data-act="tab" data-t="one" aria-pressed="${S.tab==='one'}">🙋 Igram sam</button><button class="press ${S.tab==='two'?'on':''}" data-act="tab" data-t="two" aria-pressed="${S.tab==='two'}">👫 Igrava dva</button></div>
-   <div class="games gtiles ${S.desc?'withdesc':''}">${S.tab==='two'?duo:games}</div>${S.desc?`<div class="morehelp"><button class="sm press" data-act="nav" data-v="pomoc">❓ Vsa navodila</button></div>`:''}</section>`}
+   <div class="gmode" role="group" aria-label="Koliko vas igra?"><button class="${S.tab==='one'?'on':''}" data-act="tab" data-t="one" aria-pressed="${S.tab==='one'}">🙋 Igram sam</button><button class="${S.tab==='two'?'on':''}" data-act="tab" data-t="two" aria-pressed="${S.tab==='two'}">👫 Igrava dva</button></div>
+   <div class="gpoint ${S.tab==='two'?'r':''}" aria-hidden="true"><svg viewBox="0 0 24 12"><path d="M0 12 L12 0 L24 12 Z"/></svg></div>
+   <div class="gpanel"><div class="games gtiles ${S.desc?'withdesc':''}">${S.tab==='two'?duo:games}</div>${S.desc?`<div class="morehelp"><button class="sm press" data-act="nav" data-v="pomoc">❓ Vsa navodila</button></div>`:''}</div></section>`}
   <div class="botrow"><button class="botbtn press" data-act="nav" data-v="slovar">Slovarček</button><button class="botbtn press" data-act="nav" data-v="settings">Nastavitve</button></div>`;
 }
 const MESECI=['januar','februar','marec','april','maj','junij','julij','avgust','september','oktober','november','december'];
