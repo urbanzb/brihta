@@ -8,6 +8,7 @@ Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Nov
 - V skrbniški statistiki je nov razdelek Naprave in število prenosov APK z GitHuba.
 - Uvod: ozadje ostane med letom sovice, aplikacija se počasi pokaže šele, ko sovica pristane.
 - Pripravljeno za domeno ludamus.si.
+- APK se prenese s kratkega naslova ludamus.si/apk.
 
 ## 2.7
 

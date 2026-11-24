@@ -902,7 +902,8 @@ function sendFeedback(){
   FBK={mood:'',text:'',state:'sent',err:'',mail:m};render();
   try{window.location.href=url}catch(e){}
 }
-function apkUrl(){return `https://github.com/${CFG.owner}/${CFG.repo}/releases/download/apk/Ludamus.apk`}
+/* APK: kratek naslov …/apk/ (na domeni ludamus.si/apk/) preusmeri na zadnji APK v izdajah na GitHubu. */
+function apkUrl(){return new URL('apk/',location.href).href}
 async function shareApk(){const url=apkUrl(),text='Ludamus za Android (APK). Odpri povezavo na Android telefonu in dovoli namestitev:';
   if(AB){try{AB.shareText(text+' '+url)}catch(e){}return}
   try{if(navigator.share){await navigator.share({title:'Ludamus (APK)',text,url});return}}catch(e){if(e&&e.name==='AbortError')return}

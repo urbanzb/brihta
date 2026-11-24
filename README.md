@@ -23,7 +23,7 @@ Ob prvem zagonu aplikacija vpraša za razred. Povezava z oznako razreda ga izber
 
 **iPhone:** povezavo odpri v **Safariju**, tapni gumb **Deli** (kvadrat s puščico) in izberi **Dodaj na začetni zaslon**.
 
-**Android, če se aplikacija odpira v brskalniku:** namesti različico APK s povezave **https://github.com/urbanzb/ludamus/releases/download/apk/Ludamus.apk**. Telefon bo vprašal, ali dovoliš namestitev iz tega vira: dovoli in tapni **Namesti**. Če Play Protect opozori na neznano aplikacijo, izberi **Več podrobnosti → Vseeno namesti**.
+**Android, če se aplikacija odpira v brskalniku:** namesti različico APK s povezave **https://ludamus.si/apk/** (dokler domena ni nastavljena: https://urbanzb.github.io/ludamus/apk/). Stran preusmeri na zadnji APK v izdajah na GitHubu. Telefon bo vprašal, ali dovoliš namestitev iz tega vira: dovoli in tapni **Namesti**. Če Play Protect opozori na neznano aplikacijo, izberi **Več podrobnosti → Vseeno namesti**.
 
 Posodobitev ni treba nameščati. Zgodijo se same ob odprtju aplikacije, ko je telefon povezan s spletom.
 
