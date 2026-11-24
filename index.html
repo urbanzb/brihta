@@ -299,7 +299,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <div id="app"><p class="loading">Nalagam …</p></div>
 <script>
 'use strict';
-const APP_VERSION='2.7';
+const APP_VERSION='2.8';
 const FEEDBACK_EMAIL='uzbmobileapps@gmail.com'; // mnenja se pošljejo iz uporabnikovega poštnega programa
 /* JEZIK: Ludamus uporablja izključno BRITANSKO angleščino (zapis in izgovorjava en-GB).
    Ameriške oblike pri vnosu zaznamo s US_UK in predlagamo britansko različico. */
@@ -373,7 +373,14 @@ function stKey(k){return encodeURIComponent(String(k)).replace(/\./g,'%2E').slic
 function track(key,n){if(!S.stats||!key)return;const d=dayKey();STQ[d]=STQ[d]||{};STQ[d][key]=(STQ[d][key]||0)+(n||1);lsSet('stat-vrsta',STQ);clearTimeout(stTimer);stTimer=setTimeout(flushStats,15000)}
 function trackMiss(w){if(!w||!w.key||String(w.key).startsWith('my-'))return;track('m/'+stKey(w.key))}
 function platform(){return AB?'apk':isIOS()?'ios':isAndroid()?'android':'splet'}
-function trackOpen(){if(sessionCounted)return;sessionCounted=true;track('open');track('cls_'+CLS().id);track('plat_'+platform());track('v_'+APP_VERSION.replace(/\./g,'_'))}
+/* ŠTETJE NAPRAV BREZ OZNAKE: telefon si zapomni, ali je danes oz. ta mesec že poslal »+1«, in pošlje le seštevek.
+   Nobene oznake naprave ali uporabnika ne pošiljamo. Način: apk, nam (nameščena spletna aplikacija), brs (brskalnik). */
+function devMode(){return AB?'apk':isStandalone()?'nam':'brs'}
+function devTick(){if(!S.stats)return;const d=today(),m=d.slice(0,7),md=devMode();
+  if(!lsGet('st-naprava',false)){track('dev_new');track('dev_new_'+md);lsSet('st-naprava',true)}
+  if(lsGet('st-dan','')!==d){track('dev_day');track('dev_day_'+md);lsSet('st-dan',d)}
+  if(lsGet('st-mesec','')!==m){track('dev_mon');track('dev_mon_'+md);lsSet('st-mesec',m)}}
+function trackOpen(){devTick();if(sessionCounted)return;sessionCounted=true;track('open');track('cls_'+CLS().id);track('plat_'+platform());track('v_'+APP_VERSION.replace(/\./g,'_'))}
 async function flushStats(){
   if(stBusy||!S.stats||!navigator.onLine||!duoReady())return;const days=Object.keys(STQ);if(!days.length)return;
   stBusy=true;const snap=JSON.parse(JSON.stringify(STQ));
@@ -709,8 +716,9 @@ Vse besede na enem mestu. Išči angleško ali slovensko in tapni 🔊, da besed
 - **🔔 / 🔕:** vklopi ali izklopi zvočne učinke.
 
 # 📊 Anonimna statistika
-Ludamus pošilja le skupne dnevne seštevke, brez imen in brez podatkov o napravi:
+Ludamus pošilja le skupne dnevne seštevke, brez imen in brez oznake naprave:
 - kolikokrat je bila aplikacija odprta in na kateri različici,
+- koliko naprav jo uporablja (vsaka naprava se v dnevu in mesecu prešteje le enkrat) in ali je nameščena ali odprta v brskalniku,
 - katere igre so bile začete in katere končane,
 - katere teme so bile izbrane,
 - katere besede iz šole so bile zgrešene.
@@ -869,7 +877,7 @@ function renderSettings(){
   <section class="card"><h3>✏️ Moje besede</h3><p class="instr">Besede, ki jih dodaš tukaj, so samo na tej napravi. Zdaj imaš ${besed(myN)}. Ob menjavi telefona jih izvozi in na novem telefonu uvozi.</p>
    <div class="btns"><button class="sm press" data-act="nav" data-v="my">Uredi moje besede</button><button class="sm press" data-act="export" ${MY.topics.length?'':'disabled'}>⬇️ Izvozi</button><label class="sm press filebtn">⬆️ Uvozi<input type="file" accept=".json,application/json" data-import hidden></label></div></section>
   <section class="card"><h3>💬 Pošlji mnenje</h3><p class="instr">Povejte nam, kaj vam je všeč in kaj bi izboljšali.</p><button class="sm press" data-act="nav" data-v="mnenje">Pošlji mnenje</button></section>
-  <section class="card"><h3>📊 Anonimna statistika</h3><p class="instr">Ludamus pošilja le skupne seštevke, na primer katere igre se igrajo in katere besede so težke. Brez imen, brez podatkov o napravi in brez lastnih besed.</p><button class="sm press" data-act="stattoggle" aria-pressed="${S.stats}">${S.stats?'✅ Vklopljeno':'⬜ Izklopljeno'}</button></section>
+  <section class="card"><h3>📊 Anonimna statistika</h3><p class="instr">Ludamus pošilja le skupne seštevke, na primer katere igre se igrajo, katere besede so težke in koliko naprav ga uporablja. Brez imen, brez oznake naprave in brez lastnih besed.</p><button class="sm press" data-act="stattoggle" aria-pressed="${S.stats}">${S.stats?'✅ Vklopljeno':'⬜ Izklopljeno'}</button></section>
   <section class="card"><h3>🔗 Deli aplikacijo</h3><p class="instr">Pošlji povezavo drugim staršem iz razreda. Spletna povezava deluje na vseh telefonih. APK je dodatna možnost samo za Android, če se nameščena aplikacija odpira v brskalniku.</p><div class="btns"><button class="sm press" data-act="share">🌐 Deli povezavo</button><button class="sm press" data-act="shareapk">🤖 Deli APK</button></div></section>
   ${isAndroid()&&!AB?`<section class="card"><h3>🤖 Android aplikacija (APK)</h3><p class="instr">Če se nameščena aplikacija na tvojem telefonu odpira v brskalniku, namesti to različico. Telefon bo vprašal za dovoljenje za namestitev.</p><a class="sm press linkbtn" href="${h(apkUrl())}">⬇️ Prenesi APK</a></section>`:''}
   <section class="card"><h3>🔑 Za skrbnika</h3><p class="instr">Objava novih besed za vse uporabnike. Potrebuješ GitHub žeton.</p><button class="sm press" data-act="nav" data-v="admin">Skrbniški način</button></section>
@@ -985,8 +993,11 @@ async function cfgSave(){
 }
 function odprtij(n){const m=n%100;return n+' '+(m===1?'odprtje':m===2?'odprtji':(m===3||m===4)?'odprtja':'odprtij')}
 let STDATA=null,STERR='';
+let APKDL=null;
 async function loadStats(){S.edOpen='stat';STERR='Nalagam …';STDATA=null;render();
-  try{await flushStats();const fb=await fbInit();const v=(await fb.get(fb.ref('stats'))).val()||{};STDATA=v;STERR=''}catch(e){STERR='Statistike ni bilo mogoče naložiti: '+fbErrText(e)}render()}
+  try{await flushStats();const fb=await fbInit();const v=(await fb.get(fb.ref('stats'))).val()||{};STDATA=v;STERR=''}catch(e){STERR='Statistike ni bilo mogoče naložiti: '+fbErrText(e)}
+  APKDL=null;try{if(CFG.token&&CFG.owner&&CFG.repo){const r=await fetch(ghRepoUrl()+'/releases/tags/apk',{headers:ghHeaders(),cache:'no-store'});if(r.ok){const j=await r.json();APKDL=(j.assets||[]).filter(a=>/\.apk$/i.test(a.name)).reduce((t,a)=>t+(a.download_count||0),0)}}}catch(e){}
+  render()}
 function renderStatsBody(){
   if(!duoReady())return `<p class="instr">Statistika potrebuje nastavljen Firebase.</p>`;
   const btn=`<div class="btns"><button class="sm press" data-act="statload">${STDATA?'Osveži':'Naloži statistiko'}</button>${[7,30,90].map(n=>`<button class="chip ${(S.statDays||7)===n?'on':''}" style="--c:#FFC93C" data-act="statdays" data-n="${n}">${n} dni</button>`).join('')}</div>`;
@@ -1003,8 +1014,15 @@ function renderStatsBody(){
   const cs=Object.keys(sum).filter(k=>k.startsWith('cls_')).map(k=>`${(classes().find(c=>c.id===k.slice(4))||{name:k.slice(4)}).name}: ${sum[k]}`).join(', ')||'–';
   const pl=Object.keys(sum).filter(k=>k.startsWith('plat_')).map(k=>`${k.slice(5)}: ${sum[k]}`).join(', ')||'–';
   const vv=Object.keys(sum).filter(k=>k.startsWith('v_')).map(k=>`${k.slice(2).replace(/_/g,'.')}: ${sum[k]}`).join(', ')||'–';
+  const allD=Object.keys(STDATA).filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(d)),ym=today().slice(0,7),pd=new Date();pd.setDate(1);pd.setMonth(pd.getMonth()-1);
+  const pym=pd.getFullYear()+'-'+String(pd.getMonth()+1).padStart(2,'0'),monSum=(m,k)=>allD.filter(d=>d.startsWith(m)).reduce((t,d)=>t+((STDATA[d]||{})[k]||0),0);
+  const dayDev=days.map(d=>(STDATA[d]||{}).dev_day||0),devToday=(STDATA[today()]||{}).dev_day||0,devAvg=Math.round(dayDev.reduce((a,b)=>a+b,0)/N*10)/10,devMax=Math.max(0,...dayDev);
+  const totNew=allD.reduce((t,d)=>t+((STDATA[d]||{}).dev_new||0),0),mon=monSum(ym,'dev_mon'),pmon=monSum(pym,'dev_mon');
+  const mode=k=>monSum(ym,'dev_mon_'+k),modeTxt=mon?`nameščena aplikacija ${mode('nam')}, APK ${mode('apk')}, brskalnik ${mode('brs')}`:'–';
+  const devSec=`<h4 class="sh">Naprave</h4><p class="instr">Aktivne danes: <b>${devToday}</b> · v povprečju na dan: <b>${String(devAvg).replace('.',',')}</b> · največ v enem dnevu: <b>${devMax}</b><br>Aktivne ta mesec: <b>${mon}</b> (prejšnji mesec: ${pmon})<br>Ta mesec: ${modeTxt}<br>Nove naprave v zadnjih ${N} dneh: <b>${sum.dev_new||0}</b> · vseh novih naprav: <b>${totNew}</b>${APKDL!=null?`<br>Prenosi APK z GitHuba (skupaj): <b>${APKDL}</b>`:''}<br><small>Naprave se štejejo od različice 2.8. Vsaka naprava se v dnevu in mesecu prešteje enkrat, brez oznake naprave.</small></p>`;
   const barRow=(l,v,max,extra)=>`<div class="srow"><span class="sl">${h(l)}</span><span class="sbar"><i style="width:${Math.round(v/max*100)}%"></i></span><span class="sv">${v}${extra||''}</span></div>`;
   return btn+`<p class="instr" style="margin-top:12px">Zadnjih ${N} dni: <b>${odprtij(sum.open||0)}</b> aplikacije, uporaba v <b>${active}</b> od ${N} dni.</p>
+   ${devSec}
    <div class="days">${opens.map((o,i)=>`<i title="${days[i]}: ${o}" style="height:${Math.max(4,Math.round(o/maxO*48))}px"></i>`).join('')}</div>
    <h4 class="sh">Igre (začete, v oklepaju končane)</h4>${games.length?games.map(([g,a,b])=>barRow(gname[g],a,maxG,` (${b})`)).join(''):'<p class="instr">Ni podatkov.</p>'}
    <h4 class="sh">Teme</h4>${topics.length?topics.map(([t,v])=>barRow(tname(t),v,topics[0][1])).join(''):'<p class="instr">Ni podatkov.</p>'}
@@ -1152,7 +1170,7 @@ app.addEventListener('change',e=>{const t=e.target;
   if(t.dataset.tcls!==undefined&&ADM){const tp=ADM.topics[+t.dataset.tcls];const all=[...document.querySelectorAll(`[data-tcls="${t.dataset.tcls}"]`)].filter(x=>x.checked).map(x=>x.value);
     if(!all.length){t.checked=true;S.status='Tema mora pripadati vsaj enemu razredu.'}else{tp.classes=all;S.dirty.pub=true;S.status='Razredi teme bodo spremenjeni po objavi.'}S.edOpen=tp.id;render();return}if(t.dataset.psel!==undefined&&PREV){PREV.sel=t.value;render()}else if(t.dataset.import!==undefined&&t.files&&t.files[0]){importMy(t.files[0]);t.value=''}});
 app.addEventListener('toggle',e=>{if(e.target.matches('details.ed')&&e.target.open&&e.target.dataset.id)S.edOpen=e.target.dataset.id},true);
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&S.view==='home')loadPub();if(document.visibilityState==='hidden')flushStats()});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){devTick();if(S.view==='home')loadPub()}if(document.visibilityState==='hidden')flushStats()});
 try{speechSynthesis.getVoices();speechSynthesis.addEventListener('voiceschanged',()=>{if(S.view==='home')render()})}catch(e){}
 if('serviceWorker' in navigator)window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 /* UVODNI ZASLON: sovica se pojavi, pomežikne, pomaha z desno perutjo in v krogu odleti na svoje mesto v glavi.
@@ -1187,11 +1205,12 @@ function splFly(el,owl,wl,wr){const to=document.querySelector('#app .hero .owl')
   const at=d=>{let j=1;while(j<M&&L[j]<d)j++;const f=(d-L[j-1])/((L[j]-L[j-1])||1);return [P[j-1][0]+(P[j][0]-P[j-1][0])*f,P[j-1][1]+(P[j][1]-P[j-1][1])*f]};
   const ks=[],N=90;for(let i=0;i<=N;i++){const t=i/N,e=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;const [x,y]=at(e*L[M]);
     ks.push({opacity:1,transform:`translate(${x.toFixed(2)}px,${y.toFixed(2)}px) rotate(${(-360*e).toFixed(2)}deg) scale(${(1+(k-1)*e).toFixed(4)})`})}
-  splA(el.querySelector('.sbg'),[{opacity:1},{opacity:0}],{duration:700,fill:'forwards'});
+  const bgA=splA(el.querySelector('.sbg'),[{opacity:1},{opacity:1,offset:.5},{opacity:0}],{duration:2600,easing:'linear',fill:'forwards'});
   const fl=[0,-40,10,-40,10,-40,10,-40,0];
   splA(wr,fl.map(d=>({transform:`rotate(${d}deg)`})),{duration:1500});splA(wl,fl.map(d=>({transform:`rotate(${-d}deg)`})),{duration:1500});
   const f=splA(owl,ks,{duration:1500,easing:'linear',fill:'forwards'});
-  if(f)f.onfinish=()=>splEnd(true);else splEnd(true)}
+  if(!f)return splEnd(true);
+  f.onfinish=()=>{if(bgA&&bgA.playState!=='finished')bgA.onfinish=()=>splEnd(true);else splEnd(true)}}
 render();splStart();loadPub().then(()=>{trackOpen();setTimeout(flushStats,15000)});
 </script>
 </body>

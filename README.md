@@ -144,6 +144,12 @@ V **Skrbniški način** urejaš besedilo zaslona **❓ Navodila**. Spremembe obj
 
 V **Skrbniški način → 📊 Statistika uporabe** tapni **Naloži statistiko** in izberi obdobje (7, 30 ali 90 dni). Vidiš število odprtij in dni uporabe, katere igre se začnejo in končajo, priljubljene teme, najtežje besede (koristno tudi za učiteljico) ter naprave in različice. Podatki so anonimni dnevni seštevki v Firebase (`stats`). Za delovanje morajo biti v Firebase objavljena pravila iz `firebase-pravila.json`.
 
+### Naprave
+
+Razdelek **Naprave** pokaže aktivne naprave danes, povprečje na dan, aktivne naprave ta in prejšnji mesec, nove naprave ter kako je aplikacija odprta (nameščena aplikacija, APK ali brskalnik). Če je vpisan GitHub žeton, je prikazano tudi skupno število prenosov APK.
+
+Štetje deluje brez oznake naprave: telefon si zapomni, ali je danes oziroma ta mesec že poslal »+1«, in v Firebase pošlje le seštevek. Omejitve: šteje naprave, ne ljudi; po brisanju podatkov ali ponovni namestitvi se naprava šteje kot nova; odstranitve ni mogoče zaznati; naprave z izklopljeno statistiko niso štete. Štetje velja od različice 2.8.
+
 Statistika trgovine (namestitve, ocene, sesutja) bo na voljo v Play Console, ko bo aplikacija objavljena v Trgovini Play.
 
 ## Mnenja
@@ -178,6 +184,7 @@ Igre delujejo za vse pare oblike *a = b*, izgovorjava pa sledi jezikoma `langA` 
 2. **Datoteka CNAME.** Šele ko DNS deluje (lahko traja nekaj ur), v repozitorij naloži datoteko `CNAME` z vrstico `ludamus.si`. Prej je ne nalagaj, ker bi GitHub stran preusmeril na domeno, ki še ne deluje.
 3. **GitHub.** V **Settings → Pages** mora pri **Custom domain** pisati `ludamus.si` in zeleno potrditev. Vklopi **Enforce HTTPS** (možnost postane dostopna nekaj minut do ene ure po potrditvi).
 4. **APK.** Nalaganje datoteke `CNAME` samodejno zažene gradnjo APK, ki od zdaj nalaga `https://ludamus.si/`. V dnevniku gradnje piše »Naslov aplikacije: https://ludamus.si/«.
-5. **Firebase.** **Authentication → Settings → Authorized domains → Add domain:** `ludamus.si`.
+5. **Firebase.** **Authentication → Settings → Authorized domains → Add domain:** `ludamus.si`. Če si v Google Cloud ključu API omejil dovoljene spletne naslove (HTTP referrers), dodaj tudi `https://ludamus.si/*`.
+6. **Preizkus.** Odpri `https://ludamus.si`, preveri v nastavitvah različico, preizkusi igro za dva in v skrbniškem načinu znova vpiši žeton.
 
 Stari naslov `urbanzb.github.io/ludamus/` GitHub sam preusmeri na domeno. Shranjeni podatki na telefonih (zvezdice, nastavitve, žeton) se ob prehodu na domeno ne prenesejo, ker telefon podatke hrani ločeno za vsak naslov.

@@ -2,6 +2,13 @@
 
 Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Novosti). Od različice 2.6 jih aplikacija ne prikazuje več.
 
+## 2.8
+
+- Anonimno štetje naprav: aktivne naprave na dan in v mesecu, nove naprave in delež nameščenih. Vsaka naprava se prešteje le enkrat, brez oznake naprave.
+- V skrbniški statistiki je nov razdelek Naprave in število prenosov APK z GitHuba.
+- Uvod: ozadje ostane med letom sovice, aplikacija se počasi pokaže šele, ko sovica pristane.
+- Pripravljeno za domeno ludamus.si.
+
 ## 2.7
 
 - Sovica ob vsakem zagonu pomežikne, pomaha z desno perutjo in v krogu z vrtenjem odleti v levi zgornji kot. Dotik zaslona jo takoj postavi na njeno mesto.
