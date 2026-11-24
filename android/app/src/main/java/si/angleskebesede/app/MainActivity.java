@@ -3,6 +3,11 @@ package si.angleskebesede.app;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowInsetsController;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -226,6 +231,33 @@ public class MainActivity extends Activity {
                 try {
                     startActivity(Intent.createChooser(i, "Deli"));
                 } catch (ActivityNotFoundException ignored) {
+                }
+            });
+        }
+
+        /** Pobarva zgornjo in spodnjo sistemsko vrstico v barvo ozadja spletne aplikacije (svetla ali temna tema). */
+        @JavascriptInterface
+        public void setBars(String hex, boolean dark) {
+            runOnUiThread(() -> {
+                try {
+                    Window w = getWindow();
+                    int c = Color.parseColor(hex);
+                    w.setStatusBarColor(c);
+                    w.setNavigationBarColor(c);
+                    if (Build.VERSION.SDK_INT >= 30) {
+                        WindowInsetsController ic = w.getInsetsController();
+                        if (ic != null) {
+                            int mask = WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS | WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS;
+                            ic.setSystemBarsAppearance(dark ? 0 : mask, mask);
+                        }
+                    } else {
+                        View d = w.getDecorView();
+                        int f = d.getSystemUiVisibility();
+                        int light = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+                        if (Build.VERSION.SDK_INT >= 26) light |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+                        d.setSystemUiVisibility(dark ? (f & ~light) : (f | light));
+                    }
+                } catch (Exception ignored) {
                 }
             });
         }

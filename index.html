@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ludamus</title>
 <meta name="description" content="Ludamus: igrajmo se! Igrive vaje za angleške besede iz šole.">
-<meta name="theme-color" content="#3D8BFD">
+<meta name="theme-color" content="#EAF3FB">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -219,8 +219,8 @@ code{background:var(--paper);padding:1px 6px;border-radius:6px;font-size:15px}
 :root[data-theme="dark"] .games.gtiles .game{--g:var(--gd,var(--gc));border-color:var(--g);background:color-mix(in srgb,var(--g) 22%,var(--card))}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .games.gtiles .game .ico{background:var(--paper)}}
 :root[data-theme="dark"] .games.gtiles .game .ico{background:var(--paper)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip.on,.stars,.qbtn.on{border-color:#1F2A44}}
-:root[data-theme="dark"] .chip.on,.stars,.qbtn.on{border-color:#1F2A44}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip.on,:root:not([data-theme="light"]) .stars,:root:not([data-theme="light"]) .qbtn.on{border-color:#1F2A44}}
+:root[data-theme="dark"] .chip.on,:root[data-theme="dark"] .stars,:root[data-theme="dark"] .qbtn.on{border-color:#1F2A44}
 @media (max-width:340px){.gpanel{padding:8px}.games.gtiles .game{column-gap:6px;padding:8px 6px}.games.gtiles .game .ico{width:30px;height:30px;font-size:17px}.games.gtiles .game b{font-size:14px}}
 @media (max-width:389px){.games.gtiles .game{column-gap:7px;padding:9px 7px}.games.gtiles .game .ico{width:34px;height:34px;font-size:19px;border-radius:9px}.games.gtiles .game b{font-size:15px}}
 .games.gtiles .game.wide{min-height:0;flex-direction:row;align-items:center;gap:12px}
@@ -1253,7 +1253,13 @@ function splFly(el,owl,wl,wr){const to=document.querySelector('#app .hero .owl')
   const f=splA(owl,ks,{duration:1500,easing:'linear',fill:'forwards'});
   if(!f)return splEnd(true);
   f.onfinish=()=>{if(bgA&&bgA.playState!=='finished')bgA.onfinish=()=>splEnd(true);else splEnd(true)}}
-render();splStart();loadPub().then(()=>{trackOpen();setTimeout(flushStats,15000)});
+/* Sistemski vrstici (ura, baterija in spodnji gumbi) dobita barvo ozadja aplikacije: v brskalniku in nameščeni aplikaciji prek theme-color, v APK prek AndroidBridge. */
+function syncBars(){try{const c=getComputedStyle(document.documentElement).getPropertyValue('--paper').trim()||'#EAF3FB';
+  const dark=document.documentElement.dataset.theme==='dark'||(document.documentElement.dataset.theme!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches);
+  const m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',c);
+  if(AB&&typeof AB.setBars==='function')AB.setBars(c,dark)}catch(e){}}
+try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',syncBars)}catch(e){}
+syncBars();render();splStart();loadPub().then(()=>{trackOpen();setTimeout(flushStats,15000)});
 </script>
 </body>
 </html>

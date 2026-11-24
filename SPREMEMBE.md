@@ -9,6 +9,7 @@ Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Nov
 - Barvne ploščice iger v mreži 2 × 3, vsaka igra ima svojo barvo.
 - Gumb ? ob naslovu »Izberi igro« pokaže kratke opise iger. Spodaj sta le še Slovarček in Nastavitve.
 - Prenovljena temna tema: jasne ravni svetlosti, temne sence, temnejša podlaga z igrami in ploščice z obrobo v svoji barvi.
+- Zgornja in spodnja sistemska vrstica na telefonu (ura, baterija, gumbi) imata barvo ozadja aplikacije, tudi v temnem načinu. V APK to deluje po namestitvi novega APK.
 - Navodila so vedno dosegljiva v Nastavitvah. Razdelek o anonimni statistiki v navodilih je krajši.
 - Opozorilo o glasu se na začetni strani prikaže z gumbom za zapiranje, vedno pa je v nastavitvah.
 
