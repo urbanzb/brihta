@@ -134,13 +134,11 @@ V **Skrbniški način → 🏫 Razredi** urejaš seznam razredov. Ime lahko spre
 - Lastne besede staršev so vidne v vseh razredih.
 - Statistika uporabe prikazuje tudi število odprtij po razredih.
 
-## Navodila in novosti
+## Navodila
 
-V **Skrbniški način** urejaš besedilo zaslona **❓ Navodila** in seznam novosti po različicah. Spremembe objaviš z **Objavi za vse**, nalaganje datotek na GitHub ni potrebno.
+V **Skrbniški način** urejaš besedilo zaslona **❓ Navodila**. Spremembe objaviš z **Objavi za vse**, nalaganje datotek na GitHub ni potrebno.
 
 - **❓ Navodila:** preprost zapis, kjer `# Naslov` začne nov razdelek, `- besedilo` je alineja, `**besedilo**` pa krepko. **Predogled** pokaže, kako bo izgledalo, **Ponastavi na privzeta** pa vrne prvotno besedilo.
-- **🆕 Novosti po različicah:** vpiši različico (npr. 1.9), datum in spremembe, vsako v svoji vrstici z »- «. Novosti se pokažejo na koncu navodil, zadnje tri v celoti, starejše pod »Starejše različice«. Ko objaviš novo različico, uporabniki na začetnem zaslonu vidijo pasico »🆕 Novo v različici …«.
-- Z **Uredi** lahko obstoječe novosti popraviš, z **×** pa jih izbrišeš.
 
 ## Statistika uporabe
 

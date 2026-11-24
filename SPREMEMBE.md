@@ -1,0 +1,84 @@
+# Ludamus – zgodovina različic
+
+Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Novosti). Od različice 2.6 jih aplikacija ne prikazuje več.
+
+## 2.6
+
+- Sovica ob zagonu počasi odleti v levi zgornji kot. Uvodni zaslon prikaže samo sovico.
+- V glavi je samo sovica. Razred zamenjaš v nastavitvah ⚙️.
+- Novosti po različicah niso več prikazane v aplikaciji, zgodovina je v tej datoteki.
+- Skrbniški način nima več urejanja novosti.
+
+## 2.5
+
+- Nova sovica: nova ikona in kratek uvodni zaslon ob zagonu.
+- V glavi je namesto imena sovica.
+- Spomin: število parov nastaviš sam, od 3 do 12, tudi pri igri za dva.
+
+## 2.4
+
+- Novo ime: Ludamus. V latinščini pomeni »igrajmo se!«.
+
+## 2.2
+
+- Krajše ploščice iger: opise pokažeš z gumbom ?.
+- Vadiš lahko več tem hkrati: Vse teme → 🧩 Izberi več tem.
+
+## 2.1
+
+- Jasnejši začetni zaslon: izbira teme in igre v ločenih okvirjih.
+- Zavihka se imenujeta Igram sam in Igrava dva.
+
+## 2.0
+
+- Izbira razreda.
+- Nova razporeditev: teme zgoraj, igre v zavihkih Za enega in Za dva.
+- Pregled vseh tem, razvrščen po mesecih, z iskanjem.
+- Tema Vadi se zdaj imenuje 🔁 Ponovi.
+
+## 1.9
+
+- Mnenje se pošlje iz vaše e-pošte in deluje na vseh omrežjih.
+
+## 1.8
+
+- Navodila ureja skrbnik.
+- Novosti po različicah so zapisane na koncu navodil.
+
+## 1.7
+
+- Navodila za uporabo v aplikaciji.
+
+## 1.6
+
+- Pošiljanje mnenja.
+- Anonimna statistika uporabe, ki jo lahko izklopiš.
+
+## 1.5
+
+- Samo britanska angleščina: opozorilo pri ameriških oblikah in pri manjkajočem britanskem glasu.
+
+## 1.4
+
+- Zvočni učinki, ki jih lahko izklopiš.
+- Pametno ponavljanje in tema Vadi.
+- Igra za dva na enem telefonu.
+- Nova ikona: sovica.
+
+## 1.3
+
+- Novo ime aplikacije.
+- Nova igra Sestavi besedo.
+- Deljenje Android aplikacije (APK).
+
+## 1.2
+
+- Android aplikacija (APK).
+
+## 1.1
+
+- Slovarček in igra za dva.
+
+## 1.0
+
+- Prva različica.
