@@ -2,6 +2,12 @@
 
 Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Novosti). Od različice 2.6 jih aplikacija ne prikazuje več.
 
+## 2.14
+
+- Pesmice: tema ima lahko pesmice iz šole z YouTuba ali druge spletne strani. Med igrami je ploščica 🎵 Pesmice z vgrajenim predvajalnikom.
+- V skrbniškem načinu se pesmice dodajo pri vsaki temi (naslov in povezava).
+- APK: video z YouTuba se predvaja znotraj aplikacije.
+
 ## 2.13
 
 - Okvir s temami se lahko skrči z gumbom v zgornjem desnem kotu. Skrčen prikazuje le izbrano temo, zato so vse igre vidne brez pomikanja. Pritisk na izbrano temo ali gumb okvir spet razširi.

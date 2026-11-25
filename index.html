@@ -295,6 +295,17 @@ details.ed summary small{font-family:var(--body);font-weight:400;color:var(--sof
 .wl .t{flex:1;min-width:0}
 .wl .t span{color:var(--soft)}
 .x{border:0;background:transparent;font-size:24px;color:var(--berry);padding:4px 10px;border-radius:8px}
+.songs-ed{padding:10px 16px 0;border-top:2px dashed var(--line)}
+.songs-ed h4{margin:0 0 6px;font-size:16px}
+.sform{display:grid;grid-template-columns:1fr;gap:8px;padding:8px 0 14px}
+.sform input{box-sizing:border-box;font:inherit;font-size:16px;padding:10px;border:2px solid var(--soft);border-radius:10px;background:var(--paper);color:var(--ink);width:100%}
+.songlist{display:flex;flex-direction:column;gap:10px}
+.songbtn{display:flex;align-items:center;gap:12px;text-align:left;padding:12px 14px;border-radius:16px;font-family:var(--display);font-weight:800;font-size:18px;color:var(--ink)}
+.songbtn.on{background:var(--sun);color:#1F2A44;border-color:#1F2A44}
+.songbtn small{display:block;font-family:var(--body);font-weight:400;font-size:14px;color:var(--soft)}
+.songbtn.on small{color:#1F2A44}
+.player{position:relative;width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#000;border:2.5px solid var(--edge);margin:0 0 14px}
+.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .form{display:grid;grid-template-columns:64px 1fr 1fr;gap:8px;padding:12px 16px 16px;border-top:2px dashed var(--line)}
 .form .actions,.f2 .actions{grid-column:1/-1;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .f2{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 16px 16px}
@@ -343,7 +354,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <div id="app"><p class="loading">Nalagam …</p></div>
 <script>
 'use strict';
-const APP_VERSION='2.13';
+const APP_VERSION='2.14';
 const FEEDBACK_EMAIL='uzbmobileapps@gmail.com'; // mnenja se pošljejo iz uporabnikovega poštnega programa
 /* JEZIK: Ludamus uporablja izključno BRITANSKO angleščino (zapis in izgovorjava en-GB).
    Ameriške oblike pri vnosu zaznamo s US_UK in predlagamo britansko različico. */
@@ -592,7 +603,7 @@ function render(){
   switch(S.view){
     case 'home':return renderHome();case 'kartice':return renderFlash();case 'povezi':return renderMatch();case 'spomin':return renderMem();
     case 'kviz':return renderQuiz();case 'crke':return renderSpell();case 'najdi':return renderFind();case 'few':return renderFew();
-    case 'slovar':return renderDict();case 'teme':return renderTopics();case 'razred':return renderClassPick(false);case 'pomoc':return renderHelp();case 'mnenje':return renderFeedback();case 'duo1':return renderLocal();case 'duo':return renderDuo();case 'settings':return renderSettings();case 'my':return renderMy();case 'admin':return renderAdmin();
+    case 'slovar':return renderDict();case 'pesmice':return renderSongs();case 'teme':return renderTopics();case 'razred':return renderClassPick(false);case 'pomoc':return renderHelp();case 'mnenje':return renderFeedback();case 'duo1':return renderLocal();case 'duo':return renderDuo();case 'settings':return renderSettings();case 'my':return renderMy();case 'admin':return renderAdmin();
   }
 }
 function renderClassPick(first){
@@ -609,6 +620,18 @@ function tminBtn(){const o=!S.tmin;return `<button class="qbtn press tminb" data
 function selChip(chips){const m=chips.match(/<button class="chip on"[\s\S]*?<\/button>/);
   const b=m?m[0]:`<button class="chip on" style="--c:#FFC93C">${h(topicLabel(S.topic))}</button>`;
   return b.replace(/ data-act="[^"]*"/,'').replace('<button class="chip on"','<button class="chip on tsel press" data-act="tmin" aria-label="Izbrana tema, pritisni za vse teme"')}
+/* PESMICE: teme imajo lahko pesmice {t:naslov, y:id videa na YouTubu} ali {t, u:druga povezava}.
+   Video se vgradi prek youtube-nocookie.com (brez piškotkov za oglaševanje), besedil pesmi ne objavljamo. */
+function ytId(u){const m=String(u||'').match(/(?:youtu\.be\/|[?&]v=|\/embed\/|\/shorts\/|\/live\/)([\w-]{11})/);return m?m[1]:''}
+function songTopics(){const ts=topicsAll();if(S.topic==='mix')return ts.filter(t=>(S.mix||[]).includes(t.id));const one=ts.find(t=>t.id===S.topic);return one?[one]:ts}
+function songsNow(){const out=[];for(const t of songTopics())for(const g of (t.songs||[]))if(g&&g.t&&(g.y||g.u))out.push({...g,ti:t.icon||'🎵',tn:t.name});return out}
+function renderSongs(){const list=songsNow();if(S.song==null||S.song>=list.length)S.song=list.length?0:null;const cur=list[S.song];
+  const off=!navigator.onLine;
+  const player=!cur?'':off?`<p class="note">Pesmice potrebujejo internet. Ko bo telefon povezan, jih lahko poslušaš.</p>`
+   :cur.y?`<div class="player"><iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(cur.y)}?rel=0&modestbranding=1&playsinline=1" title="${h(cur.t)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`
+   :`<p class="instr">To pesmico odpreš na njeni spletni strani.</p><p><a class="sm press" href="${h(cur.u)}" target="_blank" rel="noopener">🎵 Odpri pesmico ›</a></p>`;
+  app.innerHTML=bar('🎵 Pesmice')+(list.length?`<p class="gtopic">Tema: ${h(topicLabel(S.topic))}</p>${player}<div class="songlist">${list.map((g,i)=>`<button class="songbtn press ${i===S.song?'on':''}" data-act="song" data-i="${i}" aria-pressed="${i===S.song}"><span aria-hidden="true">${h(g.ti)}</span><span>${h(g.t)}<small>${h(g.tn)}</small></span></button>`).join('')}</div>`
+   :`<p class="instr">Ta tema še nima pesmic.</p>`)}
 function renderHome(){
   if(S.loaded&&!S.cls&&CLASS_PICK&&classes().length>1)return renderClassPick(true);
   if(S.loaded&&!S.cls){S.cls=classes()[0].id;savePrefs()}
@@ -627,6 +650,8 @@ function renderHome(){
     if(show.length<3)for(const t of ts.slice().reverse()){if(show.length>=3)break;if(!show.includes(t))show.push(t)}
     chips+=show.map(topicChip).join('')+`<button class="chip allt" data-act="nav" data-v="teme">Vse teme (${ts.length}) ›</button>`}
   const games=Object.entries(GAMES).map(([k,g])=>`<button class="game press" style="--gc:${GCOL[k]||'#3D8BFD'};--gd:${GCOLD[k]||'#5B9DFF'}" data-act="game" data-g="${k}"><span class="ico">${g.ico}</span><b>${g.name}</b><span>${g.desc}</span></button>`).join('');
+  const sn=songsNow().length;
+  const songTile=sn?`<button class="game wide press" style="--gc:#E8A317;--gd:#FFC24B" data-act="nav" data-v="pesmice"><span class="ico">🎵</span><span class="txt"><b>Pesmice</b><span>Poslušaj in zapoj pesmice iz šole.</span></span></button>`:'';
   const online=duoReady();
   const duo=`<button class="game wide press" style="--gc:#D93D6E;--gd:#FF6E98" data-act="duomode" data-m="local"><span class="ico">📱</span><span class="txt"><b>Spomin na enem telefonu</b><span>Igrata izmenično in si telefon podajata.</span></span></button>
    ${online?`<button class="game press" style="--gc:#3D8BFD;--gd:#5B9DFF" data-act="duomode" data-m="create"><span class="ico">➕</span><b>Ustvari igro</b><span>Prijatelju poveš kodo in igrata vsak s svojim telefonom.</span></button>
@@ -637,7 +662,7 @@ function renderHome(){
   <section class="hstep" aria-labelledby="h-igra"><div class="hhead"><h2 class="hlab" id="h-igra">Izberi igro</h2><button class="qbtn press ${S.desc?'on':''}" data-act="desc" aria-pressed="${S.desc}" aria-label="${S.desc?'Skrij opise iger':'Pokaži opise iger'}" title="${S.desc?'Skrij opise iger':'Kako se igra?'}">?</button></div>
    <div class="gmode" role="group" aria-label="Koliko vas igra?"><button class="${S.tab==='one'?'on':''}" data-act="tab" data-t="one" aria-pressed="${S.tab==='one'}">🙋 Igram sam</button><button class="${S.tab==='two'?'on':''}" data-act="tab" data-t="two" aria-pressed="${S.tab==='two'}">👫 Igrava dva</button></div>
    <div class="gpoint ${S.tab==='two'?'r':''}" aria-hidden="true"><svg viewBox="0 0 24 12"><path d="M0 12 L12 0 L24 12 Z"/></svg></div>
-   <div class="gpanel"><div class="games gtiles ${S.desc?'withdesc':''}">${S.tab==='two'?duo:games}</div></div></section>`}
+   <div class="gpanel"><div class="games gtiles ${S.desc?'withdesc':''}">${S.tab==='two'?duo:games+songTile}</div></div></section>`}
   <div class="botrow"><button class="botbtn press" data-act="nav" data-v="slovar">📖 Slovarček</button><button class="botbtn press" data-act="nav" data-v="settings">⚙️ Nastavitve</button></div>`;
 }
 const MESECI=['januar','februar','marec','april','maj','junij','julij','avgust','september','oktober','november','december'];
@@ -762,6 +787,9 @@ const DEFAULT_HELP=`# 🚀 Kako začneš
 - **Spomin na enem telefonu:** vsak izbere svojo živalco. Ko aplikacija napiše »Podaj telefon!«, je na vrsti drugi.
 - **Ustvari igro** in **Pridruži se:** eden ustvari igro in prijatelju pove kodo. Drugi kodo vpiše na svojem telefonu.
 - Kdor najde par, je še enkrat na vrsti. Zmaga tisti, ki najde več parov.
+
+# 🎵 Pesmice
+Če ima tema pesmice iz šole, je med igrami ploščica **🎵 Pesmice**. Pesmice se predvajajo z YouTuba, zato potrebujejo internet.
 
 # 📖 Slovarček
 Vse besede na enem mestu. Išči angleško ali slovensko in pritisni 🔊, da besedo slišiš.
@@ -1005,6 +1033,8 @@ function editorBody(k){
   const tp=d.topics.map((t,ti)=>`<details class="ed" ${S.edOpen===t.id?'open':''} data-id="${h(t.id)}"><summary>${h(t.icon)} ${h(t.name)}<small>${h(t.sl)}, ${besed(t.words.length)}${k==='pub'?', '+h(topicClasses(t,admClasses()).map(id=>(admClasses().find(c=>c.id===id)||{name:id}).name).join(' + ')):''}</small></summary>
    ${k==='pub'?`<div class="clsrow"><span>Razred:</span>${admClasses().map(c=>`<label><input type="checkbox" data-tcls="${ti}" value="${h(c.id)}" ${topicClasses(t,admClasses()).includes(c.id)?'checked':''}> ${h(c.name)}</label>`).join('')}</div>`:''}
    <ul class="wl">${t.words.map((w,wi)=>`<li><span class="p">${h(w.pic)}</span><span class="t"><b>${h(w.en)}</b> <span>= ${h(w.sl)}${isNew(w)?' ✨':''}${ukHints(w.en).length?` <i class="ukflag" title="Ameriška oblika">💂 ${h(ukHints(w.en).map(x=>x[1]).join(', '))}</i>`:''}</span></span><button class="x" data-act="delw" data-k="${k}" data-t="${ti}" data-i="${wi}" aria-label="Izbriši ${h(w.en)}">×</button></li>`).join('')}</ul>
+   <div class="songs-ed"><h4>🎵 Pesmice</h4>${(t.songs||[]).length?`<ul class="wl">${t.songs.map((g,gi)=>`<li><span class="p">🎵</span><span class="t"><b>${h(g.t)}</b> <span>${g.y?'YouTube':h(g.u||'')}</span></span><button class="x" data-act="dels" data-k="${k}" data-t="${ti}" data-i="${gi}" aria-label="Izbriši pesmico ${h(g.t)}">×</button></li>`).join('')}</ul>`:''}
+   <div class="sform"><input id="sgt-${k}-${ti}" placeholder="Naslov pesmice, npr. Hello song" aria-label="Naslov pesmice"><input id="sgu-${k}-${ti}" placeholder="Povezava (YouTube)" aria-label="Povezava do pesmice" inputmode="url" autocapitalize="off" spellcheck="false"><div><button class="sm press" data-act="adds" data-k="${k}" data-t="${ti}">Dodaj pesmico</button></div></div></div>
    <div class="form"><input id="pic-${k}-${ti}" placeholder="🐶" aria-label="Slikica (emoji)" maxlength="8"><input id="en-${k}-${ti}" placeholder="angleško" aria-label="Angleško"><input id="sl-${k}-${ti}" placeholder="slovensko" aria-label="Slovensko">
    <div class="actions"><button class="sm press" data-act="addw" data-k="${k}" data-t="${ti}">Dodaj besedo</button><button class="danger" data-act="delt" data-k="${k}" data-t="${ti}">Izbriši temo</button></div></div></details>`).join('');
   const newT=`<h3 class="sub">Nova tema</h3><div class="card" style="padding:0"><div class="form" style="border-top:0"><input id="nt-ico-${k}" placeholder="🐾" aria-label="Slikica teme" maxlength="8"><input id="nt-en-${k}" placeholder="npr. Animals" aria-label="Ime teme angleško"><input id="nt-sl-${k}" placeholder="npr. Živali" aria-label="Ime teme slovensko">${k==='pub'?`<div style="grid-column:1/-1">${clsChecks('data-ntcls',S.ntcls||defaultNewCls())}</div>`:''}<div class="actions"><button class="sm press" data-act="addt" data-k="${k}">Dodaj temo</button></div></div></div>`;
@@ -1199,6 +1229,11 @@ function act(a,b){
     if(PREV.sel==='new'){const en=PREV.nt.en.trim();if(!en){S.status='Vpiši ime nove teme.';return render()}t=makeTopic(k,en,PREV.nt.sl.trim()||en,PREV.nt.icon.trim()||'📘');if(k==='pub')t.classes=(PREV.ncls&&PREV.ncls.length?PREV.ncls:defaultNewCls()).slice();d.topics.push(t)}else t=d.topics[+PREV.sel];
     let added=0,skipped=0;for(const it of PREV.items){const en=it.en.trim(),sl=it.sl.trim();if(!en||!sl)continue;if(t.words.some(w=>w.en.toLowerCase()===en.toLowerCase())){skipped++;continue}t.words.push({en,sl,pic:it.pic.trim()||'⭐',added:today()});added++}
     PREV=null;PASTE[k]='';S.dirty[k]=true;S.edOpen=t.id;S.status=`Dodano: ${besed(added)}${skipped?`, ${skipped} že obstaja`:''}. ${k==='my'?'Ne pozabi shraniti.':'Ko je vse prav, pritisni »Objavi za vse«.'}`;render();break}
+  case 'adds':{const d=DS(k),t=d.topics[+b.dataset.t],id=k+'-'+b.dataset.t,ti=val('sgt-'+id),u=val('sgu-'+id);S.edOpen=t.id;
+    if(!u){S.status='Vpiši povezavo do pesmice.';return render()}const y=ytId(u);if(!y&&!/^https?:\/\//i.test(u)){S.status='Povezava ni veljavna.';return render()}
+    (t.songs=t.songs||[]).push(y?{t:ti||'Pesmica',y}:{t:ti||'Pesmica',u});S.dirty[k]=true;S.status='Dodana pesmica: '+(ti||'Pesmica')+'.';render();break}
+  case 'dels':{const d=DS(k),t=d.topics[+b.dataset.t];S.edOpen=t.id;(t.songs||[]).splice(+b.dataset.i,1);if(t.songs&&!t.songs.length)delete t.songs;S.dirty[k]=true;S.status='Pesmica odstranjena.';render();break}
+  case 'song':S.song=+b.dataset.i;track('song');render();break;
   case 'addw':{const d=DS(k),t=d.topics[+b.dataset.t],id=k+'-'+b.dataset.t,en=val('en-'+id),sl=val('sl-'+id),pic=val('pic-'+id)||guessPic(en)||'⭐';
     S.edOpen=t.id;if(!en||!sl){S.status='Vpiši angleško in slovensko besedo.';return render()}
     t.words.push({en,sl,pic,added:today()});S.dirty[k]=true;const uh=ukHints(en);S.status=uh.length?'Dodano: '+en+'. Pozor, to je ameriška oblika. Britansko: '+uh.map(x=>x[1]).join(', ')+'.':'Dodano: '+en+'.';render();const f=document.getElementById('en-'+id);if(f)f.focus();break}

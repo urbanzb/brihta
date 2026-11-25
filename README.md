@@ -138,6 +138,10 @@ V **Skrbniški način → 🏫 Razredi** urejaš seznam razredov. Ime lahko spre
 - Lastne besede staršev so vidne v vseh razredih.
 - Statistika uporabe prikazuje tudi število odprtij po razredih.
 
+## Pesmice
+
+V **Skrbniški način** pri vsaki temi v razdelku **🎵 Pesmice** vpišeš naslov pesmice in povezavo, nato pritisni **Dodaj pesmico** in **Objavi za vse**. Povezava je lahko z YouTuba (`youtube.com/watch?v=…`, `youtu.be/…`), takrat se video predvaja v aplikaciji, ali pa druga spletna stran, ki se odpre v brskalniku. Videi se vgradijo prek `youtube-nocookie.com`, besedil pesmi aplikacija ne prikazuje. Ploščica **🎵 Pesmice** se pokaže med igrami, če ima izbrana tema vsaj eno pesmico (pri temi Vse so prikazane pesmice vseh tem).
+
 ## Navodila
 
 V **Skrbniški način** urejaš besedilo zaslona **❓ Navodila**. Spremembe objaviš z **Objavi za vse**, nalaganje datotek na GitHub ni potrebno.

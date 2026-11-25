@@ -128,6 +128,8 @@ public class MainActivity extends Activity {
     private class AppClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            // Vgrajeni okvirji (npr. pesmica z YouTuba) ostanejo v aplikaciji.
+            if (!request.isForMainFrame()) return false;
             Uri u = request.getUrl();
             if (isAppUrl(u)) return false;
             // Vse ostale povezave (npr. GitHub) odpri zunaj aplikacije.
