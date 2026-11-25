@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-23",
+ "updated": "2026-11-25",
  "topics": [
   {
    "id": "feelings",
@@ -73,6 +73,12 @@
      "en": "not so good",
      "sl": "ne preveč dobro",
      "pic": "😕"
+    }
+   ],
+   "songs": [
+    {
+     "t": "Hello! How are you?",
+     "y": "tVlcKp3bWH8"
     }
    ]
   },
@@ -188,6 +194,12 @@
      "sl": "Vozi nazaj.",
      "pic": "⬇️"
     }
+   ],
+   "songs": [
+    {
+     "t": "Let's Be Planes",
+     "y": "YU8VOhXpLi0"
+    }
    ]
   },
   {
@@ -251,6 +263,12 @@
      "en": "Sit down",
      "sl": "Usedi se",
      "pic": "🪑"
+    }
+   ],
+   "songs": [
+    {
+     "t": "What's your name?",
+     "y": "Uv1JkBL5728"
     }
    ]
   },
@@ -345,6 +363,12 @@
      "pic": "🌸",
      "added": "2026-11-21"
     }
+   ],
+   "songs": [
+    {
+     "t": "HR Skip navigation Sign in I See Something Pink",
+     "y": "Asb8N0nz9OI"
+    }
    ]
   },
   {
@@ -424,6 +448,12 @@
      "sl": "deset",
      "pic": "🔟",
      "added": "2026-11-23"
+    }
+   ],
+   "songs": [
+    {
+     "t": "Ten Little Indians",
+     "y": "k0SkWCCWrF8"
     }
    ]
   }
