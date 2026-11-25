@@ -2,6 +2,10 @@
 
 Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Novosti). Od različice 2.6 jih aplikacija ne prikazuje več.
 
+## 2.16
+
+- Popravek: ludamus.si/apk (tudi brez poševnice na koncu) spet prenese APK. Shranjena kopija aplikacije ne prestreza več drugih strani na domeni.
+
 ## 2.15
 
 - Pesmice so v svojem razdelku med temami in igrami, ne več med igrami. Razdelek je viden le, ko ima izbrana tema pesmice. Pritisk na pesmico jo takoj odpre.

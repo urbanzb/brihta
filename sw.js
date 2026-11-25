@@ -1,6 +1,6 @@
 // Service worker: aplikacija se vedno takoj odpre iz shranjene kopije, nova različica se prenese v ozadju
 // in velja ob naslednjem odprtju. Besede (besede.json) najprej z omrežja, a največ 3 sekunde, sicer shranjene.
-const CACHE = 'ludamus-v46';
+const CACHE = 'ludamus-v47';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'besede.json', 'icon-192.png', 'icon-512.png',
   'apple-touch-icon.png', 'grandstander.woff2', 'atkinson-regular.woff2', 'atkinson-bold.woff2'];
 const DATA_TIMEOUT = 3000;
@@ -16,7 +16,13 @@ self.addEventListener('activate', e => {
 });
 
 // Osvežitev vedno preveri strežnik (mimo predpomnilnika brskalnika), da nova različica res pride.
-function fresh(req) { return fetch(new Request(req.url, { cache: 'no-cache', credentials: 'same-origin' })); }
+// Preusmerjenih odgovorov brskalnik za navigacijo ne sprejme, zato jih pretvorimo v navaden odgovor.
+function fresh(req) {
+  return fetch(new Request(req.url, { cache: 'no-cache', credentials: 'same-origin' })).then(res => {
+    if (!res.redirected) return res;
+    return res.blob().then(b => new Response(b, { status: res.status, statusText: res.statusText, headers: res.headers }));
+  });
+}
 
 function save(key, res) {
   if (res && res.ok) { const copy = res.clone(); caches.open(CACHE).then(c => c.put(key, copy)); }
@@ -56,6 +62,9 @@ self.addEventListener('fetch', e => {
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;
   const key = url.origin + url.pathname;
+  // Druge strani na isti domeni (npr. /apk za prenos) brskalnik naloži sam, mimo shranjene kopije.
+  const root = new URL('./', self.registration.scope).pathname;
+  if (req.mode === 'navigate' && url.pathname !== root && url.pathname !== root + 'index.html') return;
   if (url.pathname.endsWith('besede.json')) e.respondWith(networkWithTimeout(e, req, key));
   else e.respondWith(cacheFirst(e, req, key));
 });
