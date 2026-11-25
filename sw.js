@@ -1,6 +1,6 @@
 // Service worker: aplikacija se vedno takoj odpre iz shranjene kopije, nova različica se prenese v ozadju
 // in velja ob naslednjem odprtju. Besede (besede.json) najprej z omrežja, a največ 3 sekunde, sicer shranjene.
-const CACHE = 'ludamus-v45';
+const CACHE = 'ludamus-v46';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'besede.json', 'icon-192.png', 'icon-512.png',
   'apple-touch-icon.png', 'grandstander.woff2', 'atkinson-regular.woff2', 'atkinson-bold.woff2'];
 const DATA_TIMEOUT = 3000;
