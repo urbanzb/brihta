@@ -2,6 +2,12 @@
 
 Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Novosti). Od različice 2.6 jih aplikacija ne prikazuje več.
 
+## 2.10
+
+- Spomin in Spomin za dva: število parov je 4, 6, 8, 10 ali 12.
+- Skrbniški dostop: polje Geslo in skriti dostopni podatki pod »Več možnosti«, brez omembe GitHuba v aplikaciji.
+- Gumba spodaj imata spet emoji: 📖 Slovarček in ⚙️ Nastavitve.
+
 ## 2.9
 
 - Prenovljena začetna stran: »Igram sam« in »Igrava dva« sta stikalo, igre pa so pod njim na svetlo modri podlagi s puščico, ki kaže izbrani način.

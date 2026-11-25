@@ -95,7 +95,9 @@ Skrbniški način za objavo potrebuje žeton, ki ostane samo na tvojem telefonu.
 
 1. V brskalniku odpri **github.com/settings/personal-access-tokens/new** (na telefonu po potrebi vklopi **Spletno mesto za računalnike**).
 2. **Token name:** `appANG`, **Expiration:** najdaljši možni rok, **Repository access:** **Only select repositories → ludamus**, **Permissions:** **Contents → Read and write**.
-3. **Generate token**, žeton kopiraj in ga prilepi v **Skrbniški način → Žeton → Shrani in preveri**.
+3. **Generate token**, žeton kopiraj in ga prilepi v **Skrbniški način → 🔑 Dostop → Geslo → Shrani in preveri**.
+
+Aplikacija žetona namenoma ne imenuje »žeton« in ne omenja GitHuba: v polju **Geslo** je žeton, pod **Več možnosti → Vnesi dostopne podatke** pa so že vpisani podatki v obliki `uporabnik,repozitorij,veja`, torej `urbanzb,ludamus,main`. Spreminjati jih je treba le, če preimenuješ repozitorij.
 
 Ko žeton poteče ali izgubiš telefon, ga na isti strani izbriši in ustvari novega. Žeton vpiši v aplikaciji, ki jo dejansko uporabljaš, ker ima vsak brskalnik svojo shrambo.
 
@@ -162,7 +164,7 @@ Ludamus uporablja izključno britansko angleščino v zapisu (colour, favourite,
 
 ## Težave pri skrbništvu
 
-- **»Žeton nima pravice za pisanje«:** pri žetonu preveri dovoljenje **Contents: Read and write** in izbrani repozitorij `ludamus`.
+- **»Geslo nima pravice za shranjevanje«:** pri žetonu preveri dovoljenje **Contents: Read and write** in izbrani repozitorij `ludamus`.
 - **Napaka v objavljeni besedi:** v skrbniškem načinu besedo izbriši, jo dodaj pravilno in znova objavi.
 - **Firebase javi napako o dostopu ali se statistika ne naloži:** preveri, ali so v Realtime Database objavljena najnovejša pravila iz `firebase-pravila.json`.
 - **Gradnja APK ima rdeči križec:** odpri zagon v zavihku **Actions** in preberi besedilo napake v koraku z rdečim križcem.
@@ -185,6 +187,6 @@ Igre delujejo za vse pare oblike *a = b*, izgovorjava pa sledi jezikoma `langA` 
 3. **GitHub.** V **Settings → Pages** mora pri **Custom domain** pisati `ludamus.si` in zeleno potrditev. Vklopi **Enforce HTTPS** (možnost postane dostopna nekaj minut do ene ure po potrditvi).
 4. **APK.** Nalaganje datoteke `CNAME` samodejno zažene gradnjo APK, ki od zdaj nalaga `https://ludamus.si/`. V dnevniku gradnje piše »Naslov aplikacije: https://ludamus.si/«.
 5. **Firebase.** **Authentication → Settings → Authorized domains → Add domain:** `ludamus.si`. Če si v Google Cloud ključu API omejil dovoljene spletne naslove (HTTP referrers), dodaj tudi `https://ludamus.si/*`.
-6. **Preizkus.** Odpri `https://ludamus.si`, preveri v nastavitvah različico, preizkusi igro za dva in v skrbniškem načinu znova vpiši žeton.
+6. **Preizkus.** Odpri `https://ludamus.si`, preveri v nastavitvah različico, preizkusi igro za dva in v skrbniškem načinu znova vpiši geslo (žeton).
 
 Stari naslov `urbanzb.github.io/ludamus/` GitHub sam preusmeri na domeno. Shranjeni podatki na telefonih (zvezdice, nastavitve, žeton) se ob prehodu na domeno ne prenesejo, ker telefon podatke hrani ločeno za vsak naslov.
