@@ -2,6 +2,13 @@
 
 Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Novosti). Od različice 2.6 jih aplikacija ne prikazuje več.
 
+## 2.11
+
+- Izbira razreda je zaenkrat skrita, ker imata razreda iste besede.
+- Igra za dva: na vrhu menija je izbrana tema s številom besed in gumbom Zamenjaj, med igro je tema napisana nad rezultatom.
+- Ko tema ne dopušča več parov, je pod gumboma − in + to tudi napisano.
+- Gumbi zanesljiveje odzivajo na hitre tape na iPhonu.
+
 ## 2.10
 
 - Spomin in Spomin za dva: število parov je 4, 6, 8, 10 ali 12.

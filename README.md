@@ -127,6 +127,8 @@ V zavihku **Actions** na GitHubu sta dva postopka: **pages build and deployment*
 
 ## Razredi
 
+Izbira razreda je za uporabnike zaenkrat skrita, ker imata razreda iste besede. Ponovno jo vklopiš v `index.html`, kjer `const CLASS_PICK=false;` spremeniš v `true`.
+
 V **Skrbniški način → 🏫 Razredi** urejaš seznam razredov. Ime lahko spremeniš (naslednje leto 1.a v 2.a), teme ostanejo. Dodaš lahko nov razred ali odstraniš obstoječega. Spremembe objaviš z **Objavi za vse**.
 
 - Vsaka objavljena tema ima v urejevalniku vrstico **Razred** s polji za izbiro. Tema lahko pripada enemu ali več razredom, na primer skupna tema za 1.a in 1.b.
