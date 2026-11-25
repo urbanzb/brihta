@@ -2,6 +2,12 @@
 
 Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Novosti). Od različice 2.6 jih aplikacija ne prikazuje več.
 
+## 2.12
+
+- Gumb ? ob »Izberi igro« ostane vprašaj in se ob vklopu opisov obarva rumeno.
+- Polja v skrbniškem načinu (na primer za geslo) ne segajo več čez rob kartice.
+- Besedila uporabljajo »pritisni« namesto »tapni«.
+
 ## 2.11
 
 - Izbira razreda je zaenkrat skrita, ker imata razreda iste besede.

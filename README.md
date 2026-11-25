@@ -21,16 +21,16 @@ Ob prvem zagonu aplikacija vpraša za razred. Povezava z oznako razreda ga izber
 
 **Android:** povezavo odpri v **Chromu** (ali Samsung Internetu). Aplikacija sama ponudi gumb **Namesti**. Če ga ni, odpri meni **⋮** in izberi **Namesti aplikacijo**. Aplikacija se pojavi med ostalimi aplikacijami z imenom **Ludamus**.
 
-**iPhone:** povezavo odpri v **Safariju**, tapni gumb **Deli** (kvadrat s puščico) in izberi **Dodaj na začetni zaslon**.
+**iPhone:** povezavo odpri v **Safariju**, pritisni gumb **Deli** (kvadrat s puščico) in izberi **Dodaj na začetni zaslon**.
 
-**Android, če se aplikacija odpira v brskalniku:** namesti različico APK s povezave **https://ludamus.si/apk/** (dokler domena ni nastavljena: https://urbanzb.github.io/ludamus/apk/). Stran preusmeri na zadnji APK v izdajah na GitHubu. Telefon bo vprašal, ali dovoliš namestitev iz tega vira: dovoli in tapni **Namesti**. Če Play Protect opozori na neznano aplikacijo, izberi **Več podrobnosti → Vseeno namesti**.
+**Android, če se aplikacija odpira v brskalniku:** namesti različico APK s povezave **https://ludamus.si/apk/** (dokler domena ni nastavljena: https://urbanzb.github.io/ludamus/apk/). Stran preusmeri na zadnji APK v izdajah na GitHubu. Telefon bo vprašal, ali dovoliš namestitev iz tega vira: dovoli in pritisni **Namesti**. Če Play Protect opozori na neznano aplikacijo, izberi **Več podrobnosti → Vseeno namesti**.
 
 Posodobitev ni treba nameščati. Zgodijo se same ob odprtju aplikacije, ko je telefon povezan s spletom.
 
 ## Igra za dva
 
-- **Na enem telefonu:** v **Igra za dva** izberita vsak svojo živalco in tapnita **Začni igro**. Telefon si podajata, ko aplikacija napiše »Podaj telefon!«. Internet ni potreben.
-- **Vsak s svojim telefonom:** prvi otrok tapne **Ustvari igro** in prijatelju pove štirimestno kodo. Drugi otrok kodo vpiše in tapne **Pridruži se**. Igra potrebuje internet na obeh telefonih. Če kateri od otrok zapre aplikacijo ali zaklene telefon, se igra lahko prekine.
+- **Na enem telefonu:** v **Igra za dva** izberita vsak svojo živalco in pritisneta **Začni igro**. Telefon si podajata, ko aplikacija napiše »Podaj telefon!«. Internet ni potreben.
+- **Vsak s svojim telefonom:** prvi otrok pritisne **Ustvari igro** in prijatelju pove štirimestno kodo. Drugi otrok kodo vpiše in pritisne **Pridruži se**. Igra potrebuje internet na obeh telefonih. Če kateri od otrok zapre aplikacijo ali zaklene telefon, se igra lahko prekine.
 
 V obeh načinih se igralca izmenjujeta pri odkrivanju kartic. Kdor najde par, je še enkrat na vrsti. Temo in število parov izbere tisti, ki igro začne.
 
@@ -46,7 +46,7 @@ Slovenske besede bere slovenski glas, če ga telefon ima, sicer hrvaški. Izgovo
 
 ## Mnenje
 
-V **⚙️ → Pošlji mnenje** nam lahko sporočite, kaj vam je všeč in kaj bi izboljšali. Ob pošiljanju se odpre vaša e-pošta s pripravljenim sporočilom za **uzbmobileapps@gmail.com**, vi pa tapnete še **Pošlji**. Prosimo, ne navajajte imena otroka.
+V **⚙️ → Pošlji mnenje** nam lahko sporočite, kaj vam je všeč in kaj bi izboljšali. Ob pošiljanju se odpre vaša e-pošta s pripravljenim sporočilom za **uzbmobileapps@gmail.com**, vi pa pritisnete še **Pošlji**. Prosimo, ne navajajte imena otroka.
 
 ## Zasebnost
 
@@ -83,9 +83,9 @@ Datoteke spletne aplikacije so v eni mapi, da jih lažje naložiš tudi s telefo
 ## Dodajanje novih besed
 
 1. Fotografiraj slovarček v zvezku in fotografijo pošlji Claudu v projektu (navodila so v `navodila-za-claude-projekt.md`). Lahko uporabiš tudi Google Lens.
-2. V aplikaciji odpri **⚙️ → Za skrbnika → Skrbniški način**, besedilo prilepi v **Prilepi seznam besed** in tapni **Preberi besede**.
-3. Preveri besede. Kjer je polje za emoji rdeče, ga izberi. Če aplikacija opozori na ameriško obliko (💂), tapni **Popravi**.
-4. Tapni **Dodaj besede** in nato **Objavi za vse**.
+2. V aplikaciji odpri **⚙️ → Za skrbnika → Skrbniški način**, besedilo prilepi v **Prilepi seznam besed** in pritisni **Preberi besede**.
+3. Preveri besede. Kjer je polje za emoji rdeče, ga izberi. Če aplikacija opozori na ameriško obliko (💂), pritisni **Popravi**.
+4. Pritisni **Dodaj besede** in nato **Objavi za vse**.
 
 Ostali dobijo nove besede v nekaj minutah. Datum zadnje objave je zapisan na dnu nastavitev.
 
@@ -107,9 +107,9 @@ Pri tebi je že nastavljeno (projekt `appANG`). Postopek za primer ponovne nasta
 
 1. **console.firebase.google.com** → projekt.
 2. **Authentication → Sign-in method → Anonymous → Enable → Save.** Brez tega preizkus javi `auth/admin-restricted-operation`.
-3. **Databases & Storage → Realtime Database** (ne Firestore) **→ Create database**, lokacija **Belgium (europe-west1)**, **Start in locked mode**. V zavihek **Rules** prilepi vsebino `firebase-pravila.json` in tapni **Publish**.
+3. **Databases & Storage → Realtime Database** (ne Firestore) **→ Create database**, lokacija **Belgium (europe-west1)**, **Start in locked mode**. V zavihek **Rules** prilepi vsebino `firebase-pravila.json` in pritisni **Publish**.
 4. **Project Overview → + Add app → </> (Web)**, registriraj in kopiraj blok `const firebaseConfig = { … }` (kasneje v **Settings → General → Your apps**).
-5. V aplikaciji **Skrbniški način → 👫 Igra za dva (Firebase)**: prilepi `firebaseConfig`, tapni **Uporabi nastavitve**, **Preizkusi povezavo** in **Objavi za vse**.
+5. V aplikaciji **Skrbniški način → 👫 Igra za dva (Firebase)**: prilepi `firebaseConfig`, pritisni **Uporabi nastavitve**, **Preizkusi povezavo** in **Objavi za vse**.
 
 Nastavitve Firebase niso skrivnost. Bazo varujejo pravila iz 3. koraka.
 
@@ -146,7 +146,7 @@ V **Skrbniški način** urejaš besedilo zaslona **❓ Navodila**. Spremembe obj
 
 ## Statistika uporabe
 
-V **Skrbniški način → 📊 Statistika uporabe** tapni **Naloži statistiko** in izberi obdobje (7, 30 ali 90 dni). Vidiš število odprtij in dni uporabe, katere igre se začnejo in končajo, priljubljene teme, najtežje besede (koristno tudi za učiteljico) ter naprave in različice. Podatki so anonimni dnevni seštevki v Firebase (`stats`). Za delovanje morajo biti v Firebase objavljena pravila iz `firebase-pravila.json`.
+V **Skrbniški način → 📊 Statistika uporabe** pritisni **Naloži statistiko** in izberi obdobje (7, 30 ali 90 dni). Vidiš število odprtij in dni uporabe, katere igre se začnejo in končajo, priljubljene teme, najtežje besede (koristno tudi za učiteljico) ter naprave in različice. Podatki so anonimni dnevni seštevki v Firebase (`stats`). Za delovanje morajo biti v Firebase objavljena pravila iz `firebase-pravila.json`.
 
 ### Naprave
 
