@@ -2,6 +2,11 @@
 
 Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Novosti). Od različice 2.6 jih aplikacija ne prikazuje več.
 
+## 2.13
+
+- Okvir s temami se lahko skrči z gumbom v zgornjem desnem kotu. Skrčen prikazuje le izbrano temo, zato so vse igre vidne brez pomikanja. Pritisk na izbrano temo ali gumb okvir spet razširi.
+- Hitrejši zagon: aplikacija se vedno takoj odpre iz shranjene kopije, tudi brez interneta ali ob slabi povezavi. Nova različica se prenese v ozadju in velja ob naslednjem odprtju. Nove besede aplikacija čaka največ 3 sekunde.
+
 ## 2.12
 
 - Gumb ? ob »Izberi igro« ostane vprašaj in se ob vklopu opisov obarva rumeno.

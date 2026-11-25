@@ -196,6 +196,9 @@ code{background:var(--paper);padding:1px 6px;border-radius:6px;font-size:15px}
 /* 2.9: preprostejša izbira igre in barvne ploščice iger */
 .hhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}
 .hhead .hlab{margin:0}
+.hstep.tmin .hhead{margin:0}
+.hlab .tsel{font-family:var(--body);font-size:17px;margin-left:8px;vertical-align:3px}
+.tminb{display:inline-flex;align-items:center;justify-content:center}
 /* stikalo »Igram sam / Igrava dva« in podlaga z igrami, puščica kaže izbrano polovico */
 .gmode{display:grid;grid-template-columns:1fr 1fr;border:2.5px solid var(--edge);border-radius:16px;overflow:hidden;background:var(--card)}
 .gmode button{border:0;border-radius:0;margin:0;padding:11px 6px;background:var(--card);color:var(--soft);font-family:var(--display);font-weight:800;font-size:17px;box-shadow:none}
@@ -340,7 +343,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <div id="app"><p class="loading">Nalagam …</p></div>
 <script>
 'use strict';
-const APP_VERSION='2.12';
+const APP_VERSION='2.13';
 const FEEDBACK_EMAIL='uzbmobileapps@gmail.com'; // mnenja se pošljejo iz uporabnikovega poštnega programa
 /* JEZIK: Ludamus uporablja izključno BRITANSKO angleščino (zapis in izgovorjava en-GB).
    Ameriške oblike pri vnosu zaznamo s US_UK in predlagamo britansko različico. */
@@ -371,8 +374,8 @@ function pairHint(cur,avail){const max=pairMax(avail);if(max>=MEM_MAX||cur<max)r
 function besed(n){const m=n%100;return n+' '+(m===1?'beseda':m===2?'besedi':(m===3||m===4)?'besede':'besed')}
 function pairStepper(cur,avail,act){const max=Math.min(MEM_MAX,Math.floor(avail/2)*2);return `<span class="stepper"><button class="chip press" data-act="${act}" data-n="${cur-2}" ${cur<=MEM_MIN?'disabled':''} aria-label="Manj parov">−</button><b aria-live="polite">${cur}</b><button class="chip press" data-act="${act}" data-n="${cur+2}" ${cur+2>max?'disabled':''} aria-label="Več parov">+</button></span>`}
 const S={view:'home',topic:'all',caps:true,stars:0,memPairs:6,duoPairs:6,slo:true,sfx:true,subject:'ang',stats:true,cls:'',tab:'one',desc:false,mix:[],multi:false,msel:[],animal:'🦊',q:'',loaded:false,status:'',edOpen:null,dirty:{my:false,pub:false}};
-(function(){const p=lsGet('besede-prefs',{});if(typeof p.caps==='boolean')S.caps=p.caps;if(p.stars)S.stars=p.stars;if(Number.isInteger(p.memPairs))S.memPairs=evenPairs(p.memPairs);if(typeof p.slo==='boolean')S.slo=p.slo;if(p.animal)S.animal=p.animal;if(Number.isInteger(p.duoPairs))S.duoPairs=evenPairs(p.duoPairs);if(typeof p.sfx==='boolean')S.sfx=p.sfx;if(typeof p.stats==='boolean')S.stats=p.stats;if(p.cls)S.cls=p.cls;if(p.tab==='two')S.tab='two';if(p.desc===true)S.desc=true;if(Array.isArray(p.mix))S.mix=p.mix;if(p.subject)S.subject=p.subject})();
-function savePrefs(){lsSet('besede-prefs',{caps:S.caps,stars:S.stars,memPairs:S.memPairs,slo:S.slo,animal:S.animal,duoPairs:S.duoPairs,sfx:S.sfx,subject:S.subject,stats:S.stats,cls:S.cls,tab:S.tab,desc:S.desc,mix:S.mix})}
+(function(){const p=lsGet('besede-prefs',{});if(typeof p.caps==='boolean')S.caps=p.caps;if(p.stars)S.stars=p.stars;if(Number.isInteger(p.memPairs))S.memPairs=evenPairs(p.memPairs);if(typeof p.slo==='boolean')S.slo=p.slo;if(p.animal)S.animal=p.animal;if(Number.isInteger(p.duoPairs))S.duoPairs=evenPairs(p.duoPairs);if(typeof p.sfx==='boolean')S.sfx=p.sfx;if(typeof p.stats==='boolean')S.stats=p.stats;if(p.cls)S.cls=p.cls;if(p.tab==='two')S.tab='two';if(p.desc===true)S.desc=true;if(Array.isArray(p.mix))S.mix=p.mix;if(p.tmin===true)S.tmin=true;if(p.subject)S.subject=p.subject})();
+function savePrefs(){lsSet('besede-prefs',{caps:S.caps,stars:S.stars,memPairs:S.memPairs,slo:S.slo,animal:S.animal,duoPairs:S.duoPairs,sfx:S.sfx,subject:S.subject,stats:S.stats,cls:S.cls,tab:S.tab,desc:S.desc,mix:S.mix,tmin:!!S.tmin})}
 
 let PUB=lsGet('besede-cache',null)||{topics:[]};
 let MY=lsGet('moje-besede',null)||{topics:[]};
@@ -601,6 +604,11 @@ function renderClassPick(first){
 function topicChip(t){return `<button class="chip ${S.topic===t.id?'on':''}" style="--c:${h(t.color)}" data-act="topic" data-id="${h(t.id)}">${h(t.icon)} ${h(t.name)}${t.words.some(isNew)?'<i class="dot" title="nove besede"></i>':''}<small>${t.words.length}</small></button>`}
 function specialCounts(ts){return{all:ts.reduce((n,t)=>n+t.words.length,0),nNew:ts.reduce((n,t)=>n+t.words.filter(isNew).length,0),nHard:ts.reduce((n,t)=>n+t.words.filter(w=>isHard({key:t.id+'|'+w.en})).length,0)}}
 function topicLabel(id){if(id==='mix'){const n=(S.mix||[]).map(x=>(topicsRaw().find(t=>t.id===x)||{}).name).filter(Boolean);return '🧩 '+(n.length>3?n.slice(0,3).join(', ')+' …':n.join(', '))}if(id==='all')return '📚 Vse';if(id==='novo')return '✨ Novo';if(id==='vadi')return '🔁 Ponovi';const t=topicsRaw().find(x=>x.id===id);return t?t.icon+' '+t.name:id}
+/* TEME: okvir s temami se lahko skrči; takrat je prikazana le izbrana tema, pritisk nanjo okvir spet razširi. */
+function tminBtn(){const o=!S.tmin;return `<button class="qbtn press tminb" data-act="tmin" aria-expanded="${o}" aria-controls="h-tema" aria-label="${o?'Skrij teme':'Pokaži vse teme'}" title="${o?'Skrij teme':'Pokaži vse teme'}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${o?'M6 15l6-6 6 6':'M6 9l6 6 6-6'}"/></svg></button>`}
+function selChip(chips){const m=chips.match(/<button class="chip on"[\s\S]*?<\/button>/);
+  const b=m?m[0]:`<button class="chip on" style="--c:#FFC93C">${h(topicLabel(S.topic))}</button>`;
+  return b.replace(/ data-act="[^"]*"/,'').replace('<button class="chip on"','<button class="chip on tsel press" data-act="tmin" aria-label="Izbrana tema, pritisni za vse teme"')}
 function renderHome(){
   if(S.loaded&&!S.cls&&CLASS_PICK&&classes().length>1)return renderClassPick(true);
   if(S.loaded&&!S.cls){S.cls=classes()[0].id;savePrefs()}
@@ -625,7 +633,7 @@ function renderHome(){
    <button class="game press" style="--gc:#1E9E62;--gd:#3CCB86" data-act="duomode" data-m="join"><span class="ico">🔑</span><b>Pridruži se</b><span>Vpiši kodo, ki ti jo pove prijatelj.</span></button>`:`<p class="note" style="grid-column:1/-1">Igra vsak s svojim telefonom še ni nastavljena.</p>`}`;
     app.innerHTML=`<header class="hero"><div class="brand"><h1><span class="sr">Ludamus</span>${OWL}</h1></div><div class="tools"><span class="stars" title="Zbrane zvezdice">⭐ ${S.stars}</span><button class="pill press" data-act="caps" title="Velike ali male črke">${S.caps?'ABC':'abc'}</button><button class="pill press ${S.slo?'':'off'}" data-act="slo" aria-pressed="${S.slo}" title="Izgovorjava slovenskih besed">🔊 SLO</button><button class="pill press ${S.sfx?'':'off'}" data-act="sfx" aria-pressed="${S.sfx}" aria-label="Zvočni učinki" title="Zvočni učinki">${S.sfx?'🔔':'🔕'}</button></div></header>
   ${installBanner()}${helpBanner()}${voiceNotesHome()}
-  ${!ts.length&&!S.loaded?`<p class="loading">Nalagam besede …</p>`:`<section class="hstep" aria-labelledby="h-tema"><h2 class="hlab" id="h-tema">Izberi temo${CLASS_PICK&&classes().length>1?`<button class="clspill press" data-act="nav" data-v="razred" aria-label="Zamenjaj razred">${h(CLS().name)} ▾</button>`:''}</h2><div class="chips wrap">${chips}</div></section>
+  ${!ts.length&&!S.loaded?`<p class="loading">Nalagam besede …</p>`:`${S.tmin?`<section class="hstep tmin" aria-labelledby="h-tema"><div class="hhead"><h2 class="hlab" id="h-tema">Tema ${selChip(chips)}</h2>${tminBtn()}</div></section>`:`<section class="hstep" aria-labelledby="h-tema"><div class="hhead"><h2 class="hlab" id="h-tema">Izberi temo${CLASS_PICK&&classes().length>1?`<button class="clspill press" data-act="nav" data-v="razred" aria-label="Zamenjaj razred">${h(CLS().name)} ▾</button>`:''}</h2>${tminBtn()}</div><div class="chips wrap">${chips}</div></section>`}
   <section class="hstep" aria-labelledby="h-igra"><div class="hhead"><h2 class="hlab" id="h-igra">Izberi igro</h2><button class="qbtn press ${S.desc?'on':''}" data-act="desc" aria-pressed="${S.desc}" aria-label="${S.desc?'Skrij opise iger':'Pokaži opise iger'}" title="${S.desc?'Skrij opise iger':'Kako se igra?'}">?</button></div>
    <div class="gmode" role="group" aria-label="Koliko vas igra?"><button class="${S.tab==='one'?'on':''}" data-act="tab" data-t="one" aria-pressed="${S.tab==='one'}">🙋 Igram sam</button><button class="${S.tab==='two'?'on':''}" data-act="tab" data-t="two" aria-pressed="${S.tab==='two'}">👫 Igrava dva</button></div>
    <div class="gpoint ${S.tab==='two'?'r':''}" aria-hidden="true"><svg viewBox="0 0 24 12"><path d="M0 12 L12 0 L24 12 Z"/></svg></div>
@@ -1125,6 +1133,7 @@ function act(a,b){
   case 'topic':S.topic=b.dataset.id;pushRecent(S.topic);render();break;
   case 'tpick':S.topic=b.dataset.id;pushRecent(S.topic);S.tq='';S.view='home';render();scrollTo(0,0);break;
   case 'tab':S.tab=b.dataset.t;savePrefs();render();break;
+  case 'tmin':S.tmin=!S.tmin;savePrefs();render();break;
   case 'hidevoice':lsSet('glas-zaprto',true);render();break;
   case 'multi':S.multi=!S.multi;S.msel=S.topic==='mix'?(S.mix||[]).slice():(S.topic&&!['all','novo','vadi'].includes(S.topic)?[S.topic]:[]);render();break;
   case 'tmsel':{const id=b.dataset.id,a=S.msel||(S.msel=[]);const j=a.indexOf(id);if(j>=0)a.splice(j,1);else a.push(id);topicsList();mixBar();break}
