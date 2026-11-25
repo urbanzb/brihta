@@ -140,7 +140,7 @@ V **Skrbniški način → 🏫 Razredi** urejaš seznam razredov. Ime lahko spre
 
 ## Pesmice
 
-V **Skrbniški način** pri vsaki temi v razdelku **🎵 Pesmice** vpišeš naslov pesmice in povezavo, nato pritisni **Dodaj pesmico** in **Objavi za vse**. Povezava je lahko z YouTuba (`youtube.com/watch?v=…`, `youtu.be/…`), takrat se video predvaja v aplikaciji, ali pa druga spletna stran, ki se odpre v brskalniku. Videi se vgradijo prek `youtube-nocookie.com`, besedil pesmi aplikacija ne prikazuje. Ploščica **🎵 Pesmice** se pokaže med igrami, če ima izbrana tema vsaj eno pesmico (pri temi Vse so prikazane pesmice vseh tem).
+V **Skrbniški način** pri vsaki temi v razdelku **🎵 Pesmice** vpišeš naslov pesmice in povezavo, nato pritisni **Dodaj pesmico** in **Objavi za vse**. Povezava je lahko z YouTuba (`youtube.com/watch?v=…`, `youtu.be/…`), takrat se video predvaja v aplikaciji, ali pa druga spletna stran, ki se odpre v brskalniku. Videi se vgradijo prek `youtube-nocookie.com`, besedil pesmi aplikacija ne prikazuje. Razdelek **🎵 Pesmice** se pokaže med temami in igrami, če ima izbrana tema vsaj eno pesmico (pri temi Vse so prikazane pesmice vseh tem, vrstica se pomika vodoravno).
 
 ## Navodila
 

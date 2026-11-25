@@ -2,6 +2,10 @@
 
 Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Novosti). Od različice 2.6 jih aplikacija ne prikazuje več.
 
+## 2.15
+
+- Pesmice so v svojem razdelku med temami in igrami, ne več med igrami. Razdelek je viden le, ko ima izbrana tema pesmice. Pritisk na pesmico jo takoj odpre.
+
 ## 2.14
 
 - Pesmice: tema ima lahko pesmice iz šole z YouTuba ali druge spletne strani. Med igrami je ploščica 🎵 Pesmice z vgrajenim predvajalnikom.
