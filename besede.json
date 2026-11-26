@@ -461,7 +461,7 @@
    "id": "halloween",
    "name": "Halloween",
    "sl": "Noč čarovnic",
-   "icon": "📘",
+   "icon": "🎃",
    "subject": "ang",
    "created": "2026-11-26",
    "classes": [
@@ -472,7 +472,7 @@
     {
      "en": "Halloween",
      "sl": "Noč čarovnic",
-     "pic": "⭐",
+     "pic": "🎃",
      "added": "2026-11-26"
     }
    ],
