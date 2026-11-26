@@ -468,7 +468,21 @@
     "1a"
    ],
    "color": "#B79CFF",
-   "words": []
+   "words": [
+    {
+     "en": "Haloween",
+     "sl": "Noč čarovnic",
+     "pic": "⭐",
+     "added": "2026-11-26"
+    }
+   ],
+   "songs": [
+    {
+     "t": "Knock knock, trick or treat?",
+     "y": "4jxcWlq3CBg",
+     "l": "KNOCK KNOCK, TRICK OR TREAT?\nKNOCK KNOCK, TRICK OR TREAT? WHO ARE YOU? I'M A GHOST. I'M A LITTLE GHOST.\n\nKNOCK KNOCK. TRICK OR TREAT? WHO ARE YOU? I'M A COWBOY. I'M A LITTLE COWBOY.\n\nKNOCK KNOCK, TRICK OR TREAT? WHO ARE YOU? I'M A WITCH. I'M A LITTLE WITCH.\n\nKNOCK KNOCK, TRICK OR TREAT? WHO ARE YOU? I'M A MONSTER. I'M A LITTLE MONSTER.\n\nKNOCK KNOCK, TRICK OR TREAT? WHO ARE YOU? I'M A BALLERINA. A LITTLE BALLERINA.\n\nKNOCK KNOCK, TRICK OR TREAT? WHO ARE YOU? I'M A PIRATE. I'M A LITTLE PIRATE.\n\nKNOCK KNOCK, TRICK OR TREAT? HAPPY HALLOWEEN HAPPY HALLOWEEN\nKNOCK KNOCK, TRICK OR TREAT? HAPPY HALLOWEEN HAPPY HALLOWEEN"
+    }
+   ]
   }
  ],
  "firebase": {
