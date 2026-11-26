@@ -103,21 +103,21 @@ body.flying .hero .owl{visibility:hidden}
 @keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 .win{text-align:center;font-family:var(--display);font-weight:800;font-size:28px;margin:22px 0 12px}
 .center{display:flex;justify-content:center}
-.mem{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.mem[data-n="4"],.mem[data-n="8"],.mem[data-n="16"],.mem[data-n="20"]{grid-template-columns:repeat(4,1fr)}
-@media (min-width:560px){.mem{grid-template-columns:repeat(4,1fr)}.mem[data-n="5"],.mem[data-n="6"]{grid-template-columns:repeat(3,1fr)}.mem[data-n="20"]{grid-template-columns:repeat(5,1fr)}}
-.mem.mg{grid-template-columns:repeat(var(--c1),1fr)}
-@media (min-width:560px){.mem.mg{grid-template-columns:repeat(var(--c2),1fr)}}
+.mem{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.mem[data-n="4"],.mem[data-n="8"],.mem[data-n="16"],.mem[data-n="20"]{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (min-width:560px){.mem{grid-template-columns:repeat(4,minmax(0,1fr))}.mem[data-n="5"],.mem[data-n="6"]{grid-template-columns:repeat(3,minmax(0,1fr))}.mem[data-n="20"]{grid-template-columns:repeat(5,minmax(0,1fr))}}
+.mem.mg{grid-template-columns:repeat(var(--c1),minmax(0,1fr))}
+@media (min-width:560px){.mem.mg{grid-template-columns:repeat(var(--c2),minmax(0,1fr))}}
 .mem.dense .mcard{aspect-ratio:4/5}
 .stepper{display:inline-flex;align-items:center;gap:10px}
 .stepper .chip{width:44px;height:44px;padding:0;font-size:22px;line-height:1}
 .stepper b{min-width:2ch;text-align:center;font-family:var(--display);font-size:22px}
-.mem.dense{gap:8px}.mem.dense .p{font-size:26px}.mem.dense .word{font-size:13px}.mem.dense .mcard.down{font-size:26px}
+.mem.dense{gap:8px}.mem.dense .p{font-size:26px}.mem.dense .word{font-size:13px}.mem .word.w2{font-size:13px}.mem .word.w3{font-size:12px}.mem.dense .word.w2{font-size:11px}.mem.dense .word.w3{font-size:10px}.mem .word{hyphens:auto;-webkit-hyphens:auto}.mem.dense .mcard.down{font-size:26px}
 .sizes{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 14px}
 .sizes span{color:var(--soft);margin-right:4px}
 .sizes .chip{padding:5px 14px}
 .sizes .chip:disabled{opacity:.4}
-.mcard{aspect-ratio:3/4;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px;text-align:center}
+.mcard{min-width:0;aspect-ratio:3/4;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px;text-align:center}
 .mcard.down{background:var(--sky);background-image:radial-gradient(circle at 50% 50%,rgba(255,255,255,.35) 0 18%,transparent 19%);color:#fff;font-family:var(--display);font-size:34px;font-weight:800}
 .mcard .p{font-size:34px;line-height:1}
 .mcard .word{font-size:15px}
@@ -231,7 +231,7 @@ code{background:var(--paper);padding:1px 6px;border-radius:6px;font-size:15px}
 .games.gtiles.withdesc .game.wide .txt span{display:block}
 .ed details.more summary{cursor:pointer;color:var(--soft);font-size:15px;margin:2px 0 8px}
 .ed details.more label{display:block}
-button,[data-act]{touch-action:manipulation}
+html,button,[data-act]{touch-action:manipulation}
 .phint{margin:8px 0 0;font-size:15px;color:var(--soft)}
 .gtopic{margin:0 0 8px;font-weight:700;color:var(--soft)}
 .botrow .botbtn{border-radius:999px;padding:12px 8px;font-family:var(--display);font-weight:800;font-size:17px;color:var(--ink)}
@@ -369,7 +369,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <div id="app"><p class="loading">Nalagam …</p></div>
 <script>
 'use strict';
-const APP_VERSION='2.18';
+const APP_VERSION='2.19';
 const FEEDBACK_EMAIL='uzbmobileapps@gmail.com'; // mnenja se pošljejo iz uporabnikovega poštnega programa
 /* JEZIK: Ludamus uporablja izključno BRITANSKO angleščino (zapis in izgovorjava en-GB).
    Ameriške oblike pri vnosu zaznamo s US_UK in predlagamo britansko različico. */
@@ -642,7 +642,8 @@ function songNow(){const t=topicsAll().find(x=>x.id===S.topic);const g=t&&(t.son
 function renderSongs(){const g=songNow();const off=!navigator.onLine;
   if(!g){app.innerHTML=bar('🎵 Pesmica')+`<p class="instr">Ta tema nima pesmice.</p>`;return}
   const player=off?`<p class="note">Pesmica potrebuje internet. Ko bo telefon povezan, jo lahko poslušaš.</p>`
-   :g.y?`<div class="player"><iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(g.y)}?rel=0&modestbranding=1&playsinline=1" title="${h(g.t)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`
+   /* sandbox brez allow-popups in allow-top-navigation: video se predvaja, »Watch on YouTube« in logotip pa ne odpreta ničesar */
+   :g.y?`<div class="player"><iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(g.y)}?rel=0&modestbranding=1&playsinline=1" title="${h(g.t)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-presentation"></iframe></div>`
    :`<p class="instr">To pesmico odpreš na njeni spletni strani.</p><p><a class="sm press" href="${h(g.u)}" target="_blank" rel="noopener">🎵 Odpri pesmico ›</a></p>`;
   app.innerHTML=bar('🎵 Pesmica')+`<h2 class="songtitle">${h(g.t)}</h2><p class="gtopic">Tema: ${h(topicLabel(S.topic))}</p>${player}${g.l?`<section class="card lyrics"><h3>Besedilo</h3><div class="lyr">${h(g.l)}</div></section>`:''}`}
 function songEd(k,t,ti){const g=(t.songs||[])[0],id=k+'-'+ti,ed=S.songEd===id||!g;
@@ -736,7 +737,7 @@ function renderMem(){
   const fin=G.ok.size===G.cards.length/2;
   const cs=G.cards.map((c,i)=>{const up=G.open.includes(i)||G.ok.has(c.w.key);
     if(!up)return `<button class="mcard press down" data-act="mem" data-i="${i}" aria-label="Skrita kartica">?</button>`;
-    const inner=c.t==='en'?`<span class="p">${h(c.w.pic)}</span><span class="word">${h(c.w.en)}</span>`:`<span class="word">${h(c.w.sl)}</span>`;
+    const inner=c.t==='en'?`<span class="p">${h(c.w.pic)}</span><span class="word ${wlen(c.w.en)}" lang="en">${h(c.w.en)}</span>`:`<span class="word ${wlen(c.w.sl)}" lang="sl">${h(c.w.sl)}</span>`;
     return `<button class="mcard press ${G.ok.has(c.w.key)?'ok':''}" data-act="mem" data-i="${i}">${inner}</button>`}).join('');
   const sizes=`<div class="sizes"><span>Število parov:</span>${pairStepper(G.cards.length/2,G.max,'msize')}</div>${pairHint(G.cards.length/2,G.max)}`;
   app.innerHTML=bar('Spomin')+sizes+(fin?'':`<p class="instr">Poišči angleško besedo in njen slovenski par.</p>`)+`<div ${memGrid(G.cards.length)}>${cs}</div>`+(fin?`<div class="win">Vsi pari najdeni! ⭐ +1</div><div class="center"><button class="big press" data-act="game" data-g="spomin">Igraj znova</button></div>`:'');
@@ -768,6 +769,8 @@ function renderSpell(){
   <div class="spell-pic">${h(w.pic)}</div><div class="row"><button class="round press" data-act="ssay" aria-label="Poslušaj">🔊</button><span class="spell-sl">${h(w.sl)}</span></div>
   <div class="slots">${slots}</div>${ok?`<div class="fb"><strong>${G.hinted?'Bravo!':'Pravilno! 🎉'}</strong><span class="word">${h(w.en)}</span> = <span class="word">${h(w.sl)}</span></div><button class="big press" data-act="snext">Naprej</button>`:`<div class="tiles">${tiles}</div><div class="btns" style="justify-content:center"><button class="sm press" data-act="shint">💡 Pomoč</button><button class="sm press" data-act="sclear">↺ Znova</button></div>`}</main>`;
 }
+/* Dolge besede na majhnih karticah dobijo manjšo pisavo, da se ne lomijo sredi besede. */
+function wlen(t){const L=Math.max(...String(t||'').split(/\s+/).map(x=>x.length));return L>=10?'w3':L>=8?'w2':''}
 function mcardUp(w,extra,cls){return `<button class="mcard press ${cls||''}" ${extra}><span class="p">${h(w.pic)}</span><span class="word">${h(w.en)}</span></button>`}
 function renderFind(){
   const head=bar('Najdi'),ph=G.phase;
@@ -935,7 +938,7 @@ function renderLocal(){
   const score=`<div class="score"><span class="pl ${!G.done&&t===0?'turn':''}">${h(G.a[0])} ${G.score[0]}</span>:<span class="pl ${!G.done&&t===1?'turn':''}">${G.score[1]} ${h(G.a[1])}</span></div>`;
   const cards=G.cards.map((c,i)=>{const who=G.who[c.w.key],up=G.open.includes(i)||who!==undefined;
     if(!up)return `<button class="mcard press down" data-act="lflip" data-i="${i}" aria-label="Skrita kartica">?</button>`;
-    const inner=c.t==='en'?`<span class="p">${h(c.w.pic)}</span><span class="word">${h(c.w.en)}</span>`:`<span class="word">${h(c.w.sl)}</span>`;
+    const inner=c.t==='en'?`<span class="p">${h(c.w.pic)}</span><span class="word ${wlen(c.w.en)}" lang="en">${h(c.w.en)}</span>`:`<span class="word ${wlen(c.w.sl)}" lang="sl">${h(c.w.sl)}</span>`;
     return `<div class="mcard press ${who===undefined?'':(who===0?'ok':'theirs')}">${inner}</div>`}).join('');
   let msg;
   if(G.done){const[a,b]=G.score;msg=`<div class="win">${a===b?'Neodločeno! 🤝':'Zmagal je '+h(G.a[a>b?0:1])+'! 🏆'} ⭐ +1</div><div class="center"><button class="big press" data-act="lagain">Igraj znova</button></div>`}
@@ -963,7 +966,7 @@ function renderDuo(){
   const me=D.role,them=me==='h'?'g':'h',myA=me==='h'?v.host:v.guest,thA=me==='h'?v.guest:v.host,sc=v.score||{h:0,g:0},o=v.open||[],m=v.matched||{},myTurn=v.turn===me&&v.state==='play'&&!v.pending;
   const cards=v.cards.map((c,i)=>{const who=m['c'+i],up=o.includes(i)||who;
     if(!up)return `<button class="mcard press down ${myTurn?'':'wait'}" data-act="dflip" data-i="${i}" aria-label="Skrita kartica">?</button>`;
-    const inner=c.t==='en'?`<span class="p">${h(c.pic)}</span><span class="word">${h(c.en)}</span>`:`<span class="word">${h(c.sl)}</span>`;
+    const inner=c.t==='en'?`<span class="p">${h(c.pic)}</span><span class="word ${wlen(c.en)}" lang="en">${h(c.en)}</span>`:`<span class="word ${wlen(c.sl)}" lang="sl">${h(c.sl)}</span>`;
     return `<div class="mcard press ${who?(who===me?'ok':'theirs'):''}">${inner}</div>`}).join('');
   const score=`<div class="score"><span class="pl ${v.turn===me&&v.state==='play'?'turn':''}">${h(myA)} ${sc[me]||0}</span>:<span class="pl ${v.turn===them&&v.state==='play'?'turn':''}">${sc[them]||0} ${h(thA)}</span></div>`;
   let msg;

@@ -2,6 +2,13 @@
 
 Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Novosti). Od različice 2.6 jih aplikacija ne prikazuje več.
 
+## 2.19
+
+- Popravek: pri Spominu z 12 pari se kartice na ožjih telefonih ne raztegnejo več čez rob zaslona, zato se telefon ob pritisku ne poveča.
+- Dvojni pritisk ne povečuje več strani (povečava z dvema prstoma ostane).
+- Dolge besede na majhnih karticah imajo manjšo pisavo in se ne lomijo sredi besede.
+- Pesmice: pritisk na »Watch on YouTube« ali logotip YouTube ne odpre ničesar, ne v brskalniku ne v APK.
+
 ## 2.18
 
 - Gumb pesmice: »Pesmica« z enako pisavo kot »Tema« in »Izberi igro«, znak 🎵 med napisom in imenom pesmice, ime pesmice z manjšo pisavo.

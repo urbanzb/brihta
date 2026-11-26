@@ -125,6 +125,13 @@ public class MainActivity extends Activity {
         return u != null && u.toString().startsWith(BuildConfig.APP_URL);
     }
 
+    private static boolean isYouTube(Uri u) {
+        String s = u.toString().toLowerCase();
+        String host = u.getHost() == null ? "" : u.getHost().toLowerCase();
+        return host.equals("youtu.be") || host.endsWith("youtube.com") || host.endsWith("youtube-nocookie.com")
+                || s.startsWith("vnd.youtube") || (s.startsWith("intent:") && s.contains("youtube"));
+    }
+
     private class AppClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -132,6 +139,8 @@ public class MainActivity extends Activity {
             if (!request.isForMainFrame()) return false;
             Uri u = request.getUrl();
             if (isAppUrl(u)) return false;
+            // Povezave na YouTube (npr. »Watch on YouTube« v pesmici) se prezrejo, da otroci ne odprejo aplikacije YouTube.
+            if (isYouTube(u)) return true;
             // Vse ostale povezave (npr. GitHub) odpri zunaj aplikacije.
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, u));
