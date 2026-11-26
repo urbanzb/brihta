@@ -306,11 +306,10 @@ details.ed summary small{font-family:var(--body);font-weight:400;color:var(--sof
 .schips::-webkit-scrollbar{display:none}
 .schips.more{-webkit-mask-image:linear-gradient(to right,#000 82%,transparent);mask-image:linear-gradient(to right,#000 82%,transparent)}
 .schips .chip{white-space:nowrap;font-size:16px;box-shadow:0 3px 0 var(--shadow)}
-.songgo{display:flex;align-items:center;gap:10px;width:100%;margin:0 0 16px;padding:9px 14px;border-radius:20px;text-align:left;background:var(--card);color:var(--ink)}
+.songgo{display:flex;align-items:center;gap:10px;width:100%;margin:0 0 16px;padding:10px 14px 10px 16px;border-radius:20px;text-align:left;background:var(--card);color:var(--ink)}
 .songgo .si{width:36px;height:36px;font-size:21px;flex-shrink:0;border-radius:12px;background:var(--paper);display:flex;align-items:center;justify-content:center;font-size:24px}
-.songgo .st{flex:1;min-width:0;display:flex;align-items:baseline;gap:8px}
-.songgo small{font-size:15px;color:var(--soft);font-weight:700;flex-shrink:0}
-.songgo b{flex:1;min-width:0;font-family:var(--display);font-weight:800;font-size:19px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.songgo .sl{font-family:var(--display);font-weight:800;font-size:22px;color:var(--ink);flex-shrink:0}
+.songgo b{flex:1;min-width:0;font-family:var(--display);font-weight:700;font-size:17px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .songgo .sa{font-size:28px;line-height:1;color:var(--soft);flex-shrink:0}
 .songtitle{font-family:var(--display);font-weight:800;font-size:24px;margin:4px 0 4px}
 .lyrics .lyr{white-space:pre-wrap;font-size:18px;line-height:1.6}
@@ -370,7 +369,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <div id="app"><p class="loading">Nalagam …</p></div>
 <script>
 'use strict';
-const APP_VERSION='2.17';
+const APP_VERSION='2.18';
 const FEEDBACK_EMAIL='uzbmobileapps@gmail.com'; // mnenja se pošljejo iz uporabnikovega poštnega programa
 /* JEZIK: Ludamus uporablja izključno BRITANSKO angleščino (zapis in izgovorjava en-GB).
    Ameriške oblike pri vnosu zaznamo s US_UK in predlagamo britansko različico. */
@@ -670,7 +669,7 @@ function renderHome(){
     chips+=show.map(topicChip).join('')+`<button class="chip allt" data-act="nav" data-v="teme">Vse teme (${ts.length}) ›</button>`}
   const games=Object.entries(GAMES).map(([k,g])=>`<button class="game press" style="--gc:${GCOL[k]||'#3D8BFD'};--gd:${GCOLD[k]||'#5B9DFF'}" data-act="game" data-g="${k}"><span class="ico">${g.ico}</span><b>${g.name}</b><span>${g.desc}</span></button>`).join('');
   const sg=songNow();
-  const songSec=sg?`<button class="songgo press" data-act="songopen"><span class="si" aria-hidden="true">🎵</span><span class="st"><small>Pesmica</small><b>${h(sg.t)}</b></span><span class="sa" aria-hidden="true">›</span></button>`:'';
+  const songSec=sg?`<button class="songgo press" data-act="songopen"><span class="sl">Pesmica</span><span class="si" aria-hidden="true">🎵</span><b>${h(sg.t)}</b><span class="sa" aria-hidden="true">›</span></button>`:'';
   const online=duoReady();
   const duo=`<button class="game wide press" style="--gc:#D93D6E;--gd:#FF6E98" data-act="duomode" data-m="local"><span class="ico">📱</span><span class="txt"><b>Spomin na enem telefonu</b><span>Igrata izmenično in si telefon podajata.</span></span></button>
    ${online?`<button class="game press" style="--gc:#3D8BFD;--gd:#5B9DFF" data-act="duomode" data-m="create"><span class="ico">➕</span><b>Ustvari igro</b><span>Prijatelju poveš kodo in igrata vsak s svojim telefonom.</span></button>

@@ -2,6 +2,10 @@
 
 Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Novosti). Od različice 2.6 jih aplikacija ne prikazuje več.
 
+## 2.18
+
+- Gumb pesmice: »Pesmica« z enako pisavo kot »Tema« in »Izberi igro«, znak 🎵 med napisom in imenom pesmice, ime pesmice z manjšo pisavo.
+
 ## 2.17
 
 - Pesmica je gumb »🎵 Pesmica« z imenom pesmice, viden le, ko je izbrana ena tema s pesmico. Gumb je v eni vrstici, predolga imena se končajo s tremi pikami.
