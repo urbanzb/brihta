@@ -458,8 +458,8 @@
    ]
   },
   {
-   "id": "haloween",
-   "name": "Haloween",
+   "id": "halloween",
+   "name": "Halloween",
    "sl": "Noč čarovnic",
    "icon": "📘",
    "subject": "ang",
@@ -470,7 +470,7 @@
    "color": "#B79CFF",
    "words": [
     {
-     "en": "Haloween",
+     "en": "Halloween",
      "sl": "Noč čarovnic",
      "pic": "⭐",
      "added": "2026-11-26"
