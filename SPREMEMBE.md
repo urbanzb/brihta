@@ -2,6 +2,12 @@
 
 Novosti po različicah, ki so bile prej prikazane v aplikaciji (Navodila → Novosti). Od različice 2.6 jih aplikacija ne prikazuje več.
 
+## 2.17
+
+- Pesmica je gumb »🎵 Pesmica« z imenom pesmice, viden le, ko je izbrana ena tema s pesmico. Gumb je v eni vrstici, predolga imena se končajo s tremi pikami.
+- Pod videom je lahko besedilo pesmice.
+- V skrbniškem načinu ima vsaka tema eno pesmico, ki jo urediš (naslov, povezava, besedilo) ali odstraniš.
+
 ## 2.16
 
 - Popravek: ludamus.si/apk (tudi brez poševnice na koncu) spet prenese APK. Shranjena kopija aplikacije ne prestreza več drugih strani na domeni.
