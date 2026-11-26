@@ -1,6 +1,6 @@
 {
  "version": 1,
- "updated": "2026-11-25",
+ "updated": "2026-11-26",
  "topics": [
   {
    "id": "feelings",
@@ -456,6 +456,19 @@
      "y": "k0SkWCCWrF8"
     }
    ]
+  },
+  {
+   "id": "haloween",
+   "name": "Haloween",
+   "sl": "Noč čarovnic",
+   "icon": "📘",
+   "subject": "ang",
+   "created": "2026-11-26",
+   "classes": [
+    "1a"
+   ],
+   "color": "#B79CFF",
+   "words": []
   }
  ],
  "firebase": {
